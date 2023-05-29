@@ -1,0 +1,3 @@
+class ValueObject extends Model {
+
+}
