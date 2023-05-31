@@ -1,0 +1,162 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="AutoImportSettings">
+    <option name="autoReloadType" value="SELECTIVE" />
+  </component>
+  <component name="ChangeListManager">
+    <list default="true" id="67558acb-1948-4a06-8aee-1a140c430703" name="Changes" comment="">
+      <change afterPath="$PROJECT_DIR$/.idea/research-assistant-frontend.iml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/App.scss" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/clients/BackendOneClient.ts" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/clients/Client.ts" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/components/managements/documents/DetailModalComponent.tsx" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/models/entities/DocumentType.ts" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/models/entities/FileDocument.ts" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/models/entities/TextDocument.ts" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/models/entities/WebDocument.ts" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/models/value_objects/contracts/Content.ts" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/models/value_objects/contracts/requests/Request.ts" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/models/value_objects/contracts/requests/authentications/LoginBody.ts" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/models/value_objects/contracts/requests/authentications/LoginRequest.ts" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/models/value_objects/contracts/requests/authentications/RegisterBody.ts" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/models/value_objects/contracts/requests/authentications/RegisterRequest.ts" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/models/value_objects/contracts/requests/managements/accounts/CreateBody.ts" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/models/value_objects/contracts/requests/managements/accounts/CreateOneRequest.ts" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/models/value_objects/contracts/requests/managements/accounts/DeleteOneByIdRequest.ts" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/models/value_objects/contracts/requests/managements/accounts/PatchBody.ts" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/models/value_objects/contracts/requests/managements/accounts/PatchOneById.ts" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/models/value_objects/contracts/requests/managements/accounts/ReadAllByAccountIdRequest.ts" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/models/value_objects/contracts/requests/managements/accounts/ReadOneByIdRequest.ts" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/models/value_objects/contracts/requests/managements/document_types/CreateBody.ts" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/models/value_objects/contracts/requests/managements/document_types/CreateOneRequest.ts" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/models/value_objects/contracts/requests/managements/document_types/DeleteOneByIdRequest.ts" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/models/value_objects/contracts/requests/managements/document_types/PatchBody.ts" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/models/value_objects/contracts/requests/managements/document_types/PatchOneById.ts" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/models/value_objects/contracts/requests/managements/document_types/ReadOneByIdRequest.ts" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/models/value_objects/contracts/requests/managements/documents/CreateBody.ts" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/models/value_objects/contracts/requests/managements/documents/CreateOneRequest.ts" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/models/value_objects/contracts/requests/managements/documents/DeleteOneByIdRequest.ts" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/models/value_objects/contracts/requests/managements/documents/PatchBody.ts" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/models/value_objects/contracts/requests/managements/documents/PatchOneById.ts" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/models/value_objects/contracts/requests/managements/documents/ReadOneByIdRequest.ts" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/models/value_objects/contracts/requests/managements/file_documents/CreateBody.ts" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/models/value_objects/contracts/requests/managements/file_documents/CreateOneRequest.ts" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/models/value_objects/contracts/requests/managements/file_documents/DeleteOneByIdRequest.ts" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/models/value_objects/contracts/requests/managements/file_documents/PatchBody.ts" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/models/value_objects/contracts/requests/managements/file_documents/PatchOneById.ts" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/models/value_objects/contracts/requests/managements/file_documents/ReadOneByIdRequest.ts" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/models/value_objects/contracts/response/Response.ts" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/models/value_objects/contracts/response/authentications/LoginResponse.ts" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/models/value_objects/contracts/response/authentications/RegisterResponse.ts" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/pages/NotFound.tsx" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/pages/authentications/LoginPage.tsx" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/pages/authentications/RegisterPage.tsx" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/pages/managements/DocumentManagementPage.tsx" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/router/AuthenticatedRouter.tsx" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/router/RootRouter.tsx" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/router/UnAuthenticatedRouter.tsx" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/services/AccountService.ts" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/services/AuthenticationService.ts" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/services/DocumentService.ts" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/services/DocumentTypeService.ts" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/services/FileDocumentService.ts" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/services/Service.ts" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/settings/ClientSetting.ts" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/settings/Setting.ts" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/slices/AuthenticationSlice.ts" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/slices/DomainSlice.ts" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/slices/MessageModalSlice.ts" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/slices/Store.ts" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/styles.sass" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/.gitignore" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/inspectionProfiles/Project_Default.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/inspectionProfiles/Project_Default.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/jpa-buddy.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/misc.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/misc.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/modules.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/modules.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/vcs.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/vcs.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/package.json" beforeDir="false" afterPath="$PROJECT_DIR$/package.json" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/App.css" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/App.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/App.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/assets/react.svg" beforeDir="false" afterPath="$PROJECT_DIR$/src/assets/react.svg" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/index.css" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/main.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/models/entities/Account.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/models/entities/Account.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/models/entities/Document.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/models/entities/Document.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/models/entities/Entity.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/models/entities/Entity.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/models/value_objects/ValueObject.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/models/value_objects/ValueObject.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/vite-env.d.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/vite-env.d.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/yarn.lock" beforeDir="false" afterPath="$PROJECT_DIR$/yarn.lock" afterDir="false" />
+    </list>
+    <option name="SHOW_DIALOG" value="false" />
+    <option name="HIGHLIGHT_CONFLICTS" value="true" />
+    <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
+    <option name="LAST_RESOLUTION" value="IGNORE" />
+  </component>
+  <component name="Git.Settings">
+    <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
+  </component>
+  <component name="MarkdownSettingsMigration">
+    <option name="stateVersion" value="1" />
+  </component>
+  <component name="ProjectId" id="2QYgvK6YrG0eqngQAG0uSQR8wda" />
+  <component name="ProjectLevelVcsManager">
+    <ConfirmationsSetting value="2" id="Add" />
+  </component>
+  <component name="ProjectViewState">
+    <option name="hideEmptyMiddlePackages" value="true" />
+    <option name="showLibraryContents" value="true" />
+  </component>
+  <component name="PropertiesComponent"><![CDATA[{
+  "keyToString": {
+    "RunOnceActivity.ShowReadmeOnStart": "true",
+    "SHARE_PROJECT_CONFIGURATION_FILES": "true",
+    "WebServerToolWindowFactoryState": "false",
+    "codeWithMe.voiceChat.enabledByDefault": "false",
+    "last_opened_file_path": "C:/Data/Apps/research-assistant-frontend/src/models/value_objects/contracts/requests/managements",
+    "node.js.detected.package.eslint": "true",
+    "node.js.detected.package.tslint": "true",
+    "node.js.selected.package.eslint": "(autodetect)",
+    "node.js.selected.package.tslint": "(autodetect)",
+    "nodejs_package_manager_path": "yarn",
+    "ts.external.directory.path": "C:\\Data\\Apps\\research-assistant-frontend\\node_modules\\typescript\\lib",
+    "vue.rearranger.settings.migration": "true"
+  }
+}]]></component>
+  <component name="RecentsManager">
+    <key name="CopyFile.RECENT_KEYS">
+      <recent name="C:\Data\Apps\research-assistant-frontend\src\models\value_objects\contracts\requests\managements" />
+      <recent name="C:\Data\Apps\research-assistant-frontend\src\services" />
+      <recent name="C:\Data\Apps\research-assistant-frontend\src\models\value_objects\contracts\requests\managements\accounts" />
+      <recent name="C:\Data\Apps\research-assistant-frontend\src\models\entities" />
+      <recent name="C:\Data\Apps\research-assistant-frontend\src\models\value_objects\contracts\requests\authentications" />
+    </key>
+  </component>
+  <component name="RunManager">
+    <configuration name="run-1" type="js.build_tools.npm">
+      <package-json value="$PROJECT_DIR$/package.json" />
+      <command value="run" />
+      <scripts>
+        <script value="dev" />
+      </scripts>
+      <arguments value="--host" />
+      <node-interpreter value="project" />
+      <envs />
+      <method v="2" />
+    </configuration>
+  </component>
+  <component name="SpellCheckerSettings" RuntimeDictionaries="0" Folders="0" CustomDictionaries="0" DefaultDictionary="application-level" UseSingleDictionary="true" transferred="true" />
+  <component name="TaskManager">
+    <task active="true" id="Default" summary="Default task">
+      <changelist id="67558acb-1948-4a06-8aee-1a140c430703" name="Changes" comment="" />
+      <created>1685536157919</created>
+      <option name="number" value="Default" />
+      <option name="presentableId" value="Default" />
+      <updated>1685536157919</updated>
+      <workItem from="1685536158932" duration="20675000" />
+    </task>
+    <servers />
+  </component>
+  <component name="TypeScriptGeneratedFilesManager">
+    <option name="version" value="3" />
+  </component>
+</project>

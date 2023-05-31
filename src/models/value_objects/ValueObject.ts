@@ -1,3 +1,3 @@
-class ValueObject extends Model {
+export default class ValueObject extends Model {
 
 }

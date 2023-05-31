@@ -1,4 +1,6 @@
-class Account extends Entity {
+import Entity from "./Entity.ts";
+
+export default class Account extends Entity {
     id: string | undefined;
     name: string | undefined;
     email: string | undefined;

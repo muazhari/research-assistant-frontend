@@ -1,3 +1,3 @@
-class Entity extends Model {
-    
+export default class Entity extends Model {
+
 }

@@ -1,14 +1,18 @@
-class Account extends Entity {
+import Entity from "./Entity.ts";
+
+export default class Document extends Entity {
     id: string | undefined;
     name: string | undefined;
-    email: string | undefined;
-    password: string | undefined;
+    description: string | undefined;
+    documentTypeId: string | undefined;
+    accountId: string | undefined;
 
-    constructor(id: string | undefined, name: string | undefined, email: string | undefined, password: string | undefined) {
+    constructor(id: string | undefined, name: string | undefined, description: string | undefined, documentTypeId: string | undefined, accountId: string | undefined) {
         super();
         this.id = id;
         this.name = name;
-        this.email = email;
-        this.password = password;
+        this.description = description;
+        this.documentTypeId = documentTypeId;
+        this.accountId = accountId;
     }
 }
