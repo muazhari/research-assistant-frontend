@@ -14,6 +14,8 @@ import {useEffect} from "react";
 import Content from "../../models/value_objects/contracts/Content.ts";
 import DocumentTypeService from "../../services/DocumentTypeService.ts";
 import DocumentService from "../../services/DocumentService.ts";
+import FileDocumentPropertyResponse
+    from "../../models/value_objects/contracts/response/managements/FileDocumentPropertyResponse.ts";
 
 export default function SelectModalComponent() {
     const dispatch = useDispatch();
@@ -82,10 +84,19 @@ export default function SelectModalComponent() {
     }
 
     const handleClickSelect = (document: Document) => {
-        dispatch(domainSlice.actions.setCurrentDomain({
-            document: document
-        }))
-        alert("Document selected.")
+        fileDocumentService.readOnePropertyById({
+            id: document.id
+        }).then((response) => {
+            const content: Content<FileDocumentPropertyResponse> = response.data;
+            dispatch(domainSlice.actions.setCurrentDomain({
+                document: document,
+                fileDocumentProperty: content.data
+            }))
+            alert("Document selected.")
+            alert(content.data)
+        }).catch((error) => {
+            console.log(error)
+        })
     }
 
 

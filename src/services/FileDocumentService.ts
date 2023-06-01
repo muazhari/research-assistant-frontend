@@ -1,7 +1,8 @@
 import Service from "./Service.ts";
 import Client from "../clients/Client.ts";
 import BackendOneClient from "../clients/BackendOneClient.ts";
-import CreateOneRequest from "../models/value_objects/contracts/requests/managements/file_documents/CreateOneRequest.ts";
+import CreateOneRequest
+    from "../models/value_objects/contracts/requests/managements/file_documents/CreateOneRequest.ts";
 import DeleteOneByIdRequest
     from "../models/value_objects/contracts/requests/managements/file_documents/DeleteOneByIdRequest.ts";
 import {AxiosResponse} from "axios";
@@ -12,6 +13,8 @@ import FileDocument from "../models/entities/FileDocument.ts";
 import Content from "../models/value_objects/contracts/Content.ts";
 import ReadAllByAccountIdRequest
     from "../models/value_objects/contracts/requests/managements/accounts/ReadAllByAccountIdRequest.ts";
+import FileDocumentPropertyResponse
+    from "../models/value_objects/contracts/response/managements/FileDocumentPropertyResponse.ts";
 
 export default class FileDocumentService extends Service {
     client: Client;
@@ -43,6 +46,10 @@ export default class FileDocumentService extends Service {
 
     readOneById(request: ReadOneByIdRequest): Promise<AxiosResponse<Content<FileDocument>>> {
         return this.client.instance.get(`${this.path}/${request.id}`);
+    }
+
+    readOnePropertyById(request: ReadOneByIdRequest): Promise<AxiosResponse<Content<FileDocumentPropertyResponse>>> {
+        return this.client.instance.get(`${this.path}/${request.id}/property`);
     }
 
     patchOneById(request: PatchOneByIdRequest): Promise<AxiosResponse<Content<FileDocument>>> {

@@ -5,8 +5,12 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="67558acb-1948-4a06-8aee-1a140c430703" name="Changes" comment="">
+      <change afterPath="$PROJECT_DIR$/src/models/value_objects/contracts/response/managements/FileDocumentPropertyResponse.ts" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/components/long_form_qas/SelectModalComponent.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/long_form_qas/SelectModalComponent.tsx" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/pages/managements/LongFormQa.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/pages/managements/LongFormQa.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/services/FileDocumentService.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/services/FileDocumentService.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/slices/DomainSlice.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/slices/DomainSlice.ts" afterDir="false" />
     </list>
     <list id="a7cadf68-e7dd-4100-82ff-87108b6e6aff" name="Changes by avwan" comment="" />
     <option name="SHOW_DIALOG" value="false" />
@@ -42,7 +46,7 @@
     "SHARE_PROJECT_CONFIGURATION_FILES": "true",
     "WebServerToolWindowFactoryState": "false",
     "codeWithMe.voiceChat.enabledByDefault": "false",
-    "last_opened_file_path": "C:/Data/Apps/research-assistant-frontend/src/components/long_form_qas",
+    "last_opened_file_path": "C:/Data/Apps/research-assistant-frontend/src/models/value_objects/contracts/response/managements",
     "node.js.detected.package.eslint": "true",
     "node.js.detected.package.tslint": "true",
     "node.js.selected.package.eslint": "(autodetect)",
@@ -55,11 +59,11 @@
 }]]></component>
   <component name="RecentsManager">
     <key name="CopyFile.RECENT_KEYS">
+      <recent name="C:\Data\Apps\research-assistant-frontend\src\models\value_objects\contracts\response\managements" />
       <recent name="C:\Data\Apps\research-assistant-frontend\src\components\long_form_qas" />
       <recent name="C:\Data\Apps\research-assistant-frontend\src\models\value_objects\contracts\requests\passage_searchs" />
       <recent name="C:\Data\Apps\research-assistant-frontend\src\models\value_objects\contracts\requests\long_form_qas" />
       <recent name="C:\Data\Apps\research-assistant-frontend\src\models\value_objects\contracts\response\passage_searchs" />
-      <recent name="C:\Data\Apps\research-assistant-frontend\src\models\value_objects\contracts\response" />
     </key>
     <key name="MoveFile.RECENT_KEYS">
       <recent name="C:\Data\Apps\research-assistant-frontend\src\components\navigation_bars" />
@@ -87,7 +91,7 @@
       <option name="presentableId" value="Default" />
       <updated>1685536157919</updated>
       <workItem from="1685536158932" duration="40470000" />
-      <workItem from="1685627892346" duration="9966000" />
+      <workItem from="1685627892346" duration="12266000" />
     </task>
     <servers />
   </component>

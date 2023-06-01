@@ -39,6 +39,7 @@ export default function LongFormQaPage() {
         webDocument,
         processDuration,
         generatedAnswer,
+        fileDocumentProperty,
     } = domainState.currentDomain;
 
     const {
@@ -54,7 +55,7 @@ export default function LongFormQaPage() {
                     documentId: document?.id,
                     detailSetting: {
                         startPage: 1,
-                        endPage: 1
+                        endPage: fileDocumentProperty?.pageLength || 1,
                     }
                 },
                 query: "",
@@ -518,18 +519,20 @@ export default function LongFormQaPage() {
                 <hr/>
                 <button type="submit" className="btn btn-primary">QA</button>
             </form>
-            <h2 className="my-3">Output</h2>
-            <div className="d-flex flex-column justify-content-center align-items-center mb-3 w-50">
+            <h2 className="mt-5 mb-3">Output</h2>
+            <div className="d-flex flex-column justify-content-center align-items-center mb-3 w-75">
                 <h3>Process Duration</h3>
                 <hr className="w-100"/>
-                <p>
-                    {processDuration || "..."}
+                <p className="text-center">
+                    {processDuration ? processDuration + " second(s)." : "..."}
                 </p>
             </div>
-            <div className="d-flex flex-column justify-content-center align-items-center mb-5 w-50">
+            <div className="d-flex flex-column justify-content-center align-items-center mb-5 w-75">
                 <h3>Answer</h3>
                 <hr className="w-100"/>
-                {generatedAnswer || "..."}
+                <p style={{"text-align": "justify"}}>
+                    {generatedAnswer || "..."}
+                </p>
             </div>
         </div>
     );
