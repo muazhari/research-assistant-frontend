@@ -65,7 +65,7 @@ export default function LongFormQaPage() {
                 denseRetriever: {
                     topK: 100,
                     similarityFunction: "dot_product",
-                    sourceType: "",
+                    sourceType: "dense_passage",
                     isUpdate: true,
                     embeddingModel: {
                         dimension: 128,
@@ -154,11 +154,15 @@ export default function LongFormQaPage() {
                 }
             ).then((response) => {
                 const content: Content<QaResponse> = response.data;
-                dispatch(domainSlice.actions.setCurrentDomain({
-                    processDuration: content.data?.processDuration,
-                    generatedAnswer: content.data?.generatedAnswer,
-                    retrievedDocuments: content.data?.retrievedDocuments
-                }));
+                if (content.data) {
+                    dispatch(domainSlice.actions.setCurrentDomain({
+                        processDuration: content.data?.processDuration,
+                        generatedAnswer: content.data?.generatedAnswer,
+                        retrievedDocuments: content.data?.retrievedDocuments
+                    }));
+                } else {
+                    alert(content.message);
+                }
             }).catch((error) => {
                 console.log(error);
             })
@@ -270,7 +274,8 @@ export default function LongFormQaPage() {
                         onBlur={formik.handleBlur}
                         value={formik.values.inputSetting.denseRetriever.sourceType}
                     >
-                        <option selected value="local">Local</option>
+                        <option selected value="dense_passage">Dense Passage</option>
+                        <option value="multihop">Multihop</option>
                         <option value="online">Online</option>
                     </select>
                 </fieldset>

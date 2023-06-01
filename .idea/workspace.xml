@@ -5,61 +5,8 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="67558acb-1948-4a06-8aee-1a140c430703" name="Changes" comment="">
-      <change afterPath="$PROJECT_DIR$/src/components/long_form_qas/SelectModalComponent.tsx" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/components/managements/documents/InsertModalComponent.tsx" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/components/navigation_bars/AuthenticatedNavBarComponent.tsx" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/components/navigation_bars/UnAuthenticatedNavBarComponent.tsx" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/models/value_objects/contracts/requests/long_form_qas/Generator.ts" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/models/value_objects/contracts/requests/long_form_qas/GeneratorModel.ts" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/models/value_objects/contracts/requests/long_form_qas/InputSetting.ts" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/models/value_objects/contracts/requests/long_form_qas/OnlineGeneratorModel.ts" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/models/value_objects/contracts/requests/long_form_qas/QaRequest.ts" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/models/value_objects/contracts/requests/managements/text_documents/CreateBody.ts" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/models/value_objects/contracts/requests/managements/text_documents/CreateOneRequest.ts" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/models/value_objects/contracts/requests/managements/text_documents/DeleteOneByIdRequest.ts" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/models/value_objects/contracts/requests/managements/text_documents/PatchBody.ts" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/models/value_objects/contracts/requests/managements/text_documents/PatchOneById.ts" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/models/value_objects/contracts/requests/managements/text_documents/ReadOneByIdRequest.ts" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/models/value_objects/contracts/requests/managements/web_documents/CreateBody.ts" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/models/value_objects/contracts/requests/managements/web_documents/CreateOneRequest.ts" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/models/value_objects/contracts/requests/managements/web_documents/DeleteOneByIdRequest.ts" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/models/value_objects/contracts/requests/managements/web_documents/PatchBody.ts" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/models/value_objects/contracts/requests/managements/web_documents/PatchOneById.ts" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/models/value_objects/contracts/requests/managements/web_documents/ReadOneByIdRequest.ts" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/models/value_objects/contracts/requests/passage_searchs/DenseEmbeddingModel.ts" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/models/value_objects/contracts/requests/passage_searchs/DenseRetriever.ts" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/models/value_objects/contracts/requests/passage_searchs/DocumentSetting.ts" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/models/value_objects/contracts/requests/passage_searchs/EmbeddingModel.ts" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/models/value_objects/contracts/requests/passage_searchs/FileDocumentSetting.ts" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/models/value_objects/contracts/requests/passage_searchs/InputSetting.ts" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/models/value_objects/contracts/requests/passage_searchs/MultihopEmbeddingModel.ts" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/models/value_objects/contracts/requests/passage_searchs/OnlineEmbeddingModel.ts" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/models/value_objects/contracts/requests/passage_searchs/OutputSeting.ts" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/models/value_objects/contracts/requests/passage_searchs/Ranker.ts" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/models/value_objects/contracts/requests/passage_searchs/Retriever.ts" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/models/value_objects/contracts/requests/passage_searchs/SearchRequest.ts" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/models/value_objects/contracts/requests/passage_searchs/SparseRetriever.ts" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/models/value_objects/contracts/requests/passage_searchs/TextDocumentSetting.ts" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/models/value_objects/contracts/requests/passage_searchs/WebDocumentSetting.ts" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/models/value_objects/contracts/response/long_form_qas/QaResponse.ts" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/models/value_objects/contracts/response/long_form_qas/RetrievedDocument.ts" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/models/value_objects/contracts/response/passage_searchs/SearchResponse.ts" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/pages/managements/LongFormQa.tsx" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/pages/managements/PassageSearch.tsx" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/services/LongFormQaService.ts" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/services/PassageSearchService.ts" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/services/TextDocumentService.ts" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/services/WebDocumentService.ts" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/components/managements/documents/DetailModalComponent.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/managements/documents/DetailModalComponent.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/models/value_objects/contracts/Content.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/models/value_objects/contracts/Content.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/pages/authentications/LoginPage.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/pages/authentications/LoginPage.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/pages/authentications/RegisterPage.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/pages/authentications/RegisterPage.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/pages/managements/DocumentManagementPage.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/pages/managements/DocumentManagementPage.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/router/AuthenticatedRouter.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/router/AuthenticatedRouter.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/router/RootRouter.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/router/RootRouter.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/router/UnAuthenticatedRouter.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/router/UnAuthenticatedRouter.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/slices/DomainSlice.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/slices/DomainSlice.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/pages/managements/LongFormQa.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/pages/managements/LongFormQa.tsx" afterDir="false" />
     </list>
     <list id="a7cadf68-e7dd-4100-82ff-87108b6e6aff" name="Changes by avwan" comment="" />
     <option name="SHOW_DIALOG" value="false" />
@@ -140,7 +87,7 @@
       <option name="presentableId" value="Default" />
       <updated>1685536157919</updated>
       <workItem from="1685536158932" duration="40470000" />
-      <workItem from="1685627892346" duration="8323000" />
+      <workItem from="1685627892346" duration="9184000" />
     </task>
     <servers />
   </component>
