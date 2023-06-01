@@ -1,7 +1,7 @@
 import {useFormik} from "formik";
 
 import * as Yup from 'yup';
-import {Link, redirect, useNavigate} from "react-router-dom";
+import {Link, useNavigate} from "react-router-dom";
 import AuthenticationService from "../../services/AuthenticationService.ts";
 import Content from "../../models/value_objects/contracts/Content.ts";
 import LoginResponse from "../../models/value_objects/contracts/response/authentications/LoginResponse.ts";
@@ -32,7 +32,7 @@ export default function LoginPage() {
                 .then((response) => {
                         const content: Content<LoginResponse> = response.data;
                         alert(content.message)
-                        dispatch(authenticationSlice.actions.login(content.data.account))
+                        dispatch(authenticationSlice.actions.login(content.data?.account))
                         navigate("/managements/documents")
                     }
                 )
@@ -53,6 +53,7 @@ export default function LoginPage() {
                         type="email"
                         id="email"
                         name="email"
+                        onBlur={formik.handleBlur}
                         onChange={formik.handleChange}
                         value={formik.values.email}
                     />
@@ -69,6 +70,7 @@ export default function LoginPage() {
                         type="password"
                         id="password"
                         name="password"
+                        onBlur={formik.handleBlur}
                         onChange={formik.handleChange}
                         value={formik.values.password}
                     />

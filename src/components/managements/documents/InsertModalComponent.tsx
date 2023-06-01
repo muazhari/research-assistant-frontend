@@ -1,6 +1,6 @@
 import {Modal, ModalBody, ModalFooter, ModalHeader} from "react-bootstrap";
 import {useDispatch, useSelector} from "react-redux";
-import {useLocation, useNavigate} from "react-router-dom";
+import {useNavigate} from "react-router-dom";
 import DocumentService from "../../../services/DocumentService.ts";
 import DocumentTypeService from "../../../services/DocumentTypeService.ts";
 import domainSlice, {DomainState} from "../../../slices/DomainSlice.ts";
@@ -8,7 +8,6 @@ import {RootState} from "../../../slices/Store.ts";
 import {AuthenticationState} from "../../../slices/AuthenticationSlice.ts";
 import {useFormik} from "formik";
 import Content from "../../../models/value_objects/contracts/Content.ts";
-import {useEffect} from "react";
 import FileDocumentService from "../../../services/FileDocumentService.ts";
 import FileDocument from "../../../models/entities/FileDocument.ts";
 import WebDocument from "../../../models/entities/WebDocument.ts";
@@ -16,10 +15,9 @@ import TextDocument from "../../../models/entities/TextDocument.ts";
 import TextDocumentService from "../../../services/TextDocumentService.ts";
 import WebDocumentService from "../../../services/WebDocumentService.ts";
 
-export default function DetailModalComponent() {
+export default function InsertModalComponent() {
     const dispatch = useDispatch();
     const navigate = useNavigate();
-    const location = useLocation();
 
     const documentService = new DocumentService();
     const documentTypeService = new DocumentTypeService();
@@ -50,74 +48,22 @@ export default function DetailModalComponent() {
         isShow
     } = domainState.modalDomain;
 
-    const handleOnHide = () => {
-        if (["/features/passage-search", "/features/long-form-qa"].includes(location.pathname)) {
-            dispatch(domainSlice.actions.setModalDomain({
-                name: "select"
-            }))
-        } else {
-            dispatch(domainSlice.actions.setModalDomain({
-                isShow: !isShow
-            }))
-        }
-    }
-
-    useEffect(() => {
-        if (documentType?.name == "file") {
-            fileDocumentService.readOneById({
-                id: document?.id
-            }).then((response) => {
-                const content: Content<FileDocument> = response.data;
-                dispatch(domainSlice.actions.setCurrentDomain({
-                    fileDocument: content.data
-                }))
-            }).catch((error) => {
-                console.log(error)
-            })
-        } else if (documentType?.name == "text") {
-            textDocumentService.readOneById({
-                id: document?.id
-            }).then((response) => {
-                const content: Content<TextDocument> = response.data;
-                dispatch(domainSlice.actions.setCurrentDomain({
-                    textDocument: content.data
-                }))
-            }).catch((error) => {
-                console.log(error)
-            })
-        } else if (documentType?.name == "web") {
-            webDocumentService.readOneById({
-                id: document?.id
-            }).then((response) => {
-                const content: Content<WebDocument> = response.data;
-                dispatch(domainSlice.actions.setCurrentDomain({
-                    webDocument: content.data
-                }))
-            }).catch((error) => {
-                console.log(error)
-            })
-        } else {
-            alert("Document type is not supported.")
-        }
-    }, [documentType])
 
     const formik = useFormik({
         initialValues: {
-            id: document?.id,
-            name: document?.name,
-            description: document?.description,
-            documentTypeId: documentType?.id,
-            fileName: fileDocument?.fileName,
-            fileExtension: fileDocument?.fileExtension,
+            name: "",
+            description: "",
+            documentTypeId: documentTypes?.[0]?.id,
+            fileName: "",
+            fileExtension: "",
             fileBytes: "",
-            textContent: textDocument?.textContent,
-            webUrl: webDocument?.webUrl
+            textContent: "",
+            webUrl: ""
         },
         enableReinitialize: true,
         onSubmit: (values) => {
-            if (documentType?.name == "file") {
-                fileDocumentService.patchOneById({
-                    id: document?.id,
+            if (formikDocumentTypeName == "file") {
+                fileDocumentService.createOne({
                     body: {
                         name: values.name,
                         description: values.description,
@@ -134,20 +80,14 @@ export default function DetailModalComponent() {
                         fileDocument: content.data
                     }))
                     dispatch(domainSlice.actions.setDocumentDomain({
-                        accountDocuments: accountDocuments?.map((accountDocument) => {
-                            if (accountDocument.id === content.data?.id) {
-                                return content.data
-                            }
-                            return accountDocument
-                        })
+                        accountDocuments: [...(accountDocuments || []), content.data]
                     }))
                     alert(content.message)
                 }).catch((error) => {
                     console.log(error)
                 })
-            } else if (documentType?.name == "text") {
-                textDocumentService.patchOneById({
-                    id: document?.id,
+            } else if (formikDocumentTypeName == "text") {
+                textDocumentService.createOne({
                     body: {
                         name: values.name,
                         description: values.description,
@@ -162,20 +102,14 @@ export default function DetailModalComponent() {
                         textDocument: content.data
                     }))
                     dispatch(domainSlice.actions.setDocumentDomain({
-                        accountDocuments: accountDocuments?.map((accountDocument) => {
-                            if (accountDocument.id === content.data?.id) {
-                                return content.data
-                            }
-                            return accountDocument
-                        })
+                        accountDocuments: [...(accountDocuments || []), content.data]
                     }))
                     alert(content.message)
                 }).catch((error) => {
                     console.log(error)
                 })
-            } else if (documentType?.name == "web") {
-                webDocumentService.patchOneById({
-                    id: document?.id,
+            } else if (formikDocumentTypeName == "web") {
+                webDocumentService.createOne({
                     body: {
                         name: values.name,
                         description: values.description,
@@ -190,12 +124,7 @@ export default function DetailModalComponent() {
                         fileDocument: content.data
                     }))
                     dispatch(domainSlice.actions.setDocumentDomain({
-                        accountDocuments: accountDocuments?.map((accountDocument) => {
-                            if (accountDocument.id === content.data?.id) {
-                                return content.data
-                            }
-                            return accountDocument
-                        })
+                        accountDocuments: [...(accountDocuments || []), content.data]
                     }))
                     alert(content.message)
                 }).catch((error) => {
@@ -207,6 +136,14 @@ export default function DetailModalComponent() {
         }
     })
 
+
+    const formikDocumentTypeName = documentTypes?.find((documentType) => documentType.id === formik.values.documentTypeId)?.name
+
+    const handleOnHide = () => {
+        dispatch(domainSlice.actions.setModalDomain({
+            isShow: !isShow
+        }))
+    }
 
     const convertToBase64 = (file: File): Promise<string> => {
         return new Promise((resolve, reject) => {
@@ -236,19 +173,6 @@ export default function DetailModalComponent() {
             <ModalBody>
                 <form onSubmit={formik.handleSubmit}>
                     <fieldset className="mb-2">
-                        <label className="form-label" htmlFor="id">ID:</label>
-                        <input
-                            disabled={true}
-                            className="form-control"
-                            type="text"
-                            name="id"
-                            id="id"
-                            onBlur={formik.handleBlur}
-                            onChange={formik.handleChange}
-                            value={formik.values.id}
-                        />
-                    </fieldset>
-                    <fieldset className="mb-2">
                         <label className="form-label" htmlFor="name">Name:</label>
                         <input
                             className="form-control"
@@ -275,12 +199,19 @@ export default function DetailModalComponent() {
                     <fieldset className="mb-2">
                         <label className="form-label" htmlFor="document-type">Type:</label>
                         <select
-                            disabled={true}
                             className="form-control"
-                            name="documentTypeId"
+                            name="document-type"
                             id="document-type"
                             onBlur={formik.handleBlur}
-                            onChange={formik.handleChange}
+                            onChange={(event) => {
+                                formik.handleChange(event)
+                                formik.setFieldValue("documentTypeId", event.target.value)
+                                formik.setFieldValue("fileName", "")
+                                formik.setFieldValue("fileExtension", "")
+                                formik.setFieldValue("fileBytes", "")
+                                formik.setFieldValue("textContent", "")
+                                formik.setFieldValue("webUrl", "")
+                            }}
                             value={formik.values.documentTypeId}
                         >
                             {
@@ -308,10 +239,13 @@ export default function DetailModalComponent() {
                                             disabled={true}
                                             className="form-control"
                                             type="file-name"
-                                            name="fileName"
+                                            name="file-name"
                                             id="file-name"
                                             onBlur={formik.handleBlur}
-                                            onChange={formik.handleChange}
+                                            onChange={(event) => {
+                                                formik.handleChange(event)
+                                                formik.setFieldValue("fileName", event.target.value)
+                                            }}
                                             value={formik.values.fileName}
                                         />
                                     </fieldset>
@@ -321,10 +255,13 @@ export default function DetailModalComponent() {
                                             disabled={true}
                                             className="form-control"
                                             type="text"
-                                            name="fileExtension"
+                                            name="file-extension"
                                             id="file-extension"
                                             onBlur={formik.handleBlur}
-                                            onChange={formik.handleChange}
+                                            onChange={(event) => {
+                                                formik.handleChange(event)
+                                                formik.setFieldValue("fileExtension", event.target.value)
+                                            }}
                                             value={formik.values.fileExtension}
                                         />
                                     </fieldset>
@@ -333,7 +270,7 @@ export default function DetailModalComponent() {
                                         <input
                                             className="form-control"
                                             type="file"
-                                            name="fileBytes"
+                                            name="file-bytes"
                                             id="file-bytes"
                                             onBlur={formik.handleBlur}
                                             onChange={async (event) => {
@@ -356,10 +293,13 @@ export default function DetailModalComponent() {
                                         <label className="form-label" htmlFor="text-content">Text Content:</label>
                                         <textarea
                                             className="form-control"
-                                            name="textContent"
+                                            name="text-content"
                                             id="text-content"
                                             onBlur={formik.handleBlur}
-                                            onChange={formik.handleChange}
+                                            onChange={(event) => {
+                                                formik.handleChange(event)
+                                                formik.setFieldValue("textContent", event.target.value)
+                                            }}
                                             value={formik.values.textContent}
                                         />
                                     </fieldset>
@@ -370,21 +310,24 @@ export default function DetailModalComponent() {
                                         <label className="form-label" htmlFor="web-url">Web Url:</label>
                                         <textarea
                                             className="form-control"
-                                            name="webUrl"
+                                            name="web-url"
                                             id="web-url"
                                             onBlur={formik.handleBlur}
-                                            onChange={formik.handleChange}
+                                            onChange={(event) => {
+                                                formik.handleChange(event)
+                                                formik.setFieldValue("webUrl", event.target.value)
+                                            }}
                                             value={formik.values.webUrl}
                                         />
                                     </fieldset>
                                 </>,
                             "default": undefined
-                        }[documentType?.name || "default"]
+                        }[formikDocumentTypeName || "default"]
                     }
                 </form>
             </ModalBody>
             <ModalFooter>
-                <button onClick={formik.submitForm} className="btn btn-primary">Patch</button>
+                <button onClick={formik.submitForm} className="btn btn-primary">Insert</button>
             </ModalFooter>
         </Modal>
     )

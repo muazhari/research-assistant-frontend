@@ -1,5 +1,4 @@
-import {BrowserRouter} from "react-router-dom";
-import {useDispatch, useSelector} from "react-redux";
+import {useSelector} from "react-redux";
 import {AuthenticationState} from "../slices/AuthenticationSlice.ts";
 import {DomainState} from "../slices/DomainSlice.ts";
 import {RootState} from "../slices/Store.ts";
@@ -13,8 +12,8 @@ export default function RootRouter() {
     const {isLoggedIn} = authenticationState;
 
     return (
-        <BrowserRouter>
+        <div>
             {isLoggedIn ? <AuthenticatedRouter/> : <UnAuthenticatedRouter/>}
-        </BrowserRouter>
+        </div>
     )
 }

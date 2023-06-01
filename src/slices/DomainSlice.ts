@@ -5,6 +5,7 @@ import DocumentType from "../models/entities/DocumentType.ts";
 import FileDocument from "../models/entities/FileDocument.ts";
 import TextDocument from "../models/entities/TextDocument.ts";
 import WebDocument from "../models/entities/WebDocument.ts";
+import RetrievedDocument from "../models/value_objects/contracts/response/long_form_qas/RetrievedDocument.ts";
 
 
 export interface AccountDomain {
@@ -28,6 +29,9 @@ export interface CurrentDomain {
     fileDocument: FileDocument | undefined,
     textDocument: TextDocument | undefined,
     webDocument: WebDocument | undefined
+    generatedAnswer: string | undefined
+    processDuration: number | undefined
+    retrievedDocuments: RetrievedDocument[] | undefined
 }
 
 export interface DomainState {
@@ -57,7 +61,10 @@ export default createSlice({
             documentType: undefined,
             fileDocument: undefined,
             textDocument: undefined,
-            webDocument: undefined
+            webDocument: undefined,
+            generatedAnswer: undefined,
+            processDuration: undefined,
+            retrievedDocuments: undefined
         }
     },
     reducers: {

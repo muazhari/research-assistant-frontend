@@ -33,6 +33,7 @@ export default function LoginPage() {
                         type="name"
                         id="name"
                         name="name"
+                        onBlur={formik.handleBlur}
                         onChange={formik.handleChange}
                         value={formik.values.name}
                     />
@@ -49,6 +50,7 @@ export default function LoginPage() {
                         type="email"
                         id="email"
                         name="email"
+                        onBlur={formik.handleBlur}
                         onChange={formik.handleChange}
                         value={formik.values.email}
                     />
@@ -65,6 +67,7 @@ export default function LoginPage() {
                         type="password"
                         id="password"
                         name="password"
+                        onBlur={formik.handleBlur}
                         onChange={formik.handleChange}
                         value={formik.values.password}
                     />
