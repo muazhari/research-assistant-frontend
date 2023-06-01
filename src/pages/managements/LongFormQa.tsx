@@ -153,6 +153,7 @@ export default function LongFormQaPage() {
                     }
                 }
             ).then((response) => {
+                console.log(response)
                 const content: Content<QaResponse> = response.data;
                 if (content.data) {
                     dispatch(domainSlice.actions.setCurrentDomain({
@@ -175,7 +176,7 @@ export default function LongFormQaPage() {
             {name === "select" && <SelectModalComponent/>}
             <h1 className="my-5">Long Form Question Answering</h1>
             <h2 className="mb-3">Configuration</h2>
-            <form onSubmit={formik.handleSubmit} className="d-flex flex-column w-50">
+            <form onSubmit={formik.handleSubmit} className="d-flex flex-column w-50 mb-3">
                 <h3 className="mb-2">Input Setting</h3>
                 <fieldset className="mb-2">
                     <label htmlFor="inputSetting.query">Query</label>
@@ -482,6 +483,7 @@ export default function LongFormQaPage() {
                         id="inputSetting.generator.prompt"
                         name="inputSetting.generator.prompt"
                         className="form-control"
+                        rows={9}
                         onChange={formik.handleChange}
                         onBlur={formik.handleBlur}
                         value={formik.values.inputSetting.generator.prompt}
@@ -517,14 +519,16 @@ export default function LongFormQaPage() {
                 <button type="submit" className="btn btn-primary">QA</button>
             </form>
             <h2 className="my-3">Output</h2>
-            <div className="d-flex flex-column justify-content-center align-items-center mb-3">
+            <div className="d-flex flex-column justify-content-center align-items-center mb-3 w-50">
                 <h3>Process Duration</h3>
+                <hr className="w-100"/>
                 <p>
                     {processDuration || "..."}
                 </p>
             </div>
-            <div className="d-flex flex-column justify-content-center align-items-center mb-3">
+            <div className="d-flex flex-column justify-content-center align-items-center mb-5 w-50">
                 <h3>Answer</h3>
+                <hr className="w-100"/>
                 {generatedAnswer || "..."}
             </div>
         </div>
