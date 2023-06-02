@@ -111,11 +111,11 @@ export default function DocumentManagementPage() {
             <table className="table table-hover">
                 <thead>
                 <tr>
-                    <th>ID</th>
-                    <th>Name</th>
-                    <th>Description</th>
-                    <th>Type Name</th>
-                    <th>Actions</th>
+                    <th style={{width: "5vw"}}>ID</th>
+                    <th style={{width: "5vw"}}>Name</th>
+                    <th style={{width: "20vw"}}>Description</th>
+                    <th style={{width: "5vw"}}>Type Name</th>
+                    <th style={{width: "5vw"}}>Actions</th>
                 </tr>
                 </thead>
                 <tbody>
