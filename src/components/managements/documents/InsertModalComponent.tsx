@@ -131,7 +131,7 @@ export default function InsertModalComponent() {
                     console.log(error)
                 })
             } else {
-                alert("Document type is not supported.")
+                alert("Document type is not supported")
             }
         }
     })

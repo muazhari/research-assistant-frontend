@@ -5,12 +5,21 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="67558acb-1948-4a06-8aee-1a140c430703" name="Changes" comment="">
-      <change afterPath="$PROJECT_DIR$/src/models/value_objects/contracts/response/managements/FileDocumentPropertyResponse.ts" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/slices/ProcessSlice.ts" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/components/long_form_qas/SelectModalComponent.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/long_form_qas/SelectModalComponent.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/components/managements/documents/DetailModalComponent.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/managements/documents/DetailModalComponent.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/components/managements/documents/InsertModalComponent.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/managements/documents/InsertModalComponent.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/models/value_objects/contracts/requests/authentications/RegisterRequest.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/models/value_objects/contracts/requests/authentications/RegisterRequest.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/models/value_objects/contracts/response/long_form_qas/QaResponse.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/models/value_objects/contracts/response/long_form_qas/QaResponse.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/models/value_objects/contracts/response/long_form_qas/RetrievedDocument.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/models/value_objects/contracts/response/passage_searchs/RetrievedDocument.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/models/value_objects/contracts/response/passage_searchs/SearchResponse.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/models/value_objects/contracts/response/passage_searchs/SearchResponse.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/pages/authentications/LoginPage.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/pages/authentications/LoginPage.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/pages/authentications/RegisterPage.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/pages/authentications/RegisterPage.tsx" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/pages/managements/LongFormQa.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/pages/managements/LongFormQa.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/services/FileDocumentService.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/services/FileDocumentService.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/pages/managements/PassageSearch.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/pages/managements/PassageSearch.tsx" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/slices/DomainSlice.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/slices/DomainSlice.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/slices/Store.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/slices/Store.ts" afterDir="false" />
     </list>
     <list id="a7cadf68-e7dd-4100-82ff-87108b6e6aff" name="Changes by avwan" comment="" />
     <option name="SHOW_DIALOG" value="false" />
@@ -46,7 +55,7 @@
     "SHARE_PROJECT_CONFIGURATION_FILES": "true",
     "WebServerToolWindowFactoryState": "false",
     "codeWithMe.voiceChat.enabledByDefault": "false",
-    "last_opened_file_path": "C:/Data/Apps/research-assistant-frontend/src/models/value_objects/contracts/response/managements",
+    "last_opened_file_path": "C:/Data/Apps/research-assistant-frontend/src/slices",
     "node.js.detected.package.eslint": "true",
     "node.js.detected.package.tslint": "true",
     "node.js.selected.package.eslint": "(autodetect)",
@@ -59,13 +68,14 @@
 }]]></component>
   <component name="RecentsManager">
     <key name="CopyFile.RECENT_KEYS">
+      <recent name="C:\Data\Apps\research-assistant-frontend\src\slices" />
       <recent name="C:\Data\Apps\research-assistant-frontend\src\models\value_objects\contracts\response\managements" />
       <recent name="C:\Data\Apps\research-assistant-frontend\src\components\long_form_qas" />
       <recent name="C:\Data\Apps\research-assistant-frontend\src\models\value_objects\contracts\requests\passage_searchs" />
       <recent name="C:\Data\Apps\research-assistant-frontend\src\models\value_objects\contracts\requests\long_form_qas" />
-      <recent name="C:\Data\Apps\research-assistant-frontend\src\models\value_objects\contracts\response\passage_searchs" />
     </key>
     <key name="MoveFile.RECENT_KEYS">
+      <recent name="C:\Data\Apps\research-assistant-frontend\src\models\value_objects\contracts\response\passage_searchs" />
       <recent name="C:\Data\Apps\research-assistant-frontend\src\components\navigation_bars" />
     </key>
   </component>
@@ -91,7 +101,7 @@
       <option name="presentableId" value="Default" />
       <updated>1685536157919</updated>
       <workItem from="1685536158932" duration="40470000" />
-      <workItem from="1685627892346" duration="12266000" />
+      <workItem from="1685627892346" duration="25705000" />
     </task>
     <servers />
   </component>

@@ -97,7 +97,7 @@ export default function DetailModalComponent() {
                 console.log(error)
             })
         } else {
-            alert("Document type is not supported.")
+            alert("Document type is not supported")
         }
     }, [documentType])
 
@@ -202,7 +202,7 @@ export default function DetailModalComponent() {
                     console.log(error)
                 })
             } else {
-                alert("Document type is not supported.")
+                alert("Document type is not supported")
             }
         }
     })

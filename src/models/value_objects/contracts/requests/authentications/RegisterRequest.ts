@@ -1,7 +1,7 @@
 import Request from "../Request.ts";
-import LoginBody from "./LoginBody.ts";
+import RegisterBody from "./RegisterBody.ts";
 
-export default class LoginRequest extends Request {
+export default class RegisterRequest extends Request {
 
-    body: LoginBody | undefined;
+    body: RegisterBody | undefined;
 }

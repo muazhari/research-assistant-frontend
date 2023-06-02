@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {useEffect} from 'react';
 import {useDispatch, useSelector} from 'react-redux';
 import {useNavigate} from "react-router-dom";
 import DocumentService from "../../services/DocumentService.ts";
@@ -12,6 +12,23 @@ import DetailModalComponent from "../../components/managements/documents/DetailM
 import LongFormQaService from "../../services/LongFormQaService.ts";
 import Content from "../../models/value_objects/contracts/Content.ts";
 import QaResponse from "../../models/value_objects/contracts/response/long_form_qas/QaResponse.ts";
+import QaRequest from "../../models/value_objects/contracts/requests/long_form_qas/QaRequest.ts";
+import InputSetting from "../../models/value_objects/contracts/requests/long_form_qas/InputSetting.ts";
+import DocumentSetting from "../../models/value_objects/contracts/requests/passage_searchs/DocumentSetting.ts";
+import DenseRetriever from "../../models/value_objects/contracts/requests/passage_searchs/DenseRetriever.ts";
+import SparseRetriever from "../../models/value_objects/contracts/requests/passage_searchs/SparseRetriever.ts";
+import Ranker from "../../models/value_objects/contracts/requests/passage_searchs/Ranker.ts";
+import Generator from "../../models/value_objects/contracts/requests/long_form_qas/Generator.ts";
+import FileDocumentSetting from "../../models/value_objects/contracts/requests/passage_searchs/FileDocumentSetting.ts";
+import TextDocumentSetting from "../../models/value_objects/contracts/requests/passage_searchs/TextDocumentSetting.ts";
+import WebDocumentSetting from "../../models/value_objects/contracts/requests/passage_searchs/WebDocumentSetting.ts";
+import DenseEmbeddingModel from "../../models/value_objects/contracts/requests/passage_searchs/DenseEmbeddingModel.ts";
+import MultihopEmbeddingModel
+    from "../../models/value_objects/contracts/requests/passage_searchs/MultihopEmbeddingModel.ts";
+import OnlineEmbeddingModel
+    from "../../models/value_objects/contracts/requests/passage_searchs/OnlineEmbeddingModel.ts";
+import OnlineGeneratorModel from "../../models/value_objects/contracts/requests/long_form_qas/OnlineGeneratorModel.ts";
+import processSlice, {ProcessState} from "../../slices/ProcessSlice.ts";
 
 
 export default function LongFormQaPage() {
@@ -22,9 +39,17 @@ export default function LongFormQaPage() {
     const documentTypeService = new DocumentTypeService();
     const longFormQaService = new LongFormQaService();
 
+    const processState: ProcessState = useSelector((state: RootState) => state.process);
     const domainState: DomainState = useSelector((state: RootState) => state.domain);
     const authenticationState: AuthenticationState = useSelector((state: RootState) => state.authentication);
-    const {account} = authenticationState;
+    const {
+        account
+    } = authenticationState;
+
+    const {
+        isLoading
+    } = processState;
+
     const {
         accountDocuments,
         documentTypes
@@ -37,8 +62,7 @@ export default function LongFormQaPage() {
         fileDocument,
         textDocument,
         webDocument,
-        processDuration,
-        generatedAnswer,
+        qaResponse,
         fileDocumentProperty,
     } = domainState.currentDomain;
 
@@ -47,15 +71,16 @@ export default function LongFormQaPage() {
         isShow
     } = domainState.modalDomain;
 
+
     const formik = useFormik({
         initialValues: {
             accountId: account?.id,
             inputSetting: {
                 documentSetting: {
-                    documentId: document?.id,
+                    documentId: "",
                     detailSetting: {
                         startPage: 1,
-                        endPage: fileDocumentProperty?.pageLength || 1,
+                        endPage: 1,
                     }
                 },
                 query: "",
@@ -74,7 +99,7 @@ export default function LongFormQaPage() {
                         passageModel: "vblagoje/dpr-ctx_encoder-single-lfqa-wiki",
                         apiKey: "",
                         model: "sentence-transformers/all-mpnet-base-v2",
-                        numIterations: 0,
+                        numIterations: 2,
                     }
                 },
                 sparseRetriever: {
@@ -105,78 +130,146 @@ export default function LongFormQaPage() {
                 }
             }
         },
-        enableReinitialize: true,
         onSubmit: values => {
-            longFormQaService.qa({
-                    accountId: values.accountId,
-                    inputSetting: {
-                        documentSetting: {
-                            documentId: values.inputSetting.documentSetting.documentId,
-                            detailSetting: {
-                                startPage: values.inputSetting.documentSetting.detailSetting.startPage,
-                                endPage: values.inputSetting.documentSetting.detailSetting.endPage
-                            }
-                        },
-                        query: values.inputSetting.query,
-                        granularity: values.inputSetting.granularity,
-                        windowSizes: values.inputSetting.windowSizes,
-                        denseRetriever: {
-                            topK: values.inputSetting.denseRetriever.topK,
-                            similarityFunction: values.inputSetting.denseRetriever.similarityFunction,
-                            sourceType: values.inputSetting.denseRetriever.sourceType,
-                            isUpdate: values.inputSetting.denseRetriever.isUpdate,
-                            embeddingModel: {
-                                dimension: values.inputSetting.denseRetriever.embeddingModel.dimension,
-                                queryModel: values.inputSetting.denseRetriever.embeddingModel.queryModel,
-                                passageModel: values.inputSetting.denseRetriever.embeddingModel.passageModel,
-                            },
-                        },
-                        sparseRetriever: {
-                            topK: values.inputSetting.sparseRetriever.topK,
-                            similarityFunction: values.inputSetting.sparseRetriever.similarityFunction,
-                            sourceType: values.inputSetting.sparseRetriever.sourceType,
-                            model: values.inputSetting.sparseRetriever.model
-                        },
-                        ranker: {
-                            sourceType: values.inputSetting.ranker.sourceType,
-                            model: values.inputSetting.ranker.model,
-                            topK: values.inputSetting.ranker.topK
-                        },
-                        generator: {
-                            sourceType: values.inputSetting.generator.sourceType,
-                            generatorModel: {
-                                model: values.inputSetting.generator.generatorModel.model,
-                                apiKey: values.inputSetting.generator.generatorModel.apiKey
-                            },
-                            prompt: values.inputSetting.generator.prompt,
-                            answerMaxLength: values.inputSetting.generator.answerMaxLength
-                        }
+            dispatch(processSlice.actions.set({
+                isLoading: true
+            }));
+            const qaRequest: QaRequest = getQaRequest(values);
+            longFormQaService
+                .qa(qaRequest)
+                .then((response) => {
+                    const content: Content<QaResponse> = response.data;
+                    if (content.data) {
+                        dispatch(domainSlice.actions.setCurrentDomain({
+                            qaResponse: content.data,
+                        }));
+                    } else {
+                        alert(content.message);
                     }
-                }
-            ).then((response) => {
-                console.log(response)
-                const content: Content<QaResponse> = response.data;
-                if (content.data) {
-                    dispatch(domainSlice.actions.setCurrentDomain({
-                        processDuration: content.data?.processDuration,
-                        generatedAnswer: content.data?.generatedAnswer,
-                        retrievedDocuments: content.data?.retrievedDocuments
+                })
+                .catch((error) => {
+                    console.log(error);
+                })
+                .finally(() => {
+                    dispatch(processSlice.actions.set({
+                        isLoading: false
                     }));
-                } else {
-                    alert(content.message);
-                }
-            }).catch((error) => {
-                console.log(error);
-            })
+                });
         }
     });
+
+
+    useEffect(() => {
+        formik.setFieldValue("inputSetting.documentSetting.detailSetting.endPage", fileDocumentProperty?.pageLength);
+        formik.setFieldValue("inputSetting.documentSetting.documentId", document?.id);
+        formik.setFieldValue("inputSetting.accountId", account?.id);
+    }, [account, document, fileDocumentProperty]);
+
+    const getQaRequest = (values: any): QaRequest => {
+        let detailSetting: FileDocumentSetting | TextDocumentSetting | WebDocumentSetting | undefined = undefined
+        if (documentType?.name === "file") {
+            detailSetting = {
+                startPage: values.inputSetting.documentSetting.detailSetting.startPage,
+                endPage: values.inputSetting.documentSetting.detailSetting.endPage
+            }
+        } else if (documentType?.name === "text") {
+            detailSetting = {}
+        } else if (documentType?.name === "web") {
+            detailSetting = {}
+        } else {
+            alert("Document type is not supported");
+        }
+
+        const documentSetting: DocumentSetting = {
+            documentId: values.inputSetting.documentSetting.documentId,
+            detailSetting: detailSetting
+        }
+
+        let embeddingModel: DenseEmbeddingModel | MultihopEmbeddingModel | OnlineEmbeddingModel | undefined = undefined;
+
+        if (values.inputSetting.denseRetriever.sourceType == "dense_passage") {
+            embeddingModel = {
+                dimension: values.inputSetting.denseRetriever.embeddingModel.dimension,
+                queryModel: values.inputSetting.denseRetriever.embeddingModel.queryModel,
+                passageModel: values.inputSetting.denseRetriever.embeddingModel.passageModel,
+            }
+        } else if (values.inputSetting.denseRetriever.sourceType == "multihop") {
+            embeddingModel = {
+                dimension: values.inputSetting.denseRetriever.embeddingModel.dimension,
+                model: values.inputSetting.denseRetriever.embeddingModel.model,
+                num_iterations: values.inputSetting.denseRetriever.embeddingModel.numIterations,
+            }
+        } else if (values.inputSetting.denseRetriever.sourceType == "online") {
+            embeddingModel = {
+                dimension: values.inputSetting.denseRetriever.embeddingModel.dimension,
+                model: values.inputSetting.denseRetriever.embeddingModel.model,
+                apiKey: values.inputSetting.denseRetriever.embeddingModel.apiKey,
+            }
+        } else {
+            throw new Error("Source type is not supported");
+        }
+
+        const denseRetriever: DenseRetriever = {
+            topK: values.inputSetting.denseRetriever.topK,
+            similarityFunction: values.inputSetting.denseRetriever.similarityFunction,
+            sourceType: values.inputSetting.denseRetriever.sourceType,
+            isUpdate: values.inputSetting.denseRetriever.isUpdate,
+            embeddingModel: embeddingModel,
+        }
+
+        const sparseRetriever: SparseRetriever = {
+            topK: values.inputSetting.sparseRetriever.topK,
+            similarityFunction: values.inputSetting.sparseRetriever.similarityFunction,
+            sourceType: values.inputSetting.sparseRetriever.sourceType,
+            model: values.inputSetting.sparseRetriever.model
+        }
+
+        const ranker: Ranker = {
+            sourceType: values.inputSetting.ranker.sourceType,
+            model: values.inputSetting.ranker.model,
+            topK: values.inputSetting.ranker.topK
+        }
+
+        let generatorModel: OnlineGeneratorModel | undefined = undefined;
+        if (values.inputSetting.generator.sourceType == "online") {
+            generatorModel = {
+                model: values.inputSetting.generator.generatorModel.model,
+                apiKey: values.inputSetting.generator.generatorModel.apiKey
+            }
+        } else {
+            throw new Error("Source type is not supported");
+        }
+
+        const generator: Generator = {
+            sourceType: values.inputSetting.generator.sourceType,
+            generatorModel: generatorModel,
+            prompt: values.inputSetting.generator.prompt,
+            answerMaxLength: values.inputSetting.generator.answerMaxLength
+        }
+
+        const inputSetting: InputSetting = {
+            documentSetting: documentSetting,
+            query: values.inputSetting.query,
+            granularity: values.inputSetting.granularity,
+            windowSizes: values.inputSetting.windowSizes,
+            denseRetriever: denseRetriever,
+            sparseRetriever: sparseRetriever,
+            ranker: ranker,
+            generator: generator
+        }
+
+        return {
+            accountId: values.accountId,
+            inputSetting: inputSetting
+        };
+    }
 
     return (
         <div className="d-flex flex-column justify-content-center align-items-center">
             {name === "detail" && <DetailModalComponent/>}
             {name === "select" && <SelectModalComponent/>}
             <h1 className="my-5">Long Form Question Answering</h1>
-            <h2 className="mb-3">Configuration</h2>
+            <h2 className="mb-4">Configuration</h2>
             <form onSubmit={formik.handleSubmit} className="d-flex flex-column w-50 mb-3">
                 <h3 className="mb-2">Input Setting</h3>
                 <fieldset className="mb-2">
@@ -240,30 +333,41 @@ export default function LongFormQaPage() {
                 </fieldset>
                 <hr/>
                 <h5 className="mb-2">Detail Setting</h5>
-                <fieldset className="mb-2">
-                    <label htmlFor="inputSetting.documentSetting.detailSetting.startPage">Start Page</label>
-                    <input
-                        type="number"
-                        id="inputSetting.documentSetting.detailSetting.startPage"
-                        name="inputSetting.documentSetting.detailSetting.startPage"
-                        className="form-control"
-                        onChange={formik.handleChange}
-                        onBlur={formik.handleBlur}
-                        value={formik.values.inputSetting.documentSetting.detailSetting.startPage}
-                    />
-                </fieldset>
-                <fieldset className="mb-2">
-                    <label htmlFor="inputSetting.documentSetting.detailSetting.endPage">End Page</label>
-                    <input
-                        type="number"
-                        id="inputSetting.documentSetting.detailSetting.endPage"
-                        name="inputSetting.documentSetting.detailSetting.endPage"
-                        className="form-control"
-                        onChange={formik.handleChange}
-                        onBlur={formik.handleBlur}
-                        value={formik.values.inputSetting.documentSetting.detailSetting.endPage}
-                    />
-                </fieldset>
+                {
+                    {
+                        "file":
+                            <>
+                                <fieldset className="mb-2">
+                                    <label htmlFor="inputSetting.documentSetting.detailSetting.startPage">Start
+                                        Page</label>
+                                    <input
+                                        type="number"
+                                        id="inputSetting.documentSetting.detailSetting.startPage"
+                                        name="inputSetting.documentSetting.detailSetting.startPage"
+                                        className="form-control"
+                                        onChange={formik.handleChange}
+                                        onBlur={formik.handleBlur}
+                                        value={formik.values.inputSetting.documentSetting.detailSetting.startPage}
+                                    />
+                                </fieldset>
+                                <fieldset className="mb-2">
+                                    <label htmlFor="inputSetting.documentSetting.detailSetting.endPage">End Page</label>
+                                    <input
+                                        type="number"
+                                        id="inputSetting.documentSetting.detailSetting.endPage"
+                                        name="inputSetting.documentSetting.detailSetting.endPage"
+                                        className="form-control"
+                                        onChange={formik.handleChange}
+                                        onBlur={formik.handleBlur}
+                                        value={formik.values.inputSetting.documentSetting.detailSetting.endPage}
+                                    />
+                                </fieldset>
+                            </>,
+                        "text": <div>None</div>,
+                        "web": <div>None</div>,
+                        "default": <div className="text-danger">Please select the supported document type.</div>
+                    }[documentType?.name || "default"]
+                }
                 <hr/>
                 <h4 className="mb-2">Dense Retriever</h4>
                 <fieldset className="mb-2">
@@ -317,7 +421,8 @@ export default function LongFormQaPage() {
                         onBlur={formik.handleBlur}
                         checked={formik.values.inputSetting.denseRetriever.isUpdate}
                     />
-                    <label htmlFor="inputSetting.denseRetriever.isUpdate" className="ms-2">Is update embedding?</label>
+                    <label htmlFor="inputSetting.denseRetriever.isUpdate" className="ms-2">Is update stored
+                        embedding?</label>
                 </fieldset>
                 <hr/>
                 <h5 className="mb-2">Embedding Model</h5>
@@ -333,30 +438,92 @@ export default function LongFormQaPage() {
                         value={formik.values.inputSetting.denseRetriever.embeddingModel.dimension}
                     />
                 </fieldset>
-                <fieldset className="mb-2">
-                    <label htmlFor="inputSetting.denseRetriever.embeddingModel.queryModel">Query Model</label>
-                    <input
-                        type="text"
-                        id="inputSetting.denseRetriever.embeddingModel.queryModel"
-                        name="inputSetting.denseRetriever.embeddingModel.queryModel"
-                        className="form-control"
-                        onChange={formik.handleChange}
-                        onBlur={formik.handleBlur}
-                        value={formik.values.inputSetting.denseRetriever.embeddingModel.queryModel}
-                    />
-                </fieldset>
-                <fieldset className="mb-2">
-                    <label htmlFor="inputSetting.denseRetriever.embeddingModel.passageModel">Passage Model</label>
-                    <input
-                        type="text"
-                        id="inputSetting.denseRetriever.embeddingModel.passageModel"
-                        name="inputSetting.denseRetriever.embeddingModel.passageModel"
-                        className="form-control"
-                        onChange={formik.handleChange}
-                        onBlur={formik.handleBlur}
-                        value={formik.values.inputSetting.denseRetriever.embeddingModel.passageModel}
-                    />
-                </fieldset>
+                {{
+                    "dense_passage":
+                        <>
+                            <fieldset className="mb-2">
+                                <label htmlFor="inputSetting.denseRetriever.embeddingModel.queryModel">Query
+                                    Model</label>
+                                <input
+                                    type="text"
+                                    id="inputSetting.denseRetriever.embeddingModel.queryModel"
+                                    name="inputSetting.denseRetriever.embeddingModel.queryModel"
+                                    className="form-control"
+                                    onChange={formik.handleChange}
+                                    onBlur={formik.handleBlur}
+                                    value={formik.values.inputSetting.denseRetriever.embeddingModel.queryModel}
+                                />
+                            </fieldset>
+                            <fieldset className="mb-2">
+                                <label htmlFor="inputSetting.denseRetriever.embeddingModel.passageModel">Passage
+                                    Model</label>
+                                <input
+                                    type="text"
+                                    id="inputSetting.denseRetriever.embeddingModel.passageModel"
+                                    name="inputSetting.denseRetriever.embeddingModel.passageModel"
+                                    className="form-control"
+                                    onChange={formik.handleChange}
+                                    onBlur={formik.handleBlur}
+                                    value={formik.values.inputSetting.denseRetriever.embeddingModel.passageModel}
+                                />
+                            </fieldset>
+                        </>,
+                    "multihop":
+                        <>
+                            <fieldset className="mb-2">
+                                <label htmlFor="inputSetting.denseRetriever.embeddingModel.model">Model</label>
+                                <input
+                                    type="text"
+                                    id="inputSetting.denseRetriever.embeddingModel.model"
+                                    name="inputSetting.denseRetriever.embeddingModel.model"
+                                    className="form-control"
+                                    onChange={formik.handleChange}
+                                    onBlur={formik.handleBlur}
+                                    value={formik.values.inputSetting.denseRetriever.embeddingModel.model}
+                                />
+                            </fieldset>
+                            <fieldset className="mb-2">
+                                <label htmlFor="inputSetting.denseRetriever.embeddingModel.numIterations">Number of
+                                    Iterations</label>
+                                <input
+                                    type="number"
+                                    id="inputSetting.denseRetriever.embeddingModel.numIterations"
+                                    name="inputSetting.denseRetriever.embeddingModel.numIterations"
+                                    className="form-control"
+                                    onChange={formik.handleChange}
+                                    onBlur={formik.handleBlur}
+                                    value={formik.values.inputSetting.denseRetriever.embeddingModel.numIterations}
+                                />
+                            </fieldset>
+                        </>,
+                    "online": <>
+                        <fieldset className="mb-2">
+                            <label htmlFor="inputSetting.denseRetriever.embeddingModel.model">Model</label>
+                            <input
+                                type="text"
+                                id="inputSetting.denseRetriever.embeddingModel.model"
+                                name="inputSetting.denseRetriever.embeddingModel.model"
+                                className="form-control"
+                                onChange={formik.handleChange}
+                                onBlur={formik.handleBlur}
+                                value={formik.values.inputSetting.denseRetriever.embeddingModel.model}
+                            />
+                        </fieldset>
+                        <fieldset className="mb-2">
+                            <label htmlFor="inputSetting.denseRetriever.embeddingModel.apiKey">API Key</label>
+                            <input
+                                type="number"
+                                id="inputSetting.denseRetriever.embeddingModel.apiKey"
+                                name="inputSetting.denseRetriever.embeddingModel.apiKey"
+                                className="form-control"
+                                onChange={formik.handleChange}
+                                onBlur={formik.handleBlur}
+                                value={formik.values.inputSetting.denseRetriever.embeddingModel.apiKey}
+                            />
+                        </fieldset>
+                    </>,
+                    "default": <div className="text-danger">Please Select the supported embedding model.</div>
+                }[formik.values.inputSetting.denseRetriever.sourceType || "default"]}
                 <hr/>
                 <h4 className="mb-2">Sparse Retriever</h4>
                 <fieldset className="mb-2">
@@ -492,49 +659,103 @@ export default function LongFormQaPage() {
                 </fieldset>
                 <hr/>
                 <h5 className="mb-2">Generator Model</h5>
-                <fieldset className="mb-2">
-                    <label htmlFor="inputSetting.generator.generatorModel.model">Model</label>
-                    <input
-                        type="text"
-                        id="inputSetting.generator.generatorModel.model"
-                        name="inputSetting.generator.generatorModel.model"
-                        className="form-control"
-                        onChange={formik.handleChange}
-                        onBlur={formik.handleBlur}
-                        value={formik.values.inputSetting.generator.generatorModel.model}
-                    />
-                </fieldset>
-                <fieldset className="mb-2">
-                    <label htmlFor="inputSetting.generator.generatorModel.apiKey">API Key</label>
-                    <input
-                        type="password"
-                        id="inputSetting.generator.generatorModel.apiKey"
-                        name="inputSetting.generator.generatorModel.apiKey"
-                        className="form-control"
-                        onChange={formik.handleChange}
-                        onBlur={formik.handleBlur}
-                        value={formik.values.inputSetting.generator.generatorModel.apiKey}
-                    />
-                </fieldset>
+                {
+                    {
+                        "online":
+                            <>
+                                <fieldset className="mb-2">
+                                    <label htmlFor="inputSetting.generator.generatorModel.model">Model</label>
+                                    <input
+                                        type="text"
+                                        id="inputSetting.generator.generatorModel.model"
+                                        name="inputSetting.generator.generatorModel.model"
+                                        className="form-control"
+                                        onChange={formik.handleChange}
+                                        onBlur={formik.handleBlur}
+                                        value={formik.values.inputSetting.generator.generatorModel.model}
+                                    />
+                                </fieldset>
+                                <fieldset className="mb-2">
+                                    <label htmlFor="inputSetting.generator.generatorModel.apiKey">API Key</label>
+                                    <input
+                                        type="password"
+                                        id="inputSetting.generator.generatorModel.apiKey"
+                                        name="inputSetting.generator.generatorModel.apiKey"
+                                        className="form-control"
+                                        onChange={formik.handleChange}
+                                        onBlur={formik.handleBlur}
+                                        value={formik.values.inputSetting.generator.generatorModel.apiKey}
+                                    />
+                                </fieldset>
+                            </>,
+                        "default": <div className="text-danger">Please select the supported source type.</div>
+
+                    }[formik.values.inputSetting.generator.sourceType || "default"]
+                }
                 <hr/>
-                <button type="submit" className="btn btn-primary">QA</button>
+                <button type="submit" className="btn btn-primary" disabled={isLoading}>
+                    {
+                        isLoading ?
+                            <div className="spinner-border text-light" role="status">
+                                <span className="visually-hidden">Loading...</span>
+                            </div>
+                            :
+                            "QA"
+                    }
+                </button>
             </form>
-            <h2 className="mt-5 mb-3">Output</h2>
-            <div className="d-flex flex-column justify-content-center align-items-center mb-3 w-75">
+            <h2 className="mt-5 mb-4">Output</h2>
+            <div className="d-flex flex-column justify-content-center align-items-center w-75">
                 <h3>Process Duration</h3>
-                <hr className="w-100"/>
                 <p className="text-center">
-                    {processDuration ? processDuration + " second(s)." : "..."}
+                    {qaResponse?.processDuration ? qaResponse?.processDuration + " second(s)." : "..."}
                 </p>
             </div>
-            <div className="d-flex flex-column justify-content-center align-items-center mb-5 w-75">
+            <hr className="w-75 mb-3"/>
+            <div className="d-flex flex-column justify-content-center align-items-center w-75">
                 <h3>Answer</h3>
-                <hr className="w-100"/>
-                <p style={{"text-align": "justify"}}>
-                    {generatedAnswer || "..."}
+                <p style={{textAlign: "justify"}}>
+                    {qaResponse?.generatedAnswer || "..."}
                 </p>
+            </div>
+            <hr className="w-75 mb-3"/>
+            <div className="d-flex flex-column justify-content-center align-items-center mb-5 w-75">
+                <h3>Retrieved Documents</h3>
+                <hr className="w-100"/>
+                <table className="table table-hover" style={{tableLayout: "fixed"}}>
+                    <thead>
+                    <tr>
+                        <th style={{"width": "5vw"}}>Rank</th>
+                        <th style={{"width": "10vw"}}>Score</th>
+                        <th style={{"width": "50vw"}}>Content</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    {
+                        qaResponse?.retrievedDocuments ?
+                            [...qaResponse.retrievedDocuments]
+                                .sort((a, b) => b.score! - a.score!)
+                                .map((document, index) => {
+                                    return (
+                                        <tr>
+                                            <td>{index + 1}</td>
+                                            <td className="text-break">{document.score}</td>
+                                            <td className="text-break">{document.content}</td>
+                                        </tr>
+                                    );
+                                })
+                            :
+                            <tr>
+                                <td>...</td>
+                                <td>...</td>
+                                <td>...</td>
+                            </tr>
+                    }
+                    </tbody>
+                </table>
             </div>
         </div>
-    );
+    )
+        ;
 }
 

@@ -5,11 +5,13 @@ import messageModalSlice from "./MessageModalSlice.ts";
 import domainSlice from "./DomainSlice.ts";
 import {persistReducer, persistStore} from "redux-persist";
 import storage from "redux-persist/lib/storage";
+import processSlice from "./ProcessSlice.ts";
 
 const rootReducer = combineReducers({
     [authenticationSlice.name]: authenticationSlice.reducer,
     [messageModalSlice.name]: messageModalSlice.reducer,
     [domainSlice.name]: domainSlice.reducer,
+    [processSlice.name]: processSlice.reducer,
 })
 
 const persistedReducer = persistReducer({

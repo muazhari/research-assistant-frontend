@@ -5,9 +5,10 @@ import DocumentType from "../models/entities/DocumentType.ts";
 import FileDocument from "../models/entities/FileDocument.ts";
 import TextDocument from "../models/entities/TextDocument.ts";
 import WebDocument from "../models/entities/WebDocument.ts";
-import RetrievedDocument from "../models/value_objects/contracts/response/long_form_qas/RetrievedDocument.ts";
 import FileDocumentPropertyResponse
     from "../models/value_objects/contracts/response/managements/FileDocumentPropertyResponse.ts";
+import QaResponse from "../models/value_objects/contracts/response/long_form_qas/QaResponse.ts";
+import SearchResponse from "../models/value_objects/contracts/response/passage_searchs/SearchResponse.ts";
 
 
 export interface AccountDomain {
@@ -30,12 +31,12 @@ export interface CurrentDomain {
     documentType: DocumentType | undefined
     fileDocument: FileDocument | undefined,
     textDocument: TextDocument | undefined,
-    webDocument: WebDocument | undefined
-    generatedAnswer: string | undefined
-    processDuration: number | undefined
-    retrievedDocuments: RetrievedDocument[] | undefined
-    fileDocumentProperty: FileDocumentPropertyResponse | undefined
+    webDocument: WebDocument | undefined,
+    qaResponse: QaResponse | undefined,
+    searchResponse: SearchResponse | undefined,
+    fileDocumentProperty: FileDocumentPropertyResponse | undefined,
 }
+
 
 export interface DomainState {
     accountDomain: AccountDomain
@@ -65,10 +66,9 @@ export default createSlice({
             fileDocument: undefined,
             textDocument: undefined,
             webDocument: undefined,
-            generatedAnswer: undefined,
-            processDuration: undefined,
-            retrievedDocuments: undefined,
-            fileDocumentProperty: undefined
+            qaResponse: undefined,
+            searchResponse: undefined,
+            fileDocumentProperty: undefined,
         }
     },
     reducers: {
@@ -83,7 +83,7 @@ export default createSlice({
         },
         setCurrentDomain: (state, action) => {
             state.currentDomain = {...state.currentDomain, ...action.payload};
-        }
+        },
     },
 });
 

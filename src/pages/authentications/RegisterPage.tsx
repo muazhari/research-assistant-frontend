@@ -1,10 +1,18 @@
 import {useFormik} from "formik";
 
 import * as Yup from 'yup';
-import {Link} from "react-router-dom";
+import {Link, useNavigate} from "react-router-dom";
 import React from "react";
+import AuthenticationService from "../../services/AuthenticationService.ts";
+import {useDispatch} from "react-redux";
+import Content from "../../models/value_objects/contracts/Content.ts";
+import RegisterResponse from "../../models/value_objects/contracts/response/authentications/RegisterResponse.ts";
 
-export default function LoginPage() {
+export default function RegisterPage() {
+
+    const authenticationService = new AuthenticationService();
+    const dispatch = useDispatch();
+    const navigate = useNavigate();
 
     const formik = useFormik({
         initialValues: {
@@ -18,7 +26,22 @@ export default function LoginPage() {
             password: Yup.string().required()
         }),
         onSubmit: (values) => {
-            alert(JSON.stringify(values, null, 2))
+            authenticationService
+                .register({
+                    body: {
+                        name: values.name,
+                        email: values.email,
+                        password: values.password
+                    }
+                })
+                .then((response) => {
+                        const content: Content<RegisterResponse> = response.data;
+                        alert(content.message)
+                    }
+                )
+                .catch((error) => {
+                    console.log(error)
+                })
         },
     })
 

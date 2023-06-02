@@ -37,7 +37,7 @@ export default function LoginPage() {
                     }
                 )
                 .catch((error) => {
-                    alert(error)
+                    console.log(error)
                 })
         },
     })

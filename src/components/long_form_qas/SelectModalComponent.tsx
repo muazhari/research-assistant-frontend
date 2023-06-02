@@ -84,19 +84,39 @@ export default function SelectModalComponent() {
     }
 
     const handleClickSelect = (document: Document) => {
-        fileDocumentService.readOnePropertyById({
-            id: document.id
-        }).then((response) => {
-            const content: Content<FileDocumentPropertyResponse> = response.data;
+        const documentType = documentTypes?.find((documentType) => {
+            return documentType.id === document.documentTypeId
+        })
+
+        if (documentType?.name === "file") {
+            fileDocumentService.readOnePropertyById({
+                id: document.id
+            }).then((response) => {
+                const content: Content<FileDocumentPropertyResponse> = response.data;
+                dispatch(domainSlice.actions.setCurrentDomain({
+                    document: document,
+                    documentType: documentType,
+                    fileDocumentProperty: content.data
+                }))
+                alert("Document selected.")
+            }).catch((error) => {
+                console.log(error)
+            })
+        } else if (documentType?.name === "text") {
             dispatch(domainSlice.actions.setCurrentDomain({
                 document: document,
-                fileDocumentProperty: content.data
+                documentType: documentType,
             }))
             alert("Document selected.")
-            alert(content.data)
-        }).catch((error) => {
-            console.log(error)
-        })
+        } else if (documentType?.name === "web") {
+            dispatch(domainSlice.actions.setCurrentDomain({
+                document: document,
+                documentType: documentType,
+            }))
+            alert("Document selected.")
+        } else {
+            throw new Error("Document type is not supported.")
+        }
     }
 
 
