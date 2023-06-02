@@ -1,4 +1,4 @@
-import React, {useEffect} from 'react';
+import {useEffect} from 'react';
 import {useDispatch, useSelector} from 'react-redux';
 import {useNavigate} from "react-router-dom";
 import DocumentService from "../../services/DocumentService.ts";
@@ -253,6 +253,33 @@ export default function PassageSearchPage() {
             inputSetting: inputSetting,
             outputSetting: outputSetting,
         };
+    }
+
+    const base64toBlob = (b64Data: string, contentType: string, sliceSize: number) => {
+        contentType = contentType || '';
+        sliceSize = sliceSize || 512;
+
+        const byteCharacters = atob(b64Data);
+        const byteArrays = [];
+
+        for (let offset = 0; offset < byteCharacters.length; offset += sliceSize) {
+            const slice = byteCharacters.slice(offset, offset + sliceSize);
+
+            const byteNumbers = new Array(slice.length);
+            for (let i = 0; i < slice.length; i++) {
+                byteNumbers[i] = slice.charCodeAt(i);
+            }
+
+            const byteArray = new Uint8Array(byteNumbers);
+            byteArrays.push(byteArray);
+        }
+
+        return new Blob(byteArrays, {type: contentType});
+    }
+
+    const base64PdfToBlobUrl = (base64: string): string => {
+        const blob = base64toBlob(base64, "application/pdf", 512);
+        return URL.createObjectURL(blob);
     }
 
     return (
@@ -657,8 +684,7 @@ export default function PassageSearchPage() {
                     searchResponse?.outputDocument ?
                         <embed
                             style={{width: "100%", height: "100vh"}}
-                            src={`data:application/pdf;base64,${searchResponse?.outputDocument.fileBytes}`}
-                            type="application/pdf"
+                            src={base64PdfToBlobUrl(searchResponse?.outputDocument.fileBytes)}
                         />
                         :
                         "..."
