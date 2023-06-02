@@ -26,7 +26,7 @@ export default class AuthenticationService extends Service {
 
 
     register(request: RegisterRequest): Promise<AxiosResponse<Content<RegisterResponse>>> {
-        return this.client.instance.post(`${this.path}/logins/email-and-password`, request.body);
+        return this.client.instance.post(`${this.path}/registers/email-and-password`, request.body);
     }
 
 
