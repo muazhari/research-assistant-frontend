@@ -14,6 +14,8 @@ import WebDocument from "../../../models/entities/WebDocument.ts";
 import TextDocument from "../../../models/entities/TextDocument.ts";
 import TextDocumentService from "../../../services/TextDocumentService.ts";
 import WebDocumentService from "../../../services/WebDocumentService.ts";
+import React from "react";
+import processSlice, {ProcessState} from "../../../slices/ProcessSlice.ts";
 
 export default function InsertModalComponent() {
     const dispatch = useDispatch();
@@ -25,8 +27,14 @@ export default function InsertModalComponent() {
     const textDocumentService = new TextDocumentService();
     const webDocumentService = new WebDocumentService();
 
+    const processState: ProcessState = useSelector((state: RootState) => state.process);
     const domainState: DomainState = useSelector((state: RootState) => state.domain);
     const authenticationState: AuthenticationState = useSelector((state: RootState) => state.authentication);
+
+    const {
+        isLoading
+    } = processState;
+
     const {
         account
     } = authenticationState;
@@ -62,6 +70,9 @@ export default function InsertModalComponent() {
         },
         enableReinitialize: true,
         onSubmit: (values) => {
+            dispatch(processSlice.actions.set({
+                isLoading: true
+            }));
             if (formikDocumentTypeName == "file") {
                 fileDocumentService.createOne({
                     body: {
@@ -85,6 +96,10 @@ export default function InsertModalComponent() {
                     alert(content.message)
                 }).catch((error) => {
                     console.log(error)
+                }).finally(() => {
+                    dispatch(processSlice.actions.set({
+                        isLoading: false
+                    }));
                 })
             } else if (formikDocumentTypeName == "text") {
                 textDocumentService.createOne({
@@ -107,6 +122,10 @@ export default function InsertModalComponent() {
                     alert(content.message)
                 }).catch((error) => {
                     console.log(error)
+                }).finally(() => {
+                    dispatch(processSlice.actions.set({
+                        isLoading: false
+                    }));
                 })
             } else if (formikDocumentTypeName == "web") {
                 webDocumentService.createOne({
@@ -129,6 +148,10 @@ export default function InsertModalComponent() {
                     alert(content.message)
                 }).catch((error) => {
                     console.log(error)
+                }).finally(() => {
+                    dispatch(processSlice.actions.set({
+                        isLoading: false
+                    }));
                 })
             } else {
                 alert("Document type is not supported")
@@ -327,7 +350,16 @@ export default function InsertModalComponent() {
                 </form>
             </ModalBody>
             <ModalFooter>
-                <button onClick={formik.submitForm} className="btn btn-primary">Insert</button>
+                <button onClick={formik.submitForm} type="submit" className="btn btn-primary" disabled={isLoading}>
+                    {
+                        isLoading ?
+                            <div className="spinner-border text-light" role="status">
+                                <span className="visually-hidden">Loading...</span>
+                            </div>
+                            :
+                            "Insert"
+                    }
+                </button>
             </ModalFooter>
         </Modal>
     )

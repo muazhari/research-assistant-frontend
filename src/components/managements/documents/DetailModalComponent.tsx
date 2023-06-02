@@ -8,13 +8,14 @@ import {RootState} from "../../../slices/Store.ts";
 import {AuthenticationState} from "../../../slices/AuthenticationSlice.ts";
 import {useFormik} from "formik";
 import Content from "../../../models/value_objects/contracts/Content.ts";
-import {useEffect} from "react";
+import React, {useEffect} from "react";
 import FileDocumentService from "../../../services/FileDocumentService.ts";
 import FileDocument from "../../../models/entities/FileDocument.ts";
 import WebDocument from "../../../models/entities/WebDocument.ts";
 import TextDocument from "../../../models/entities/TextDocument.ts";
 import TextDocumentService from "../../../services/TextDocumentService.ts";
 import WebDocumentService from "../../../services/WebDocumentService.ts";
+import processSlice, {ProcessState} from "../../../slices/ProcessSlice.ts";
 
 export default function DetailModalComponent() {
     const dispatch = useDispatch();
@@ -27,8 +28,14 @@ export default function DetailModalComponent() {
     const textDocumentService = new TextDocumentService();
     const webDocumentService = new WebDocumentService();
 
+    const processState: ProcessState = useSelector((state: RootState) => state.process);
     const domainState: DomainState = useSelector((state: RootState) => state.domain);
     const authenticationState: AuthenticationState = useSelector((state: RootState) => state.authentication);
+
+    const {
+        isLoading
+    } = processState;
+
     const {
         account
     } = authenticationState;
@@ -115,6 +122,10 @@ export default function DetailModalComponent() {
         },
         enableReinitialize: true,
         onSubmit: (values) => {
+            dispatch(processSlice.actions.set({
+                isLoading: true
+            }));
+
             if (documentType?.name == "file") {
                 fileDocumentService.patchOneById({
                     id: document?.id,
@@ -144,6 +155,10 @@ export default function DetailModalComponent() {
                     alert(content.message)
                 }).catch((error) => {
                     console.log(error)
+                }).finally(() => {
+                    dispatch(processSlice.actions.set({
+                        isLoading: false
+                    }));
                 })
             } else if (documentType?.name == "text") {
                 textDocumentService.patchOneById({
@@ -172,6 +187,10 @@ export default function DetailModalComponent() {
                     alert(content.message)
                 }).catch((error) => {
                     console.log(error)
+                }).finally(() => {
+                    dispatch(processSlice.actions.set({
+                        isLoading: false
+                    }));
                 })
             } else if (documentType?.name == "web") {
                 webDocumentService.patchOneById({
@@ -200,6 +219,10 @@ export default function DetailModalComponent() {
                     alert(content.message)
                 }).catch((error) => {
                     console.log(error)
+                }).finally(() => {
+                    dispatch(processSlice.actions.set({
+                        isLoading: false
+                    }));
                 })
             } else {
                 alert("Document type is not supported")
@@ -384,7 +407,16 @@ export default function DetailModalComponent() {
                 </form>
             </ModalBody>
             <ModalFooter>
-                <button onClick={formik.submitForm} className="btn btn-primary">Patch</button>
+                <button onClick={formik.submitForm} type="submit" className="btn btn-primary" disabled={isLoading}>
+                    {
+                        isLoading ?
+                            <div className="spinner-border text-light" role="status">
+                                <span className="visually-hidden">Loading...</span>
+                            </div>
+                            :
+                            "Patch"
+                    }
+                </button>
             </ModalFooter>
         </Modal>
     )
