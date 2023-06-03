@@ -10,12 +10,23 @@ import WebDocumentService from "../../services/WebDocumentService.ts";
 import {AuthenticationState} from "../../slices/AuthenticationSlice.ts";
 import domainSlice, {DomainState} from "../../slices/DomainSlice.ts";
 import {RootState} from "../../slices/Store.ts";
-import {useEffect} from "react";
+import {useEffect, useState} from "react";
 import Content from "../../models/value_objects/contracts/Content.ts";
 import DocumentTypeService from "../../services/DocumentTypeService.ts";
 import DocumentService from "../../services/DocumentService.ts";
 import FileDocumentPropertyResponse
     from "../../models/value_objects/contracts/response/managements/FileDocumentPropertyResponse.ts";
+import DataTable, {TableColumn} from "react-data-table-component";
+import {useFormik} from "formik";
+
+interface DataRow {
+    id: string | undefined,
+    name: string | undefined,
+    description: string | undefined,
+    documentTypeName: string | undefined,
+    documentTypeId: string | undefined,
+    accountId: string | undefined,
+}
 
 export default function SelectModalComponent() {
     const dispatch = useDispatch();
@@ -50,6 +61,10 @@ export default function SelectModalComponent() {
         isShow
     } = domainState.modalDomain;
 
+
+    const [data, setData] = useState<DataRow[] | undefined>();
+
+
     const handleOnHide = () => {
         dispatch(domainSlice.actions.setModalDomain({
             isShow: !isShow,
@@ -57,8 +72,24 @@ export default function SelectModalComponent() {
         }))
     }
 
+
+    const getTableData = (accountDocuments: Document[]) => {
+        return accountDocuments.map((document) => {
+            return {
+                id: document.id,
+                name: document.name,
+                description: document.description,
+                documentTypeId: document.documentTypeId,
+                accountId: document.accountId,
+                documentTypeName: documentTypes?.find((documentType) => {
+                    return documentType.id === document.documentTypeId
+                })?.name
+            }
+        })
+    }
+
     useEffect(() => {
-        fetchData()
+        fetchData();
     }, [])
 
     const fetchData = () => {
@@ -77,24 +108,25 @@ export default function SelectModalComponent() {
                     accountDocuments: accountDocumentsContent.data,
                     documentTypes: documentTypesContent.data
                 }))
+                setData(getTableData(accountDocumentsContent.data || []))
             })
             .catch((error) => {
                 console.log(error)
             })
     }
 
-    const handleClickSelect = (document: Document) => {
+    const handleClickSelect = (row: DataRow) => {
         const documentType = documentTypes?.find((documentType) => {
-            return documentType.id === document.documentTypeId
+            return documentType.id === row.documentTypeId
         })
 
         if (documentType?.name === "file") {
             fileDocumentService.readOnePropertyById({
-                id: document.id
+                id: row.id
             }).then((response) => {
                 const content: Content<FileDocumentPropertyResponse> = response.data;
                 dispatch(domainSlice.actions.setCurrentDomain({
-                    document: document,
+                    document: row,
                     documentType: documentType,
                     fileDocumentProperty: content.data
                 }))
@@ -104,13 +136,13 @@ export default function SelectModalComponent() {
             })
         } else if (documentType?.name === "text") {
             dispatch(domainSlice.actions.setCurrentDomain({
-                document: document,
+                document: row,
                 documentType: documentType,
             }))
             alert("Document selected.")
         } else if (documentType?.name === "web") {
             dispatch(domainSlice.actions.setCurrentDomain({
-                document: document,
+                document: row,
                 documentType: documentType,
             }))
             alert("Document selected.")
@@ -134,6 +166,69 @@ export default function SelectModalComponent() {
     }
 
 
+    const columns: TableColumn<DataRow>[] = [
+        {
+            name: "ID",
+            width: "15%",
+            selector: (row: DataRow) => row.id!,
+            sortable: true,
+        },
+        {
+            name: "Name",
+            width: "15%",
+            selector: (row: DataRow) => row.name!,
+            sortable: true,
+        },
+        {
+            name: "Description",
+            width: "15%",
+            selector: (row: DataRow) => row.description!,
+            sortable: true,
+        },
+        {
+            name: "Document Type Name",
+            width: "20%",
+            selector: (row: DataRow) => row.documentTypeName!,
+            sortable: true,
+        },
+        {
+            name: "Actions",
+            width: "20%",
+            cell: (row: DataRow) =>
+                <>
+                    <button
+                        id={row.id}
+                        className="btn btn-info me-3"
+                        onClick={() => handleClickDetail(row)}
+                    >
+                        Detail
+                    </button>
+                    <button
+                        id={row.id}
+                        className="btn btn-primary"
+                        onClick={() => handleClickSelect(row)}
+                    >
+                        Select
+                    </button>
+                </>,
+            ignoreRowClick: true,
+            allowOverflow: true,
+            button: true,
+        }
+    ];
+
+    const formik = useFormik({
+        initialValues: {
+            search: "",
+        },
+        onSubmit: (values) => {
+            setData(getTableData(accountDocuments || [])?.filter((document) => {
+                return JSON.stringify(document).includes(values.search)
+            }))
+        }
+    })
+
+
     return (
         <Modal
             size={"xl"}
@@ -143,54 +238,23 @@ export default function SelectModalComponent() {
             <ModalHeader closeButton>
                 <Modal.Title>Select Document</Modal.Title>
             </ModalHeader>
-            <ModalBody>
-                <table className="table table-hover">
-                    <thead>
-                    <tr>
-                        <th style={{width: "5vw"}}>ID</th>
-                        <th style={{width: "5vw"}}>Name</th>
-                        <th style={{width: "20vw"}}>Description</th>
-                        <th style={{width: "5vw"}}>Type Name</th>
-                        <th style={{width: "5vw"}}>Actions</th>
-                    </tr>
-                    </thead>
-                    <tbody>
-                    {
-                        accountDocuments?.map((document) => {
-                            return (
-                                <tr key={document.id}>
-                                    <td>{document.id}</td>
-                                    <td>{document.name}</td>
-                                    <td>{document.description}</td>
-                                    <td>
-                                        {
-                                            documentTypes?.find((documentType) => {
-                                                return documentType.id === document.documentTypeId
-                                            })?.name
-                                        }
-                                    </td>
-                                    <td>
-                                        <div className="d-flex flex-row">
-                                            <button
-                                                className="btn btn-info me-3"
-                                                onClick={() => handleClickDetail(document)}
-                                            >
-                                                Detail
-                                            </button>
-                                            <button
-                                                className="btn btn-primary"
-                                                onClick={() => handleClickSelect(document)}
-                                            >
-                                                Select
-                                            </button>
-                                        </div>
-                                    </td>
-                                </tr>
-                            )
-                        })
-                    }
-                    </tbody>
-                </table>
+            <ModalBody className="d-flex flex-column justify-content-center align-items-center">
+                <input
+                    type="text"
+                    className="form-control w-50 mb-2"
+                    placeholder="Search here.."
+                    name="search"
+                    onChange={(event) => {
+                        formik.handleChange(event)
+                        formik.handleSubmit()
+                    }}
+                />
+
+                <DataTable
+                    pagination={true}
+                    columns={columns}
+                    data={data || []}
+                />
             </ModalBody>
         </Modal>
     )
