@@ -8,7 +8,7 @@ import FileDocumentService from "../../services/FileDocumentService.ts";
 import TextDocumentService from "../../services/TextDocumentService.ts";
 import WebDocumentService from "../../services/WebDocumentService.ts";
 import {AuthenticationState} from "../../slices/AuthenticationSlice.ts";
-import domainSlice, {DomainState, getDocumentTableRows} from "../../slices/DomainSlice.ts";
+import domainSlice, {DocumentTableRow, DomainState, getDocumentTableRows} from "../../slices/DomainSlice.ts";
 import {RootState} from "../../slices/Store.ts";
 import {useEffect} from "react";
 import Content from "../../models/value_objects/contracts/Content.ts";
@@ -19,14 +19,6 @@ import FileDocumentPropertyResponse
 import DataTable, {TableColumn} from "react-data-table-component";
 import {useFormik} from "formik";
 
-interface DocumentTableRow {
-    id: string | undefined,
-    name: string | undefined,
-    description: string | undefined,
-    documentTypeName: string | undefined,
-    documentTypeId: string | undefined,
-    accountId: string | undefined,
-}
 
 export default function SelectModalComponent() {
     const dispatch = useDispatch();
@@ -238,7 +230,7 @@ export default function SelectModalComponent() {
                 <DataTable
                     pagination={true}
                     columns={columns}
-                    data={documentTableRows}
+                    data={documentTableRows || []}
                 />
             </ModalBody>
         </Modal>

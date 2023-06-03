@@ -1,0 +1,9 @@
+services:
+  app:
+    build: .
+    ports:
+      - "${APP_PORT}:3000"
+    volumes:
+      - .:/app
+    command:
+      - "yarn serve"

@@ -30,6 +30,7 @@ import SearchResponse from "../../models/value_objects/contracts/response/passag
 import DocumentType from "../../models/entities/DocumentType.ts";
 import processSlice, {ProcessState} from "../../slices/ProcessSlice.ts";
 import b64toBlob from "b64-to-blob";
+import FileDocument from "../../models/entities/FileDocument.ts";
 
 export default function PassageSearchPage() {
     const dispatch = useDispatch();
@@ -663,7 +664,7 @@ export default function PassageSearchPage() {
                     searchResponse?.outputDocument ?
                         <embed
                             style={{width: "100%", height: "100vh"}}
-                            src={base64PdfToBlobUrl(searchResponse?.outputDocument.fileBytes)}
+                            src={base64PdfToBlobUrl((searchResponse?.outputDocument as FileDocument).fileBytes || "")}
                         />
                         :
                         "..."
