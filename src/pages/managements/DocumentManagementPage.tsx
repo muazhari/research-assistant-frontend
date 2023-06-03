@@ -172,7 +172,7 @@ export default function DocumentManagementPage() {
         onSubmit: (values) => {
             dispatch(domainSlice.actions.setCurrentDomain({
                 documentTableRows: getDocumentTableRows(accountDocuments || [], documentTypes || []).filter((documentTableRow) => {
-                    return JSON.stringify(documentTableRows).toLowerCase().includes(values.search.toLowerCase())
+                    return JSON.stringify(documentTableRow).toLowerCase().includes(values.search.toLowerCase())
                 })
             }))
         }
