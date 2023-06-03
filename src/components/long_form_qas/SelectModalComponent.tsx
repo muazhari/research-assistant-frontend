@@ -152,25 +152,25 @@ export default function SelectModalComponent() {
         {
             name: "ID",
             width: "15%",
-            selector: (row: DocumentTableRow) => row.id!,
+            selector: (row: DocumentTableRow) => row.id || "",
             sortable: true,
         },
         {
             name: "Name",
             width: "15%",
-            selector: (row: DocumentTableRow) => row.name!,
+            selector: (row: DocumentTableRow) => row.name || "",
             sortable: true,
         },
         {
             name: "Description",
             width: "15%",
-            selector: (row: DocumentTableRow) => row.description!,
+            selector: (row: DocumentTableRow) => row.description || "",
             sortable: true,
         },
         {
             name: "Document Type Name",
             width: "20%",
-            selector: (row: DocumentTableRow) => row.documentTypeName!,
+            selector: (row: DocumentTableRow) => row.documentTypeName || "",
             sortable: true,
         },
         {

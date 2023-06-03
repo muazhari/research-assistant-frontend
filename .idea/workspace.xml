@@ -7,6 +7,7 @@
     <list default="true" id="67558acb-1948-4a06-8aee-1a140c430703" name="Changes" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/components/long_form_qas/SelectModalComponent.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/long_form_qas/SelectModalComponent.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/components/managements/documents/InsertModalComponent.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/managements/documents/InsertModalComponent.tsx" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/pages/managements/DocumentManagementPage.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/pages/managements/DocumentManagementPage.tsx" afterDir="false" />
     </list>
     <list id="a7cadf68-e7dd-4100-82ff-87108b6e6aff" name="Changes by avwan" comment="" />
@@ -91,7 +92,7 @@
       <workItem from="1685536158932" duration="40470000" />
       <workItem from="1685627892346" duration="25705000" />
       <workItem from="1685701701090" duration="6979000" />
-      <workItem from="1685780179859" duration="11838000" />
+      <workItem from="1685780179859" duration="12790000" />
     </task>
     <servers />
   </component>

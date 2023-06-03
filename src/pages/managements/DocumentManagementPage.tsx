@@ -98,10 +98,14 @@ export default function DocumentManagementPage() {
             })
             .then((response) => {
                 const content: Content<Document> = response.data;
+                const newAccountDocuments = accountDocuments!.filter((document) => {
+                    return document.id !== content.data?.id
+                })
                 dispatch(domainSlice.actions.setDocumentDomain({
-                    accountDocuments: accountDocuments?.filter((document) => {
-                        return document.id !== content.data?.id
-                    })
+                    accountDocuments: newAccountDocuments
+                }))
+                dispatch(domainSlice.actions.setCurrentDomain({
+                    documentTableRows: getDocumentTableRows(newAccountDocuments || [], documentTypes || [])
                 }))
                 alert(content.message)
             })
@@ -121,22 +125,22 @@ export default function DocumentManagementPage() {
     const columns: TableColumn<DocumentTableRow>[] = [
         {
             name: "ID",
-            selector: (row: DocumentTableRow) => row.id!,
+            selector: (row: DocumentTableRow) => row.id || "",
             sortable: true,
         },
         {
             name: "Name",
-            selector: (row: DocumentTableRow) => row.name!,
+            selector: (row: DocumentTableRow) => row.name || "",
             sortable: true,
         },
         {
             name: "Description",
-            selector: (row: DocumentTableRow) => row.description!,
+            selector: (row: DocumentTableRow) => row.description || "",
             sortable: true,
         },
         {
             name: "Document Type Name",
-            selector: (row: DocumentTableRow) => row.documentTypeName!,
+            selector: (row: DocumentTableRow) => row.documentTypeName || "",
             sortable: true,
         },
         {

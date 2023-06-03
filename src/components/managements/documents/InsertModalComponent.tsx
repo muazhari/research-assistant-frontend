@@ -3,7 +3,7 @@ import {useDispatch, useSelector} from "react-redux";
 import {useNavigate} from "react-router-dom";
 import DocumentService from "../../../services/DocumentService.ts";
 import DocumentTypeService from "../../../services/DocumentTypeService.ts";
-import domainSlice, {DomainState} from "../../../slices/DomainSlice.ts";
+import domainSlice, {DomainState, getDocumentTableRows} from "../../../slices/DomainSlice.ts";
 import {RootState} from "../../../slices/Store.ts";
 import {AuthenticationState} from "../../../slices/AuthenticationSlice.ts";
 import {useFormik} from "formik";
@@ -86,12 +86,14 @@ export default function InsertModalComponent() {
                     }
                 }).then((response) => {
                     const content: Content<FileDocument> = response.data;
+                    const newAccountDocuments = [...(accountDocuments || []), content.data!];
                     dispatch(domainSlice.actions.setCurrentDomain({
                         document: content.data,
-                        fileDocument: content.data
+                        fileDocument: content.data,
+                        documentTableRows: getDocumentTableRows(newAccountDocuments || [], documentTypes || [])
                     }))
                     dispatch(domainSlice.actions.setDocumentDomain({
-                        accountDocuments: [...(accountDocuments || []), content.data]
+                        accountDocuments: newAccountDocuments
                     }))
                     alert(content.message)
                 }).catch((error) => {
@@ -112,12 +114,14 @@ export default function InsertModalComponent() {
                     }
                 }).then((response) => {
                     const content: Content<TextDocument> = response.data;
+                    const newAccountDocuments = [...(accountDocuments || []), content.data!];
                     dispatch(domainSlice.actions.setCurrentDomain({
                         document: content.data,
-                        textDocument: content.data
+                        textDocument: content.data,
+                        documentTableRows: getDocumentTableRows(newAccountDocuments || [], documentTypes || [])
                     }))
                     dispatch(domainSlice.actions.setDocumentDomain({
-                        accountDocuments: [...(accountDocuments || []), content.data]
+                        accountDocuments: newAccountDocuments
                     }))
                     alert(content.message)
                 }).catch((error) => {
@@ -138,12 +142,14 @@ export default function InsertModalComponent() {
                     }
                 }).then((response) => {
                     const content: Content<WebDocument> = response.data;
+                    const newAccountDocuments = [...(accountDocuments || []), content.data!];
                     dispatch(domainSlice.actions.setCurrentDomain({
                         document: content.data,
-                        fileDocument: content.data
+                        webDocument: content.data,
+                        documentTableRows: getDocumentTableRows(newAccountDocuments || [], documentTypes || [])
                     }))
                     dispatch(domainSlice.actions.setDocumentDomain({
-                        accountDocuments: [...(accountDocuments || []), content.data]
+                        accountDocuments: newAccountDocuments
                     }))
                     alert(content.message)
                 }).catch((error) => {
