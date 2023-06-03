@@ -62,6 +62,8 @@ export default function DocumentManagementPage() {
                 dispatch(domainSlice.actions.setDocumentDomain({
                     accountDocuments: accountDocumentsContent.data,
                     documentTypes: documentTypesContent.data,
+                }))
+                dispatch(domainSlice.actions.setCurrentDomain({
                     documentTableRows: getDocumentTableRows(accountDocumentsContent.data || [], documentTypesContent.data || [])
                 }))
             })
@@ -168,9 +170,9 @@ export default function DocumentManagementPage() {
             search: "",
         },
         onSubmit: (values) => {
-            dispatch(domainSlice.actions.setDocumentDomain({
+            dispatch(domainSlice.actions.setCurrentDomain({
                 documentTableRows: getDocumentTableRows(accountDocuments || [], documentTypes || []).filter((documentTableRow) => {
-                    return documentTableRow.name?.toLowerCase().includes(values.search.toLowerCase())
+                    return JSON.stringify(documentTableRows).toLowerCase().includes(values.search.toLowerCase())
                 })
             }))
         }
@@ -182,7 +184,8 @@ export default function DocumentManagementPage() {
             {name === "insert" && <InsertModalComponent/>}
             <h1 className="align-item-start mb-5">Document Management Page</h1>
             <div className="d-flex justify-content-end w-100">
-                <button className="btn btn-primary align-items-end h-50 me-5" onClick={handleClickInsert}>Insert
+                <button className="btn btn-primary align-items-end h-50 me-5" onClick={handleClickInsert}>
+                    Insert
                 </button>
             </div>
 

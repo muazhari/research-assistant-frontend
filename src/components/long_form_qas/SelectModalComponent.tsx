@@ -54,7 +54,6 @@ export default function SelectModalComponent() {
         fileDocument,
         textDocument,
         webDocument,
-        documentTableRows,
     } = domainState.currentDomain;
 
     const {
@@ -88,6 +87,8 @@ export default function SelectModalComponent() {
                 dispatch(domainSlice.actions.setDocumentDomain({
                     accountDocuments: accountDocumentsContent.data,
                     documentTypes: documentTypesContent.data,
+                }))
+                dispatch(domainSlice.actions.setCurrentDomain({
                     documentTableRows: getDocumentTableRows(accountDocumentsContent.data || [], documentTypesContent.data || [])
                 }))
             })
@@ -203,9 +204,9 @@ export default function SelectModalComponent() {
             search: "",
         },
         onSubmit: (values) => {
-            dispatch(domainSlice.actions.setDocumentDomain({
+            dispatch(domainSlice.actions.setCurrentDomain({
                 documentTableRows: getDocumentTableRows(accountDocuments || [], documentTypes || []).filter((documentTableRow) => {
-                    return documentTableRow.name?.toLowerCase().includes(values.search.toLowerCase())
+                    return JSON.stringify(accountDocuments).toLowerCase().includes(values.search.toLowerCase())
                 })
             }))
         }
@@ -236,7 +237,7 @@ export default function SelectModalComponent() {
                 <DataTable
                     pagination={true}
                     columns={columns}
-                    data={documentTableRows || []}
+                    data={getDocumentTableRows(accountDocuments || [], documentTypes || [])}
                 />
             </ModalBody>
         </Modal>
