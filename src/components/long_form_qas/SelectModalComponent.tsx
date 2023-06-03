@@ -54,6 +54,7 @@ export default function SelectModalComponent() {
         fileDocument,
         textDocument,
         webDocument,
+        documentTableRows,
     } = domainState.currentDomain;
 
     const {
@@ -237,7 +238,7 @@ export default function SelectModalComponent() {
                 <DataTable
                     pagination={true}
                     columns={columns}
-                    data={getDocumentTableRows(accountDocuments || [], documentTypes || [])}
+                    data={documentTableRows}
                 />
             </ModalBody>
         </Modal>
