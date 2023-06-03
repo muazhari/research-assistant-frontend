@@ -3,12 +3,12 @@ import {useDispatch, useSelector} from "react-redux";
 import {useLocation, useNavigate} from "react-router-dom";
 import DocumentService from "../../../services/DocumentService.ts";
 import DocumentTypeService from "../../../services/DocumentTypeService.ts";
-import domainSlice, {DomainState} from "../../../slices/DomainSlice.ts";
+import domainSlice, {DomainState, getDocumentTableRows} from "../../../slices/DomainSlice.ts";
 import {RootState} from "../../../slices/Store.ts";
 import {AuthenticationState} from "../../../slices/AuthenticationSlice.ts";
 import {useFormik} from "formik";
 import Content from "../../../models/value_objects/contracts/Content.ts";
-import React, {useEffect} from "react";
+import {useEffect} from "react";
 import FileDocumentService from "../../../services/FileDocumentService.ts";
 import FileDocument from "../../../models/entities/FileDocument.ts";
 import WebDocument from "../../../models/entities/WebDocument.ts";
@@ -16,6 +16,7 @@ import TextDocument from "../../../models/entities/TextDocument.ts";
 import TextDocumentService from "../../../services/TextDocumentService.ts";
 import WebDocumentService from "../../../services/WebDocumentService.ts";
 import processSlice, {ProcessState} from "../../../slices/ProcessSlice.ts";
+import b64toBlob from "b64-to-blob";
 
 export default function DetailModalComponent() {
     const dispatch = useDispatch();
@@ -108,6 +109,7 @@ export default function DetailModalComponent() {
         }
     }, [documentType])
 
+
     const formik = useFormik({
         initialValues: {
             id: document?.id,
@@ -140,17 +142,17 @@ export default function DetailModalComponent() {
                     }
                 }).then((response) => {
                     const content: Content<FileDocument> = response.data;
+                    const newAccountDocuments = accountDocuments?.map((document) => {
+                        if (document.id === content.data?.id) {
+                            return content.data!
+                        }
+                        return document!
+                    });
                     dispatch(domainSlice.actions.setCurrentDomain({
                         document: content.data,
-                        fileDocument: content.data
-                    }))
-                    dispatch(domainSlice.actions.setDocumentDomain({
-                        accountDocuments: accountDocuments?.map((accountDocument) => {
-                            if (accountDocument.id === content.data?.id) {
-                                return content.data
-                            }
-                            return accountDocument
-                        })
+                        fileDocument: content.data,
+                        accountDocuments: newAccountDocuments,
+                        documentTableRows: getDocumentTableRows(newAccountDocuments || [], documentTypes || [])
                     }))
                     alert(content.message)
                 }).catch((error) => {
@@ -172,17 +174,17 @@ export default function DetailModalComponent() {
                     }
                 }).then((response) => {
                     const content: Content<TextDocument> = response.data;
+                    const newAccountDocuments = accountDocuments?.map((document) => {
+                        if (document.id === content.data?.id) {
+                            return content.data!
+                        }
+                        return document!
+                    })
                     dispatch(domainSlice.actions.setCurrentDomain({
                         document: content.data,
-                        textDocument: content.data
-                    }))
-                    dispatch(domainSlice.actions.setDocumentDomain({
-                        accountDocuments: accountDocuments?.map((accountDocument) => {
-                            if (accountDocument.id === content.data?.id) {
-                                return content.data
-                            }
-                            return accountDocument
-                        })
+                        textDocument: content.data,
+                        accountDocuments: newAccountDocuments,
+                        documentTableRows: getDocumentTableRows(newAccountDocuments || [], documentTypes || [])
                     }))
                     alert(content.message)
                 }).catch((error) => {
@@ -204,17 +206,17 @@ export default function DetailModalComponent() {
                     }
                 }).then((response) => {
                     const content: Content<WebDocument> = response.data;
+                    const newAccountDocuments = accountDocuments?.map((document) => {
+                        if (document.id === content.data?.id) {
+                            return content.data!
+                        }
+                        return document!
+                    })
                     dispatch(domainSlice.actions.setCurrentDomain({
                         document: content.data,
-                        fileDocument: content.data
-                    }))
-                    dispatch(domainSlice.actions.setDocumentDomain({
-                        accountDocuments: accountDocuments?.map((accountDocument) => {
-                            if (accountDocument.id === content.data?.id) {
-                                return content.data
-                            }
-                            return accountDocument
-                        })
+                        webDocument: content.data,
+                        accountDocuments: newAccountDocuments,
+                        documentTableRows: getDocumentTableRows(newAccountDocuments || [], documentTypes || [])
                     }))
                     alert(content.message)
                 }).catch((error) => {
@@ -246,6 +248,11 @@ export default function DetailModalComponent() {
                 reject(error);
             }
         })
+    }
+
+    const getFileDownloadUrl = () => {
+        const blob = b64toBlob(fileDocument?.fileBytes || "", "application/octet-stream");
+        return URL.createObjectURL(blob)
     }
 
     return (
@@ -371,6 +378,14 @@ export default function DetailModalComponent() {
                                             }}
                                         />
                                     </fieldset>
+                                    <div className="d-flex justify-content-center align-items-center mt-3">
+                                        <a
+                                            download={`${formik.values.fileName}${formik.values.fileExtension}`}
+                                            href={getFileDownloadUrl()}
+                                        >
+                                            <button className="btn btn-success" type="button">Download</button>
+                                        </a>
+                                    </div>
                                 </>
                             ,
                             "text":

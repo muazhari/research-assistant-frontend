@@ -257,7 +257,7 @@ export default function PassageSearchPage() {
 
 
     const base64PdfToBlobUrl = (base64: string): string => {
-        const blob = b64toBlob(base64, "application/pdf", 512);
+        const blob = b64toBlob(base64, "application/pdf");
         return URL.createObjectURL(blob);
     }
 

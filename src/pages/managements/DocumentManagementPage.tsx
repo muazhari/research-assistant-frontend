@@ -1,6 +1,6 @@
 import DocumentService from "../../services/DocumentService.ts";
 import DocumentTypeService from "../../services/DocumentTypeService.ts";
-import domainSlice, {DomainState} from "../../slices/DomainSlice.ts";
+import domainSlice, {DocumentTableRow, DomainState, getDocumentTableRows} from "../../slices/DomainSlice.ts";
 import {useDispatch, useSelector} from "react-redux";
 import {RootState} from "../../slices/Store.ts";
 import {AuthenticationState} from "../../slices/AuthenticationSlice.ts";
@@ -11,19 +11,10 @@ import DocumentType from "../../models/entities/DocumentType.ts";
 import {useNavigate} from "react-router-dom";
 import DetailModalComponent from "../../components/managements/documents/DetailModalComponent.tsx";
 import InsertModalComponent from "../../components/managements/documents/InsertModalComponent.tsx";
-import {useEffect, useState} from "react";
+import {useEffect} from "react";
 import DataTable, {TableColumn} from "react-data-table-component";
 import {useFormik} from "formik";
 
-
-interface DataRow {
-    id: string | undefined,
-    name: string | undefined,
-    description: string | undefined,
-    documentTypeName: string | undefined,
-    documentTypeId: string | undefined,
-    accountId: string | undefined,
-}
 
 export default function DocumentManagementPage() {
 
@@ -38,30 +29,20 @@ export default function DocumentManagementPage() {
     const {account} = authenticationState;
     const {
         accountDocuments,
-        documentTypes
+        documentTypes,
     } = domainState.documentDomain;
+
+    const {
+
+        documentTableRows
+    } = domainState.currentDomain
+
     const {
         name,
         isShow
     } = domainState.modalDomain;
 
 
-    const [data, setData] = useState<DataRow[] | undefined>();
-
-    const getTableData = (accountDocuments: Document[]) => {
-        return accountDocuments.map((document) => {
-            return {
-                id: document.id,
-                name: document.name,
-                description: document.description,
-                documentTypeId: document.documentTypeId,
-                accountId: document.accountId,
-                documentTypeName: documentTypes?.find((documentType) => {
-                    return documentType.id === document.documentTypeId
-                })?.name
-            }
-        })
-    }
     useEffect(() => {
         fetchData();
     }, [])
@@ -80,16 +61,16 @@ export default function DocumentManagementPage() {
                 const documentTypesContent: Content<DocumentType[]> = response[1].data;
                 dispatch(domainSlice.actions.setDocumentDomain({
                     accountDocuments: accountDocumentsContent.data,
-                    documentTypes: documentTypesContent.data
+                    documentTypes: documentTypesContent.data,
+                    documentTableRows: getDocumentTableRows(accountDocumentsContent.data || [], documentTypesContent.data || [])
                 }))
-                setData(getTableData(accountDocumentsContent.data || []))
             })
             .catch((error) => {
                 console.log(error)
             })
     }
 
-    const handleClickDetail = (row: DataRow) => {
+    const handleClickDetail = (row: DocumentTableRow) => {
         dispatch(domainSlice.actions.setModalDomain({
             name: "detail",
             isShow: true,
@@ -108,7 +89,7 @@ export default function DocumentManagementPage() {
         }))
     }
 
-    const handleClickDelete = (row: DataRow) => {
+    const handleClickDelete = (row: DocumentTableRow) => {
         documentService
             .deleteOneById({
                 id: row.id
@@ -135,31 +116,31 @@ export default function DocumentManagementPage() {
     }
 
 
-    const columns: TableColumn<DataRow>[] = [
+    const columns: TableColumn<DocumentTableRow>[] = [
         {
             name: "ID",
-            selector: (row: DataRow) => row.id!,
+            selector: (row: DocumentTableRow) => row.id!,
             sortable: true,
         },
         {
             name: "Name",
-            selector: (row: DataRow) => row.name!,
+            selector: (row: DocumentTableRow) => row.name!,
             sortable: true,
         },
         {
             name: "Description",
-            selector: (row: DataRow) => row.description!,
+            selector: (row: DocumentTableRow) => row.description!,
             sortable: true,
         },
         {
             name: "Document Type Name",
-            selector: (row: DataRow) => row.documentTypeName!,
+            selector: (row: DocumentTableRow) => row.documentTypeName!,
             sortable: true,
         },
         {
             name: "Actions",
             width: "20%",
-            cell: (row: DataRow) =>
+            cell: (row: DocumentTableRow) =>
                 <>
                     <button
                         id={row.id}
@@ -187,8 +168,10 @@ export default function DocumentManagementPage() {
             search: "",
         },
         onSubmit: (values) => {
-            setData(getTableData(accountDocuments || [])?.filter((document) => {
-                return JSON.stringify(document).includes(values.search)
+            dispatch(domainSlice.actions.setDocumentDomain({
+                documentTableRows: getDocumentTableRows(accountDocuments || [], documentTypes || []).filter((documentTableRow) => {
+                    return documentTableRow.name?.toLowerCase().includes(values.search.toLowerCase())
+                })
             }))
         }
     })
@@ -219,7 +202,7 @@ export default function DocumentManagementPage() {
             <DataTable
                 pagination={true}
                 columns={columns}
-                data={data || []}
+                data={documentTableRows || []}
             />
         </div>
     )

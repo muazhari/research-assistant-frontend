@@ -8,9 +8,9 @@ import FileDocumentService from "../../services/FileDocumentService.ts";
 import TextDocumentService from "../../services/TextDocumentService.ts";
 import WebDocumentService from "../../services/WebDocumentService.ts";
 import {AuthenticationState} from "../../slices/AuthenticationSlice.ts";
-import domainSlice, {DomainState} from "../../slices/DomainSlice.ts";
+import domainSlice, {DomainState, getDocumentTableRows} from "../../slices/DomainSlice.ts";
 import {RootState} from "../../slices/Store.ts";
-import {useEffect, useState} from "react";
+import {useEffect} from "react";
 import Content from "../../models/value_objects/contracts/Content.ts";
 import DocumentTypeService from "../../services/DocumentTypeService.ts";
 import DocumentService from "../../services/DocumentService.ts";
@@ -19,7 +19,7 @@ import FileDocumentPropertyResponse
 import DataTable, {TableColumn} from "react-data-table-component";
 import {useFormik} from "formik";
 
-interface DataRow {
+interface DocumentTableRow {
     id: string | undefined,
     name: string | undefined,
     description: string | undefined,
@@ -53,7 +53,8 @@ export default function SelectModalComponent() {
         documentType,
         fileDocument,
         textDocument,
-        webDocument
+        webDocument,
+        documentTableRows,
     } = domainState.currentDomain;
 
     const {
@@ -61,31 +62,11 @@ export default function SelectModalComponent() {
         isShow
     } = domainState.modalDomain;
 
-
-    const [data, setData] = useState<DataRow[] | undefined>();
-
-
     const handleOnHide = () => {
         dispatch(domainSlice.actions.setModalDomain({
             isShow: !isShow,
             name: "select"
         }))
-    }
-
-
-    const getTableData = (accountDocuments: Document[]) => {
-        return accountDocuments.map((document) => {
-            return {
-                id: document.id,
-                name: document.name,
-                description: document.description,
-                documentTypeId: document.documentTypeId,
-                accountId: document.accountId,
-                documentTypeName: documentTypes?.find((documentType) => {
-                    return documentType.id === document.documentTypeId
-                })?.name
-            }
-        })
     }
 
     useEffect(() => {
@@ -106,16 +87,16 @@ export default function SelectModalComponent() {
                 const documentTypesContent: Content<DocumentType[]> = response[1].data;
                 dispatch(domainSlice.actions.setDocumentDomain({
                     accountDocuments: accountDocumentsContent.data,
-                    documentTypes: documentTypesContent.data
+                    documentTypes: documentTypesContent.data,
+                    documentTableRows: getDocumentTableRows(accountDocumentsContent.data || [], documentTypesContent.data || [])
                 }))
-                setData(getTableData(accountDocumentsContent.data || []))
             })
             .catch((error) => {
                 console.log(error)
             })
     }
 
-    const handleClickSelect = (row: DataRow) => {
+    const handleClickSelect = (row: DocumentTableRow) => {
         const documentType = documentTypes?.find((documentType) => {
             return documentType.id === row.documentTypeId
         })
@@ -166,35 +147,35 @@ export default function SelectModalComponent() {
     }
 
 
-    const columns: TableColumn<DataRow>[] = [
+    const columns: TableColumn<DocumentTableRow>[] = [
         {
             name: "ID",
             width: "15%",
-            selector: (row: DataRow) => row.id!,
+            selector: (row: DocumentTableRow) => row.id!,
             sortable: true,
         },
         {
             name: "Name",
             width: "15%",
-            selector: (row: DataRow) => row.name!,
+            selector: (row: DocumentTableRow) => row.name!,
             sortable: true,
         },
         {
             name: "Description",
             width: "15%",
-            selector: (row: DataRow) => row.description!,
+            selector: (row: DocumentTableRow) => row.description!,
             sortable: true,
         },
         {
             name: "Document Type Name",
             width: "20%",
-            selector: (row: DataRow) => row.documentTypeName!,
+            selector: (row: DocumentTableRow) => row.documentTypeName!,
             sortable: true,
         },
         {
             name: "Actions",
             width: "20%",
-            cell: (row: DataRow) =>
+            cell: (row: DocumentTableRow) =>
                 <>
                     <button
                         id={row.id}
@@ -222,8 +203,10 @@ export default function SelectModalComponent() {
             search: "",
         },
         onSubmit: (values) => {
-            setData(getTableData(accountDocuments || [])?.filter((document) => {
-                return JSON.stringify(document).includes(values.search)
+            dispatch(domainSlice.actions.setDocumentDomain({
+                documentTableRows: getDocumentTableRows(accountDocuments || [], documentTypes || []).filter((documentTableRow) => {
+                    return documentTableRow.name?.toLowerCase().includes(values.search.toLowerCase())
+                })
             }))
         }
     })
@@ -253,7 +236,7 @@ export default function SelectModalComponent() {
                 <DataTable
                     pagination={true}
                     columns={columns}
-                    data={data || []}
+                    data={documentTableRows || []}
                 />
             </ModalBody>
         </Modal>

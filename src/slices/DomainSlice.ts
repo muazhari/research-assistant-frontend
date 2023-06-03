@@ -11,6 +11,31 @@ import QaResponse from "../models/value_objects/contracts/response/long_form_qas
 import SearchResponse from "../models/value_objects/contracts/response/passage_searchs/SearchResponse.ts";
 
 
+export function getDocumentTableRows(documents: Document[], documentTypes: DocumentType[]) {
+    return documents.map((document) => {
+        return {
+            id: document.id,
+            name: document.name,
+            description: document.description,
+            documentTypeId: document.documentTypeId,
+            accountId: document.accountId,
+            documentTypeName: documentTypes?.find((documentType) => {
+                return documentType.id === document.documentTypeId
+            })?.name
+        }
+    })
+}
+
+export interface DocumentTableRow {
+    id: string | undefined,
+    name: string | undefined,
+    description: string | undefined,
+    documentTypeName: string | undefined,
+    documentTypeId: string | undefined,
+    accountId: string | undefined,
+}
+
+
 export interface AccountDomain {
     currentAccount: Account | undefined
 }
@@ -35,6 +60,7 @@ export interface CurrentDomain {
     qaResponse: QaResponse | undefined,
     searchResponse: SearchResponse | undefined,
     fileDocumentProperty: FileDocumentPropertyResponse | undefined,
+    documentTableRows: DocumentTableRow[] | undefined,
 }
 
 
@@ -69,6 +95,7 @@ export default createSlice({
             qaResponse: undefined,
             searchResponse: undefined,
             fileDocumentProperty: undefined,
+            documentTableRows: [],
         }
     },
     reducers: {
