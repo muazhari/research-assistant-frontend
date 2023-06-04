@@ -273,6 +273,7 @@ export default function PassageSearchPage() {
                 <fieldset className="mb-2">
                     <label htmlFor="inputSetting.query">Query</label>
                     <textarea
+                        rows={5}
                         id="inputSetting.query"
                         name="inputSetting.query"
                         className="form-control"
