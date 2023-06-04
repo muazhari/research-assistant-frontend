@@ -144,13 +144,13 @@ export default function SelectModalComponent() {
     const columns: TableColumn<DocumentTableRow>[] = [
         {
             name: "ID",
-            width: "15%",
+            width: "8%",
             selector: (row: DocumentTableRow) => row.id || "",
             sortable: true,
         },
         {
             name: "Name",
-            width: "15%",
+            width: "10%",
             selector: (row: DocumentTableRow) => row.name || "",
             sortable: true,
         },
@@ -162,7 +162,7 @@ export default function SelectModalComponent() {
         },
         {
             name: "Document Type Name",
-            width: "20%",
+            width: "15%",
             selector: (row: DocumentTableRow) => row.documentTypeName || "",
             sortable: true,
         },
@@ -186,9 +186,6 @@ export default function SelectModalComponent() {
                         Select
                     </button>
                 </>,
-            ignoreRowClick: true,
-            allowOverflow: true,
-            button: true,
         }
     ];
 

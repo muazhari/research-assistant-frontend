@@ -166,10 +166,7 @@ export default function DocumentManagementPage() {
                     >
                         Delete
                     </button>
-                </>,
-            ignoreRowClick: true,
-            allowOverflow: true,
-            button: true,
+                </>
         }
     ];
 
