@@ -63,7 +63,7 @@ export default function SelectModalComponent() {
 
     useEffect(() => {
         fetchData();
-    }, [])
+    }, [isShow])
 
     const fetchData = () => {
         Promise.all([
