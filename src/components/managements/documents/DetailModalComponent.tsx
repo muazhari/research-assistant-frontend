@@ -71,6 +71,9 @@ export default function DetailModalComponent() {
     }
 
     useEffect(() => {
+        dispatch(processSlice.actions.set({
+            isLoading: true
+        }));
         if (documentType?.name == "file") {
             fileDocumentService.readOneById({
                 id: document?.id
@@ -81,6 +84,10 @@ export default function DetailModalComponent() {
                 }))
             }).catch((error) => {
                 console.log(error)
+            }).finally(() => {
+                dispatch(processSlice.actions.set({
+                    isLoading: false
+                }));
             })
         } else if (documentType?.name == "text") {
             textDocumentService.readOneById({
@@ -92,6 +99,10 @@ export default function DetailModalComponent() {
                 }))
             }).catch((error) => {
                 console.log(error)
+            }).finally(() => {
+                dispatch(processSlice.actions.set({
+                    isLoading: false
+                }));
             })
         } else if (documentType?.name == "web") {
             webDocumentService.readOneById({
@@ -103,6 +114,10 @@ export default function DetailModalComponent() {
                 }))
             }).catch((error) => {
                 console.log(error)
+            }).finally(() => {
+                dispatch(processSlice.actions.set({
+                    isLoading: false
+                }));
             })
         } else {
             alert("Document type is not supported")

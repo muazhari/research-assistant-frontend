@@ -14,6 +14,7 @@ import InsertModalComponent from "../../components/managements/documents/InsertM
 import {useEffect} from "react";
 import DataTable, {TableColumn} from "react-data-table-component";
 import {useFormik} from "formik";
+import processSlice, {ProcessState} from "../../slices/ProcessSlice.ts";
 
 
 export default function DocumentManagementPage() {
@@ -24,9 +25,18 @@ export default function DocumentManagementPage() {
     const documentService = new DocumentService();
     const documentTypeService = new DocumentTypeService();
 
+    const processState: ProcessState = useSelector((state: RootState) => state.process);
     const domainState: DomainState = useSelector((state: RootState) => state.domain);
     const authenticationState: AuthenticationState = useSelector((state: RootState) => state.authentication);
-    const {account} = authenticationState;
+
+    const {
+        isLoading
+    } = processState;
+
+    const {
+        account
+    } = authenticationState;
+
     const {
         accountDocuments,
         documentTypes,
@@ -92,6 +102,9 @@ export default function DocumentManagementPage() {
     }
 
     const handleClickDelete = (row: DocumentTableRow) => {
+        dispatch(processSlice.actions.set({
+            isLoading: true
+        }));
         documentService
             .deleteOneById({
                 id: row.id
@@ -111,6 +124,11 @@ export default function DocumentManagementPage() {
             })
             .catch((error) => {
                 console.log(error)
+            })
+            .finally(() => {
+                dispatch(processSlice.actions.set({
+                    isLoading: false
+                }));
             })
     }
 
@@ -156,15 +174,31 @@ export default function DocumentManagementPage() {
                         id={row.id}
                         className="btn btn-info mx-3"
                         onClick={() => handleClickDetail(row)}
+                        disabled={isLoading}
                     >
-                        Detail
+                        {
+                            isLoading ?
+                                <div className="spinner-border text-light" role="status">
+                                    <span className="visually-hidden">Loading...</span>
+                                </div>
+                                :
+                                "Detail"
+                        }
                     </button>
                     <button
                         id={row.id}
                         className="btn btn-danger"
                         onClick={() => handleClickDelete(row)}
+                        disabled={isLoading}
                     >
-                        Delete
+                        {
+                            isLoading ?
+                                <div className="spinner-border text-light" role="status">
+                                    <span className="visually-hidden">Loading...</span>
+                                </div>
+                                :
+                                "Delete"
+                        }
                     </button>
                 </>
         }
