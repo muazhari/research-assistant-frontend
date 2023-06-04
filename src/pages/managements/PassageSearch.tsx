@@ -90,7 +90,7 @@ export default function PassageSearchPage() {
                     topK: 100,
                     similarityFunction: "dot_product",
                     sourceType: "dense_passage",
-                    isUpdate: true,
+                    isRefresh: true,
                     embeddingModel: {
                         dimension: 128,
                         queryModel: "vblagoje/dpr-question_encoder-single-lfqa-wiki",
@@ -218,7 +218,7 @@ export default function PassageSearchPage() {
             topK: values.inputSetting.denseRetriever.topK,
             similarityFunction: values.inputSetting.denseRetriever.similarityFunction,
             sourceType: values.inputSetting.denseRetriever.sourceType,
-            isUpdate: values.inputSetting.denseRetriever.isUpdate,
+            isRefresh: values.inputSetting.denseRetriever.isRefresh,
             embeddingModel: embeddingModel,
         }
 
@@ -413,14 +413,14 @@ export default function PassageSearchPage() {
                 <fieldset className="mb-2 d-flex">
                     <input
                         type="checkbox"
-                        id="inputSetting.denseRetriever.isUpdate"
-                        name="inputSetting.denseRetriever.isUpdate"
+                        id="inputSetting.denseRetriever.isRefresh"
+                        name="inputSetting.denseRetriever.isRefresh"
                         className="form-check"
                         onChange={formik.handleChange}
                         onBlur={formik.handleBlur}
-                        checked={formik.values.inputSetting.denseRetriever.isUpdate}
+                        checked={formik.values.inputSetting.denseRetriever.isRefresh}
                     />
-                    <label htmlFor="inputSetting.denseRetriever.isUpdate" className="ms-2">Is update stored
+                    <label htmlFor="inputSetting.denseRetriever.isRefresh" className="ms-2">Is update stored
                         embedding?</label>
                 </fieldset>
                 <hr/>
