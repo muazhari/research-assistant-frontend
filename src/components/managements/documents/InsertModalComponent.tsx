@@ -102,6 +102,7 @@ export default function InsertModalComponent() {
                     dispatch(processSlice.actions.set({
                         isLoading: false
                     }));
+                    formik.resetForm();
                 })
             } else if (formikDocumentTypeName == "text") {
                 textDocumentService.createOne({
@@ -130,6 +131,7 @@ export default function InsertModalComponent() {
                     dispatch(processSlice.actions.set({
                         isLoading: false
                     }));
+                    formik.resetForm();
                 })
             } else if (formikDocumentTypeName == "web") {
                 webDocumentService.createOne({
@@ -158,6 +160,7 @@ export default function InsertModalComponent() {
                     dispatch(processSlice.actions.set({
                         isLoading: false
                     }));
+                    formik.resetForm();
                 })
             } else {
                 alert("Document type is not supported")
@@ -170,8 +173,9 @@ export default function InsertModalComponent() {
 
     const handleOnHide = () => {
         dispatch(domainSlice.actions.setModalDomain({
-            isShow: !isShow
+            isShow: !isShow,
         }))
+        formik.resetForm();
     }
 
     const convertToBase64 = (file: File): Promise<string> => {

@@ -125,21 +125,25 @@ export default function DocumentManagementPage() {
     const columns: TableColumn<DocumentTableRow>[] = [
         {
             name: "ID",
+            width: "10%",
             selector: (row: DocumentTableRow) => row.id || "",
             sortable: true,
         },
         {
             name: "Name",
+            width: "15%",
             selector: (row: DocumentTableRow) => row.name || "",
             sortable: true,
         },
         {
             name: "Description",
+            width: "20%",
             selector: (row: DocumentTableRow) => row.description || "",
             sortable: true,
         },
         {
             name: "Document Type Name",
+            width: "15%",
             selector: (row: DocumentTableRow) => row.documentTypeName || "",
             sortable: true,
         },
