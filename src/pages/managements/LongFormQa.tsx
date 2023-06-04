@@ -422,7 +422,7 @@ export default function LongFormQaPage() {
                         onBlur={formik.handleBlur}
                         checked={formik.values.inputSetting.denseRetriever.isRefresh}
                     />
-                    <label htmlFor="inputSetting.denseRetriever.isRefresh" className="ms-2">Is update stored
+                    <label htmlFor="inputSetting.denseRetriever.isRefresh" className="ms-2">is refresh stored
                         embedding?</label>
                 </fieldset>
                 <hr/>

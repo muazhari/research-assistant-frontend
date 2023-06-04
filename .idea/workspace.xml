@@ -5,7 +5,7 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="67558acb-1948-4a06-8aee-1a140c430703" name="Changes" comment="">
-      <change beforePath="$PROJECT_DIR$/src/models/value_objects/contracts/requests/passage_searchs/DenseRetriever.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/models/value_objects/contracts/requests/passage_searchs/DenseRetriever.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/pages/managements/LongFormQa.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/pages/managements/LongFormQa.tsx" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/pages/managements/PassageSearch.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/pages/managements/PassageSearch.tsx" afterDir="false" />
     </list>
@@ -108,7 +108,7 @@
       <workItem from="1685780179859" duration="22082000" />
       <workItem from="1685869780974" duration="150000" />
       <workItem from="1685869940635" duration="5286000" />
-      <workItem from="1685887082657" duration="51000" />
+      <workItem from="1685887082657" duration="669000" />
     </task>
     <servers />
   </component>
