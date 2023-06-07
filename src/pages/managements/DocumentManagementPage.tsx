@@ -149,13 +149,13 @@ export default function DocumentManagementPage() {
         },
         {
             name: "Name",
-            width: "15%",
+            width: "23%",
             selector: (row: DocumentTableRow) => row.name || "",
             sortable: true,
         },
         {
             name: "Description",
-            width: "20%",
+            width: "27%",
             selector: (row: DocumentTableRow) => row.description || "",
             sortable: true,
         },
@@ -167,7 +167,7 @@ export default function DocumentManagementPage() {
         },
         {
             name: "Actions",
-            width: "20%",
+            width: "25%",
             cell: (row: DocumentTableRow) =>
                 <>
                     <button

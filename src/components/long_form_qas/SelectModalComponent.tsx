@@ -144,19 +144,19 @@ export default function SelectModalComponent() {
     const columns: TableColumn<DocumentTableRow>[] = [
         {
             name: "ID",
-            width: "8%",
+            width: "10%",
             selector: (row: DocumentTableRow) => row.id || "",
             sortable: true,
         },
         {
             name: "Name",
-            width: "10%",
+            width: "23%",
             selector: (row: DocumentTableRow) => row.name || "",
             sortable: true,
         },
         {
             name: "Description",
-            width: "15%",
+            width: "27%",
             selector: (row: DocumentTableRow) => row.description || "",
             sortable: true,
         },
@@ -168,7 +168,7 @@ export default function SelectModalComponent() {
         },
         {
             name: "Actions",
-            width: "20%",
+            width: "25%",
             cell: (row: DocumentTableRow) =>
                 <>
                     <button
