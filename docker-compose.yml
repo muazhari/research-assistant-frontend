@@ -4,6 +4,9 @@ services:
     ports:
       - "${APP_PORT}:3000"
     volumes:
-      - .:/app
+      - ".:/app"
+      - "/app/node_modules"
     command:
-      - "yarn serve"
+      - "/bin/bash"
+      - "-c"
+      - "yarn build && yarn serve"
