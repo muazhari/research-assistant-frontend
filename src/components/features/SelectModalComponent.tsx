@@ -57,7 +57,6 @@ export default function SelectModalComponent() {
     const handleOnHide = () => {
         dispatch(domainSlice.actions.setModalDomain({
             isShow: !isShow,
-            name: "select"
         }))
     }
 
@@ -105,6 +104,7 @@ export default function SelectModalComponent() {
                     documentType: documentType,
                     fileDocumentProperty: content.data
                 }))
+                handleOnHide()
                 alert("Document selected.")
             }).catch((error) => {
                 console.log(error)

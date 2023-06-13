@@ -7,7 +7,7 @@ import domainSlice, {DomainState} from "../../slices/DomainSlice.ts";
 import {RootState} from "../../slices/Store.ts";
 import {AuthenticationState} from "../../slices/AuthenticationSlice.ts";
 import {useFormik} from "formik";
-import SelectModalComponent from "../../components/long_form_qas/SelectModalComponent.tsx";
+import SelectModalComponent from "../../components/features/SelectModalComponent.tsx";
 import DetailModalComponent from "../../components/managements/documents/DetailModalComponent.tsx";
 import LongFormQaService from "../../services/LongFormQaService.ts";
 import Content from "../../models/value_objects/contracts/Content.ts";

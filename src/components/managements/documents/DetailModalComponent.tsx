@@ -71,6 +71,11 @@ export default function DetailModalComponent() {
     }
 
     useEffect(() => {
+        fetchData();
+    }, [documentType, document])
+
+
+    const fetchData = () => {
         dispatch(processSlice.actions.set({
             isLoading: true
         }));
@@ -122,8 +127,7 @@ export default function DetailModalComponent() {
         } else {
             alert("Document type is not supported")
         }
-    }, [documentType])
-
+    }
 
     const formik = useFormik({
         initialValues: {
