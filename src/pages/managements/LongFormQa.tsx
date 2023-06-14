@@ -120,7 +120,7 @@ export default function LongFormQaPage() {
                         apiKey: ""
                     },
                     prompt:
-                        "Create a concise and informative answer for a given question based solely on the given documents. You must only use information from the given documents. Use an unbiased and journalistic tone. Do not repeat text.  Cite at least one document in each sentence. Cite the documents using [document number] notation. If multiple documents contain the answer, cite those documents like \"as stated in [document number, document number, etc.]\". If the documents do not contain the answer to the question, say that answering is not possible given the available information and explain why.\n" +
+                        "Create a concise and informative answer for a given question based solely on the given documents. You must only use information from the given documents. Use an unbiased and journalistic tone. Do not repeat text. Cite at least one document in each sentence. Cite the documents using [document number] notation. If multiple documents contain the answer, cite those documents like \"as stated in [document number, document number, etc.]\". If the documents do not contain the answer to the question, say that answering is not possible given the available information and explain why.\n" +
                         "Paragraphs: {join(documents, delimiter=new_line, pattern=new_line+'Document[$idx]: $content')}\n" +
                         "Question: {query}\n" +
                         "Answer:",
