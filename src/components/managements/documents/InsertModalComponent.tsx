@@ -73,7 +73,7 @@ export default function InsertModalComponent() {
             dispatch(processSlice.actions.set({
                 isLoading: true
             }));
-            if (formikDocumentTypeName == "file") {
+            if (formikDocumentType?.name == "file") {
                 fileDocumentService.createOne({
                     body: {
                         name: values.name,
@@ -86,15 +86,17 @@ export default function InsertModalComponent() {
                     }
                 }).then((response) => {
                     const content: Content<FileDocument> = response.data;
-                    const newAccountDocuments = [...(accountDocuments || []), content.data!];
-                    dispatch(domainSlice.actions.setCurrentDomain({
-                        document: content.data,
-                        fileDocument: content.data,
-                        documentTableRows: getDocumentTableRows(newAccountDocuments || [], documentTypes || [])
-                    }))
-                    dispatch(domainSlice.actions.setDocumentDomain({
-                        accountDocuments: newAccountDocuments
-                    }))
+                    if (content.data) {
+                        const newAccountDocuments = [...(accountDocuments || []), content.data!];
+                        dispatch(domainSlice.actions.setCurrentDomain({
+                            document: content.data,
+                            fileDocument: content.data,
+                            documentTableRows: getDocumentTableRows(newAccountDocuments || [], documentTypes || [])
+                        }))
+                        dispatch(domainSlice.actions.setDocumentDomain({
+                            accountDocuments: newAccountDocuments
+                        }))
+                    }
                     alert(content.message)
                 }).catch((error) => {
                     console.log(error)
@@ -103,8 +105,9 @@ export default function InsertModalComponent() {
                         isLoading: false
                     }));
                     formik.resetForm();
+                    formik.setFieldValue("documentTypeId", formikDocumentType?.id)
                 })
-            } else if (formikDocumentTypeName == "text") {
+            } else if (formikDocumentType?.name == "text") {
                 textDocumentService.createOne({
                     body: {
                         name: values.name,
@@ -115,15 +118,17 @@ export default function InsertModalComponent() {
                     }
                 }).then((response) => {
                     const content: Content<TextDocument> = response.data;
-                    const newAccountDocuments = [...(accountDocuments || []), content.data!];
-                    dispatch(domainSlice.actions.setCurrentDomain({
-                        document: content.data,
-                        textDocument: content.data,
-                        documentTableRows: getDocumentTableRows(newAccountDocuments || [], documentTypes || [])
-                    }))
-                    dispatch(domainSlice.actions.setDocumentDomain({
-                        accountDocuments: newAccountDocuments
-                    }))
+                    if (content.data) {
+                        const newAccountDocuments = [...(accountDocuments || []), content.data!];
+                        dispatch(domainSlice.actions.setCurrentDomain({
+                            document: content.data,
+                            textDocument: content.data,
+                            documentTableRows: getDocumentTableRows(newAccountDocuments || [], documentTypes || [])
+                        }))
+                        dispatch(domainSlice.actions.setDocumentDomain({
+                            accountDocuments: newAccountDocuments
+                        }))
+                    }
                     alert(content.message)
                 }).catch((error) => {
                     console.log(error)
@@ -132,8 +137,9 @@ export default function InsertModalComponent() {
                         isLoading: false
                     }));
                     formik.resetForm();
+                    formik.setFieldValue("documentTypeId", formikDocumentType?.id)
                 })
-            } else if (formikDocumentTypeName == "web") {
+            } else if (formikDocumentType?.name == "web") {
                 webDocumentService.createOne({
                     body: {
                         name: values.name,
@@ -144,15 +150,17 @@ export default function InsertModalComponent() {
                     }
                 }).then((response) => {
                     const content: Content<WebDocument> = response.data;
-                    const newAccountDocuments = [...(accountDocuments || []), content.data!];
-                    dispatch(domainSlice.actions.setCurrentDomain({
-                        document: content.data,
-                        webDocument: content.data,
-                        documentTableRows: getDocumentTableRows(newAccountDocuments || [], documentTypes || [])
-                    }))
-                    dispatch(domainSlice.actions.setDocumentDomain({
-                        accountDocuments: newAccountDocuments
-                    }))
+                    if (content.data) {
+                        const newAccountDocuments = [...(accountDocuments || []), content.data!];
+                        dispatch(domainSlice.actions.setCurrentDomain({
+                            document: content.data,
+                            webDocument: content.data,
+                            documentTableRows: getDocumentTableRows(newAccountDocuments || [], documentTypes || [])
+                        }))
+                        dispatch(domainSlice.actions.setDocumentDomain({
+                            accountDocuments: newAccountDocuments
+                        }))
+                    }
                     alert(content.message)
                 }).catch((error) => {
                     console.log(error)
@@ -161,6 +169,7 @@ export default function InsertModalComponent() {
                         isLoading: false
                     }));
                     formik.resetForm();
+                    formik.setFieldValue("documentTypeId", formikDocumentType?.id)
                 })
             } else {
                 alert("Document type is not supported")
@@ -169,7 +178,7 @@ export default function InsertModalComponent() {
     })
 
 
-    const formikDocumentTypeName = documentTypes?.find((documentType) => documentType.id === formik.values.documentTypeId)?.name
+    const formikDocumentType = documentTypes?.find((documentType) => documentType.id === formik.values.documentTypeId);
 
     const handleOnHide = () => {
         dispatch(domainSlice.actions.setModalDomain({
@@ -230,15 +239,14 @@ export default function InsertModalComponent() {
                         />
                     </fieldset>
                     <fieldset className="mb-2">
-                        <label className="form-label" htmlFor="document-type">Type:</label>
+                        <label className="form-label" htmlFor="documentTypeId">Type:</label>
                         <select
                             className="form-control"
-                            name="document-type"
-                            id="document-type"
+                            name="documentTypeId"
+                            id="documentTypeId"
                             onBlur={formik.handleBlur}
                             onChange={(event) => {
                                 formik.handleChange(event)
-                                formik.setFieldValue("documentTypeId", event.target.value)
                                 formik.setFieldValue("fileName", "")
                                 formik.setFieldValue("fileExtension", "")
                                 formik.setFieldValue("fileBytes", "")
@@ -267,44 +275,38 @@ export default function InsertModalComponent() {
                             "file":
                                 <>
                                     <fieldset className="mb-2">
-                                        <label className="form-label" htmlFor="file-name">File Name:</label>
-                                        <input
-                                            disabled={true}
-                                            className="form-control"
-                                            type="file-name"
-                                            name="file-name"
-                                            id="file-name"
-                                            onBlur={formik.handleBlur}
-                                            onChange={(event) => {
-                                                formik.handleChange(event)
-                                                formik.setFieldValue("fileName", event.target.value)
-                                            }}
-                                            value={formik.values.fileName}
-                                        />
-                                    </fieldset>
-                                    <fieldset className="mb-2">
-                                        <label className="form-label" htmlFor="file-extension">File Extension:</label>
+                                        <label className="form-label" htmlFor="fileName">File Name:</label>
                                         <input
                                             disabled={true}
                                             className="form-control"
                                             type="text"
-                                            name="file-extension"
-                                            id="file-extension"
+                                            name="fileName"
+                                            id="fileName"
                                             onBlur={formik.handleBlur}
-                                            onChange={(event) => {
-                                                formik.handleChange(event)
-                                                formik.setFieldValue("fileExtension", event.target.value)
-                                            }}
+                                            onChange={formik.handleChange}
+                                            value={formik.values.fileName}
+                                        />
+                                    </fieldset>
+                                    <fieldset className="mb-2">
+                                        <label className="form-label" htmlFor="fileExtension">File Extension:</label>
+                                        <input
+                                            disabled={true}
+                                            className="form-control"
+                                            type="text"
+                                            name="fileExtension"
+                                            id="fileExtension"
+                                            onBlur={formik.handleBlur}
+                                            onChange={formik.handleChange}
                                             value={formik.values.fileExtension}
                                         />
                                     </fieldset>
                                     <fieldset className="mb-2">
-                                        <label className="form-label" htmlFor="file-bytes">File Bytes:</label>
+                                        <label className="form-label" htmlFor="fileBytes">File Bytes:</label>
                                         <input
                                             className="form-control"
                                             type="file"
-                                            name="file-bytes"
-                                            id="file-bytes"
+                                            name="fileBytes"
+                                            id="fileBytes"
                                             onBlur={formik.handleBlur}
                                             onChange={async (event) => {
                                                 formik.handleChange(event)
@@ -323,16 +325,13 @@ export default function InsertModalComponent() {
                             "text":
                                 <>
                                     <fieldset className="mb-2">
-                                        <label className="form-label" htmlFor="text-content">Text Content:</label>
+                                        <label className="form-label" htmlFor="textContent">Text Content:</label>
                                         <textarea
                                             className="form-control"
-                                            name="text-content"
-                                            id="text-content"
+                                            name="textContent"
+                                            id="textContent"
                                             onBlur={formik.handleBlur}
-                                            onChange={(event) => {
-                                                formik.handleChange(event)
-                                                formik.setFieldValue("textContent", event.target.value)
-                                            }}
+                                            onChange={formik.handleChange}
                                             value={formik.values.textContent}
                                         />
                                     </fieldset>
@@ -340,22 +339,19 @@ export default function InsertModalComponent() {
                             "web":
                                 <>
                                     <fieldset className="mb-2">
-                                        <label className="form-label" htmlFor="web-url">Web Url:</label>
+                                        <label className="form-label" htmlFor="webUrl">Web Url:</label>
                                         <textarea
                                             className="form-control"
-                                            name="web-url"
-                                            id="web-url"
+                                            name="webUrl"
+                                            id="webUrl"
                                             onBlur={formik.handleBlur}
-                                            onChange={(event) => {
-                                                formik.handleChange(event)
-                                                formik.setFieldValue("webUrl", event.target.value)
-                                            }}
+                                            onChange={formik.handleChange}
                                             value={formik.values.webUrl}
                                         />
                                     </fieldset>
                                 </>,
                             "default": undefined
-                        }[formikDocumentTypeName || "default"]
+                        }[formikDocumentType?.name || "default"]
                     }
                 </form>
             </ModalBody>

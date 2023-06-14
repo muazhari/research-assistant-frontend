@@ -120,10 +120,8 @@ export default function LongFormQaPage() {
                         apiKey: ""
                     },
                     prompt:
-                        "Synthesize a comprehensive answer from the following topk most relevant paragraphs and the given question.\n" +
-                        "Provide an elaborated long answer from the key points and information in the paragraphs.\n" +
-                        "Say irrelevant if the paragraphs are irrelevant to the question, then explain why it is irrelevant.\n" +
-                        "Paragraphs: {join(documents)}\n" +
+                        "Create a concise and informative answer for a given question based solely on the given documents. You must only use information from the given documents. Use an unbiased and journalistic tone. Do not repeat text.  Cite at least one document in each sentence. Cite the documents using [document number] notation. If multiple documents contain the answer, cite those documents like \"as stated in [document number, document number, etc.]\". If the documents do not contain the answer to the question, say that answering is not possible given the available information and explain why.\n" +
+                        "Paragraphs: {join(documents, delimiter=new_line, pattern=new_line+'Document[$idx]: $content')}\n" +
                         "Question: {query}\n" +
                         "Answer:",
                     answerMaxLength: 300

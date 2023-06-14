@@ -161,18 +161,20 @@ export default function DetailModalComponent() {
                     }
                 }).then((response) => {
                     const content: Content<FileDocument> = response.data;
-                    const newAccountDocuments = accountDocuments?.map((document) => {
-                        if (document.id === content.data?.id) {
-                            return content.data!
-                        }
-                        return document!
-                    });
-                    dispatch(domainSlice.actions.setCurrentDomain({
-                        document: content.data,
-                        fileDocument: content.data,
-                        accountDocuments: newAccountDocuments,
-                        documentTableRows: getDocumentTableRows(newAccountDocuments || [], documentTypes || [])
-                    }))
+                    if (content.data) {
+                        const newAccountDocuments = accountDocuments?.map((document) => {
+                            if (document.id === content.data?.id) {
+                                return content.data!
+                            }
+                            return document
+                        });
+                        dispatch(domainSlice.actions.setCurrentDomain({
+                            document: content.data,
+                            fileDocument: content.data,
+                            accountDocuments: newAccountDocuments,
+                            documentTableRows: getDocumentTableRows(newAccountDocuments || [], documentTypes || [])
+                        }))
+                    }
                     alert(content.message)
                 }).catch((error) => {
                     console.log(error)
@@ -193,18 +195,20 @@ export default function DetailModalComponent() {
                     }
                 }).then((response) => {
                     const content: Content<TextDocument> = response.data;
-                    const newAccountDocuments = accountDocuments?.map((document) => {
-                        if (document.id === content.data?.id) {
-                            return content.data!
-                        }
-                        return document!
-                    })
-                    dispatch(domainSlice.actions.setCurrentDomain({
-                        document: content.data,
-                        textDocument: content.data,
-                        accountDocuments: newAccountDocuments,
-                        documentTableRows: getDocumentTableRows(newAccountDocuments || [], documentTypes || [])
-                    }))
+                    if (content.data) {
+                        const newAccountDocuments = accountDocuments?.map((document) => {
+                            if (document.id === content.data?.id) {
+                                return content.data!
+                            }
+                            return document
+                        })
+                        dispatch(domainSlice.actions.setCurrentDomain({
+                            document: content.data,
+                            textDocument: content.data,
+                            accountDocuments: newAccountDocuments,
+                            documentTableRows: getDocumentTableRows(newAccountDocuments || [], documentTypes || [])
+                        }))
+                    }
                     alert(content.message)
                 }).catch((error) => {
                     console.log(error)
@@ -225,18 +229,20 @@ export default function DetailModalComponent() {
                     }
                 }).then((response) => {
                     const content: Content<WebDocument> = response.data;
-                    const newAccountDocuments = accountDocuments?.map((document) => {
-                        if (document.id === content.data?.id) {
-                            return content.data!
-                        }
-                        return document!
-                    })
-                    dispatch(domainSlice.actions.setCurrentDomain({
-                        document: content.data,
-                        webDocument: content.data,
-                        accountDocuments: newAccountDocuments,
-                        documentTableRows: getDocumentTableRows(newAccountDocuments || [], documentTypes || [])
-                    }))
+                    if (content.data) {
+                        const newAccountDocuments = accountDocuments?.map((document) => {
+                            if (document.id === content.data?.id) {
+                                return content.data!
+                            }
+                            return document
+                        })
+                        dispatch(domainSlice.actions.setCurrentDomain({
+                            document: content.data,
+                            webDocument: content.data,
+                            accountDocuments: newAccountDocuments,
+                            documentTableRows: getDocumentTableRows(newAccountDocuments || [], documentTypes || [])
+                        }))
+                    }
                     alert(content.message)
                 }).catch((error) => {
                     console.log(error)
