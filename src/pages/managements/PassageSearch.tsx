@@ -83,9 +83,7 @@ export default function PassageSearchPage() {
                 },
                 query: "",
                 granularity: "sentence",
-                windowSizes: [
-                    1, 2, 3, 4, 5
-                ],
+                windowSizes: "1,2,3,4,5",
                 denseRetriever: {
                     topK: 100,
                     similarityFunction: "dot_product",
@@ -192,7 +190,6 @@ export default function PassageSearchPage() {
         }
 
         let embeddingModel: DenseEmbeddingModel | MultihopEmbeddingModel | OnlineEmbeddingModel | undefined = undefined;
-
         if (values.inputSetting.denseRetriever.sourceType == "dense_passage") {
             embeddingModel = {
                 dimension: values.inputSetting.denseRetriever.embeddingModel.dimension,
@@ -212,7 +209,7 @@ export default function PassageSearchPage() {
                 apiKey: values.inputSetting.denseRetriever.embeddingModel.apiKey,
             }
         } else {
-            throw new Error("Source type is not supported");
+            alert("Source type is not supported");
         }
 
         const denseRetriever: DenseRetriever = {
@@ -241,7 +238,7 @@ export default function PassageSearchPage() {
             documentSetting: documentSetting,
             query: values.inputSetting.query,
             granularity: values.inputSetting.granularity,
-            windowSizes: values.inputSetting.windowSizes,
+            windowSizes: values.inputSetting.windowSizes.split(",").map((value: string) => value.trim()).map((value: string) => parseInt(value)),
             denseRetriever: denseRetriever,
             sparseRetriever: sparseRetriever,
             ranker: ranker,
@@ -308,7 +305,7 @@ export default function PassageSearchPage() {
                         className="form-control"
                         onChange={formik.handleChange}
                         onBlur={formik.handleBlur}
-                        value={formik.values.inputSetting.windowSizes.join(',')}
+                        value={formik.values.inputSetting.windowSizes}
                     />
                 </fieldset>
                 <hr/>
