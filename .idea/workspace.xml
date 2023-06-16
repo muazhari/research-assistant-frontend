@@ -5,9 +5,14 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="67558acb-1948-4a06-8aee-1a140c430703" name="Changes" comment="">
-      <change beforePath="$PROJECT_DIR$/dist/assets/index-939e864d.js" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/dist/assets/index-70532ddd.js" beforeDir="false" />
       <change beforePath="$PROJECT_DIR$/dist/index.html" beforeDir="false" afterPath="$PROJECT_DIR$/dist/index.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/models/value_objects/contracts/requests/passage_searchs/DenseRetriever.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/models/value_objects/contracts/requests/passage_searchs/DenseRetriever.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/models/value_objects/contracts/requests/passage_searchs/Retriever.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/models/value_objects/contracts/requests/passage_searchs/Retriever.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/models/value_objects/contracts/requests/passage_searchs/SparseRetriever.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/models/value_objects/contracts/requests/passage_searchs/SparseRetriever.ts" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/pages/managements/LongFormQa.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/pages/managements/LongFormQa.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/pages/managements/PassageSearch.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/pages/managements/PassageSearch.tsx" afterDir="false" />
     </list>
     <list id="a7cadf68-e7dd-4100-82ff-87108b6e6aff" name="Changes by avwan" comment="" />
     <option name="SHOW_DIALOG" value="false" />
@@ -117,7 +122,8 @@
       <workItem from="1686157322021" duration="29000" />
       <workItem from="1686663179072" duration="2254000" />
       <workItem from="1686722109457" duration="5337000" />
-      <workItem from="1686750552577" duration="823000" />
+      <workItem from="1686750552577" duration="1460000" />
+      <workItem from="1686896526371" duration="1946000" />
     </task>
     <servers />
   </component>

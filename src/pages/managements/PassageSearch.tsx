@@ -104,6 +104,7 @@ export default function PassageSearchPage() {
                     topK: 100,
                     similarityFunction: "dot_product",
                     sourceType: "local",
+                    isRefresh: true,
                     model: "bm25"
                 },
                 ranker: {
@@ -226,6 +227,7 @@ export default function PassageSearchPage() {
             topK: values.inputSetting.sparseRetriever.topK,
             similarityFunction: values.inputSetting.sparseRetriever.similarityFunction,
             sourceType: values.inputSetting.sparseRetriever.sourceType,
+            isRefresh: values.inputSetting.sparseRetriever.isRefresh,
             model: values.inputSetting.sparseRetriever.model
         }
 
@@ -369,6 +371,20 @@ export default function PassageSearchPage() {
                 }
                 <hr/>
                 <h4 className="mb-2">Dense Retriever</h4>
+                <fieldset className="mb-2 d-flex">
+                    <input
+                        type="checkbox"
+                        id="inputSetting.denseRetriever.isRefresh"
+                        name="inputSetting.denseRetriever.isRefresh"
+                        className="form-check"
+                        onChange={formik.handleChange}
+                        onBlur={formik.handleBlur}
+                        checked={formik.values.inputSetting.denseRetriever.isRefresh}
+                    />
+                    <label htmlFor="inputSetting.denseRetriever.isRefresh" className="ms-2">
+                        is refresh stored data?
+                    </label>
+                </fieldset>
                 <fieldset className="mb-2">
                     <label htmlFor="inputSetting.denseRetriever.sourceType">Source Type</label>
                     <select
@@ -409,19 +425,6 @@ export default function PassageSearchPage() {
                         onBlur={formik.handleBlur}
                         value={formik.values.inputSetting.denseRetriever.topK}
                     />
-                </fieldset>
-                <fieldset className="mb-2 d-flex">
-                    <input
-                        type="checkbox"
-                        id="inputSetting.denseRetriever.isRefresh"
-                        name="inputSetting.denseRetriever.isRefresh"
-                        className="form-check"
-                        onChange={formik.handleChange}
-                        onBlur={formik.handleBlur}
-                        checked={formik.values.inputSetting.denseRetriever.isRefresh}
-                    />
-                    <label htmlFor="inputSetting.denseRetriever.isRefresh" className="ms-2">is refresh stored
-                        embedding?</label>
                 </fieldset>
                 <hr/>
                 <h5 className="mb-2">Embedding Model</h5>
@@ -525,6 +528,20 @@ export default function PassageSearchPage() {
                 }[formik.values.inputSetting.denseRetriever.sourceType || "default"]}
                 <hr/>
                 <h4 className="mb-2">Sparse Retriever</h4>
+                <fieldset className="mb-2 d-flex">
+                    <input
+                        type="checkbox"
+                        id="inputSetting.sparseRetriever.isRefresh"
+                        name="inputSetting.sparseRetriever.isRefresh"
+                        className="form-check"
+                        onChange={formik.handleChange}
+                        onBlur={formik.handleBlur}
+                        checked={formik.values.inputSetting.sparseRetriever.isRefresh}
+                    />
+                    <label htmlFor="inputSetting.sparseRetriever.isRefresh" className="ms-2">
+                        is refresh stored data?
+                    </label>
+                </fieldset>
                 <fieldset className="mb-2">
                     <label htmlFor="inputSetting.sparseRetriever.sourceType">Source Type</label>
                     <select
