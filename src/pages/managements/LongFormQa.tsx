@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {useEffect} from 'react';
 import {useDispatch, useSelector} from 'react-redux';
 import {useNavigate} from "react-router-dom";
 import DocumentService from "../../services/DocumentService.ts";
@@ -217,6 +217,11 @@ export default function LongFormQaPage() {
         }
     });
 
+    useEffect(() => {
+        formik.setFieldValue("inputSetting.documentSetting.detailSetting.endPage", fileDocumentProperty?.pageLength);
+        formik.setFieldValue("inputSetting.documentSetting.documentId", document?.id);
+        formik.setFieldValue("inputSetting.accountId", account?.id);
+    }, [account, document, fileDocumentProperty]);
 
     const getQaRequest = (values: any): QaRequest => {
         let detailSetting: FileDocumentSetting | TextDocumentSetting | WebDocumentSetting | undefined = undefined
