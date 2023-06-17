@@ -125,7 +125,7 @@ export default function DetailModalComponent() {
                 }));
             })
         } else {
-            alert("Document type is not supported")
+            alert("Document type is not supported.")
         }
     }
 
@@ -252,7 +252,7 @@ export default function DetailModalComponent() {
                     }));
                 })
             } else {
-                alert("Document type is not supported")
+                alert("Document type is not supported.")
             }
         }
     })

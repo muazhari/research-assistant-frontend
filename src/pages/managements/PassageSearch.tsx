@@ -1,4 +1,4 @@
-import {useEffect} from 'react';
+import React, {useEffect} from 'react';
 import {useDispatch, useSelector} from 'react-redux';
 import {useNavigate} from "react-router-dom";
 import DocumentService from "../../services/DocumentService.ts";
@@ -69,16 +69,15 @@ export default function PassageSearchPage() {
         isShow
     } = domainState.modalDomain;
 
-
-    const formik = useFormik({
-        initialValues: {
+    const getEnglishTemplate = () => {
+        return {
             accountId: account?.id,
             inputSetting: {
                 documentSetting: {
-                    documentId: "",
+                    documentId: document?.id,
                     detailSetting: {
                         startPage: 1,
-                        endPage: 1,
+                        endPage: fileDocumentProperty?.pageLength,
                     }
                 },
                 query: "",
@@ -112,9 +111,61 @@ export default function PassageSearchPage() {
                 },
             },
             outputSetting: {
-                documentTypeId: "",
+                documentTypeId: documentTypes?.find((documentType) => documentType.name === "file")?.id,
             }
-        },
+        }
+    }
+
+    const getMultilingualTemplate = () => {
+        return {
+            accountId: account?.id,
+            inputSetting: {
+                documentSetting: {
+                    documentId: document?.id,
+                    detailSetting: {
+                        startPage: 1,
+                        endPage: fileDocumentProperty?.pageLength,
+                    }
+                },
+                query: "",
+                granularity: "sentence",
+                windowSizes: "1,2,3,4,5",
+                denseRetriever: {
+                    topK: 100,
+                    similarityFunction: "dot_product",
+                    sourceType: "dense_passage",
+                    isRefresh: true,
+                    embeddingModel: {
+                        dimension: 768,
+                        queryModel: "voidful/dpr-question_encoder-bert-base-multilingual",
+                        passageModel: "voidful/dpr-ctx_encoder-bert-base-multilingual",
+                        apiKey: "",
+                        model: "sentence-transformers/paraphrase-multilingual-mpnet-base-v2",
+                        numIterations: 2,
+                    }
+                },
+                sparseRetriever: {
+                    topK: 100,
+                    similarityFunction: "dot_product",
+                    sourceType: "local",
+                    isRefresh: true,
+                    model: "bm25"
+                },
+                ranker: {
+                    sourceType: "sentence_transformers",
+                    model: "cross-encoder/mmarco-mMiniLMv2-L12-H384-v1",
+                    topK: 15
+                },
+            },
+            outputSetting: {
+                documentTypeId: documentTypes?.find((documentType) => documentType.name === "file")?.id,
+            }
+        }
+    }
+
+    const formik = useFormik({
+        initialValues: getEnglishTemplate(),
+        enableReinitialize: true,
         onSubmit: values => {
             dispatch(processSlice.actions.set({
                 isLoading: true
@@ -159,15 +210,8 @@ export default function PassageSearchPage() {
     }
 
     useEffect(() => {
-        if (documentTypes?.length === 0) {
-            fetchData();
-        }
-
-        formik.setFieldValue("inputSetting.documentSetting.detailSetting.endPage", fileDocumentProperty?.pageLength);
-        formik.setFieldValue("inputSetting.documentSetting.documentId", document?.id);
-        formik.setFieldValue("inputSetting.accountId", account?.id);
-        formik.setFieldValue("outputSetting.documentTypeId", documentTypes?.find((documentType) => documentType.name === "file")?.id);
-    }, [account, document, fileDocumentProperty, documentTypes]);
+        fetchData();
+    },);
 
     const getSearchRequest = (values: any): SearchRequest => {
         let detailSetting: FileDocumentSetting | TextDocumentSetting | WebDocumentSetting | undefined = undefined
@@ -181,7 +225,7 @@ export default function PassageSearchPage() {
         } else if (documentType?.name === "web") {
             detailSetting = {}
         } else {
-            alert("Document type is not supported");
+            alert("Document type is not supported.");
         }
 
         const documentSetting: DocumentSetting = {
@@ -209,7 +253,7 @@ export default function PassageSearchPage() {
                 apiKey: values.inputSetting.denseRetriever.embeddingModel.apiKey,
             }
         } else {
-            alert("Source type is not supported");
+            alert("Source type is not supported.");
         }
 
         const denseRetriever: DenseRetriever = {
@@ -261,12 +305,40 @@ export default function PassageSearchPage() {
         return URL.createObjectURL(blob);
     }
 
+
+    const handleClickTemplate = (template: string) => {
+        if (template === "english") {
+            formik.setValues(getEnglishTemplate());
+            alert("English template is set!")
+        } else if (template === "multilingual") {
+            formik.setValues(getMultilingualTemplate());
+            alert("Multilingual template is set!")
+        } else {
+            alert("Template is not supported.");
+        }
+    }
+
     return (
         <div className="d-flex flex-column justify-content-center align-items-center">
             {name === "detail" && <DetailModalComponent/>}
             {name === "select" && <SelectModalComponent/>}
             <h1 className="my-5">Passage Search</h1>
             <h2 className="mb-4">Configuration</h2>
+            <div className="d-flex flex-column w-50">
+                <h3 className="mb-2">Template</h3>
+                <div className="d-flex mb-3">
+                    <button
+                        type="button" className="btn btn-outline-primary me-3"
+                        onClick={() => handleClickTemplate("english")}>
+                        English
+                    </button>
+                    <button
+                        type="button" className="btn btn-outline-primary"
+                        onClick={() => handleClickTemplate("multilingual")}>
+                        Multilingual
+                    </button>
+                </div>
+            </div>
             <form onSubmit={formik.handleSubmit} className="d-flex flex-column w-50 mb-3">
                 <h3 className="mb-2">Input Setting</h3>
                 <fieldset className="mb-2">

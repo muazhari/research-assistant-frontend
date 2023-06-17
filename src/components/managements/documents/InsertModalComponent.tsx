@@ -172,7 +172,7 @@ export default function InsertModalComponent() {
                     formik.setFieldValue("documentTypeId", formikDocumentType?.id)
                 })
             } else {
-                alert("Document type is not supported")
+                alert("Document type is not supported.")
             }
         }
     })

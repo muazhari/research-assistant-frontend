@@ -1,4 +1,4 @@
-import React, {useEffect} from 'react';
+import React from 'react';
 import {useDispatch, useSelector} from 'react-redux';
 import {useNavigate} from "react-router-dom";
 import DocumentService from "../../services/DocumentService.ts";
@@ -71,16 +71,15 @@ export default function LongFormQaPage() {
         isShow
     } = domainState.modalDomain;
 
-
-    const formik = useFormik({
-        initialValues: {
+    const getEnglishTemplate = () => {
+        return {
             accountId: account?.id,
             inputSetting: {
                 documentSetting: {
-                    documentId: "",
+                    documentId: document?.id,
                     detailSetting: {
                         startPage: 1,
-                        endPage: 1,
+                        endPage: fileDocumentProperty?.pageLength,
                     }
                 },
                 query: "",
@@ -126,7 +125,70 @@ export default function LongFormQaPage() {
                     answerMaxLength: 300
                 }
             }
-        },
+        }
+    }
+
+    const getMultilingualTemplate = () => {
+        return {
+            accountId: account?.id,
+            inputSetting: {
+                documentSetting: {
+                    documentId: document?.id,
+                    detailSetting: {
+                        startPage: 1,
+                        endPage: fileDocumentProperty?.pageLength,
+                    }
+                },
+                query: "",
+                granularity: "sentence",
+                windowSizes: "1,2,3,4,5",
+                denseRetriever: {
+                    topK: 100,
+                    similarityFunction: "dot_product",
+                    sourceType: "dense_passage",
+                    isRefresh: true,
+                    embeddingModel: {
+                        dimension: 768,
+                        queryModel: "voidful/dpr-question_encoder-bert-base-multilingual",
+                        passageModel: "voidful/dpr-ctx_encoder-bert-base-multilingual",
+                        apiKey: "",
+                        model: "sentence-transformers/paraphrase-multilingual-mpnet-base-v2",
+                        numIterations: 2,
+                    }
+                },
+                sparseRetriever: {
+                    topK: 100,
+                    similarityFunction: "dot_product",
+                    sourceType: "local",
+                    isRefresh: true,
+                    model: "bm25"
+                },
+                ranker: {
+                    sourceType: "sentence_transformers",
+                    model: "cross-encoder/mmarco-mMiniLMv2-L12-H384-v1",
+                    topK: 15
+                },
+                generator: {
+                    sourceType: "online",
+                    generatorModel: {
+                        model: "gpt-3.5-turbo",
+                        apiKey: ""
+                    },
+                    prompt:
+                        "Buat jawaban yang ringkas dan informatif untuk pertanyaan yang diberikan dengan hanya berdasarkan dokumen yang diberikan. Anda hanya boleh menggunakan informasi dari dokumen yang diberikan. Gunakan nada yang tidak memihak dan jurnalistik. Jangan ulangi teks. Mengutip setidaknya satu dokumen di setiap kalimat. Kutip dokumen menggunakan notasi [nomor dokumen]. Jika beberapa dokumen memuat jawabannya, kutip dokumen tersebut seperti \"sebagaimana dinyatakan dalam [nomor dokumen, nomor dokumen, dll.]\". Jika dokumen tidak berisi jawaban atas pertanyaan, katakan bahwa menjawab tidak mungkin dapat diberikan dari informasi yang tersedia dan jelaskan alasannya.\n" +
+                        "Paragraf-paragraf: {join(documents, delimiter=new_line, pattern='Document[$idx]: $content')}\n" +
+                        "Pertanyaan: {query}\n" +
+                        "Jawaban:",
+                    answerMaxLength: 300
+                }
+            }
+        }
+    }
+
+
+    const formik = useFormik({
+        initialValues: getEnglishTemplate(),
+        enableReinitialize: true,
         onSubmit: values => {
             dispatch(processSlice.actions.set({
                 isLoading: true
@@ -156,12 +218,6 @@ export default function LongFormQaPage() {
     });
 
 
-    useEffect(() => {
-        formik.setFieldValue("inputSetting.documentSetting.detailSetting.endPage", fileDocumentProperty?.pageLength);
-        formik.setFieldValue("inputSetting.documentSetting.documentId", document?.id);
-        formik.setFieldValue("inputSetting.accountId", account?.id);
-    }, [account, document, fileDocumentProperty]);
-
     const getQaRequest = (values: any): QaRequest => {
         let detailSetting: FileDocumentSetting | TextDocumentSetting | WebDocumentSetting | undefined = undefined
         if (documentType?.name === "file") {
@@ -174,7 +230,7 @@ export default function LongFormQaPage() {
         } else if (documentType?.name === "web") {
             detailSetting = {}
         } else {
-            alert("Document type is not supported");
+            alert("Document type is not supported.");
         }
 
         const documentSetting: DocumentSetting = {
@@ -202,7 +258,7 @@ export default function LongFormQaPage() {
                 apiKey: values.inputSetting.denseRetriever.embeddingModel.apiKey,
             }
         } else {
-            alert("Source type is not supported");
+            alert("Source type is not supported.");
         }
 
         const denseRetriever: DenseRetriever = {
@@ -234,7 +290,7 @@ export default function LongFormQaPage() {
                 apiKey: values.inputSetting.generator.generatorModel.apiKey
             }
         } else {
-            alert("Source type is not supported");
+            alert("Source type is not supported.");
         }
 
         const generator: Generator = {
@@ -261,12 +317,39 @@ export default function LongFormQaPage() {
         };
     }
 
+    const handleClickTemplate = (template: string) => {
+        if (template === "english") {
+            formik.setValues(getEnglishTemplate());
+            alert("English template is set!")
+        } else if (template === "multilingual") {
+            formik.setValues(getMultilingualTemplate());
+            alert("Multilingual template is set!")
+        } else {
+            alert("Template is not supported.");
+        }
+    }
+
     return (
         <div className="d-flex flex-column justify-content-center align-items-center">
             {name === "detail" && <DetailModalComponent/>}
             {name === "select" && <SelectModalComponent/>}
             <h1 className="my-5">Long Form Question Answering</h1>
             <h2 className="mb-4">Configuration</h2>
+            <div className="d-flex flex-column w-50">
+                <h3 className="mb-2">Template</h3>
+                <div className="d-flex mb-3">
+                    <button
+                        type="button" className="btn btn-outline-primary me-3"
+                        onClick={() => handleClickTemplate("english")}>
+                        English
+                    </button>
+                    <button
+                        type="button" className="btn btn-outline-primary"
+                        onClick={() => handleClickTemplate("multilingual")}>
+                        Multilingual
+                    </button>
+                </div>
+            </div>
             <form onSubmit={formik.handleSubmit} className="d-flex flex-column w-50 mb-3">
                 <h3 className="mb-2">Input Setting</h3>
                 <fieldset className="mb-2">
