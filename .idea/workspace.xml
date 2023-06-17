@@ -6,10 +6,9 @@
   <component name="ChangeListManager">
     <list default="true" id="67558acb-1948-4a06-8aee-1a140c430703" name="Changes" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/components/managements/documents/DetailModalComponent.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/managements/documents/DetailModalComponent.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/components/managements/documents/InsertModalComponent.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/managements/documents/InsertModalComponent.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/dist/assets/index-9c6e9fdc.js" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/dist/index.html" beforeDir="false" afterPath="$PROJECT_DIR$/dist/index.html" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/pages/managements/LongFormQa.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/pages/managements/LongFormQa.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/pages/managements/PassageSearch.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/pages/managements/PassageSearch.tsx" afterDir="false" />
     </list>
     <list id="a7cadf68-e7dd-4100-82ff-87108b6e6aff" name="Changes by avwan" comment="" />
     <option name="SHOW_DIALOG" value="false" />
@@ -69,7 +68,7 @@
       <recent name="C:\Data\Apps\research-assistant-frontend\src\components\navigation_bars" />
     </key>
   </component>
-  <component name="RunManager" selected="npm.run-1">
+  <component name="RunManager" selected="Docker.compose-1">
     <configuration name="compose-1" type="docker-deploy" factoryName="docker-compose.yml" server-name="Docker">
       <deployment type="docker-compose.yml">
         <settings>
@@ -124,7 +123,7 @@
       <workItem from="1686915844102" duration="2416000" />
       <workItem from="1686980838053" duration="598000" />
       <workItem from="1687010357652" duration="866000" />
-      <workItem from="1687017968969" duration="2207000" />
+      <workItem from="1687017968969" duration="2546000" />
     </task>
     <servers />
   </component>

@@ -176,7 +176,7 @@ export default function LongFormQaPage() {
                     },
                     prompt:
                         "Buat jawaban yang ringkas dan informatif untuk pertanyaan yang diberikan dengan hanya berdasarkan dokumen yang diberikan. Anda hanya boleh menggunakan informasi dari dokumen yang diberikan. Gunakan nada yang tidak memihak dan jurnalistik. Jangan ulangi teks. Mengutip setidaknya satu dokumen di setiap kalimat. Kutip dokumen menggunakan notasi [nomor dokumen]. Jika beberapa dokumen memuat jawabannya, kutip dokumen tersebut seperti \"sebagaimana dinyatakan dalam [nomor dokumen, nomor dokumen, dll.]\". Jika dokumen tidak berisi jawaban atas pertanyaan, katakan bahwa menjawab tidak mungkin dapat diberikan dari informasi yang tersedia dan jelaskan alasannya.\n" +
-                        "Paragraf-paragraf: {join(documents, delimiter=new_line, pattern='Document[$idx]: $content')}\n" +
+                        "Paragraf-paragraf: {join(documents, delimiter=new_line, pattern='Dokumen[$idx]: $content')}\n" +
                         "Pertanyaan: {query}\n" +
                         "Jawaban:",
                     answerMaxLength: 300
