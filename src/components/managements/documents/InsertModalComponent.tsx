@@ -308,16 +308,18 @@ export default function InsertModalComponent() {
                                             name="fileBytes"
                                             id="fileBytes"
                                             onBlur={formik.handleBlur}
-                                            onChange={async (event) => {
-                                                formik.handleChange(event)
-                                                const fileBytes: string = await convertToBase64(event.target.files![0])
-                                                await formik.setFieldValue("fileBytes", fileBytes)
-                                                const fileBase: string = event.target.files![0].name
-                                                const fileName: string = fileBase.substring(0, fileBase.lastIndexOf('.'));
-                                                const fileExtension: string = fileBase.substring(fileBase.lastIndexOf('.'));
-                                                await formik.setFieldValue("fileName", fileName)
-                                                await formik.setFieldValue("fileExtension", fileExtension)
-                                            }}
+                                            onChange={
+                                                async (event) => {
+                                                    formik.handleChange(event)
+                                                    const fileBytes: string = await convertToBase64(event.target.files![0])
+                                                    await formik.setFieldValue("fileBytes", fileBytes)
+                                                    const fileBase: string = event.target.files![0].name
+                                                    const fileName: string = fileBase.substring(0, fileBase.lastIndexOf('.'));
+                                                    const fileExtension: string = fileBase.substring(fileBase.lastIndexOf('.'));
+                                                    await formik.setFieldValue("fileName", fileName)
+                                                    await formik.setFieldValue("fileExtension", fileExtension)
+                                                }
+                                            }
                                         />
                                     </fieldset>
                                 </>
