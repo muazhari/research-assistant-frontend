@@ -188,7 +188,7 @@ export default function LongFormQaPage() {
 
     const formik = useFormik({
         initialValues: getEnglishTemplate(),
-        enableReinitialize: true,
+        enableReinitialize: false,
         onSubmit: values => {
             dispatch(processSlice.actions.set({
                 isLoading: true

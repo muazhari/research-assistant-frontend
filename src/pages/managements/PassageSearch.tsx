@@ -165,7 +165,7 @@ export default function PassageSearchPage() {
 
     const formik = useFormik({
         initialValues: getEnglishTemplate(),
-        enableReinitialize: true,
+        enableReinitialize: false,
         onSubmit: values => {
             dispatch(processSlice.actions.set({
                 isLoading: true
@@ -210,8 +210,16 @@ export default function PassageSearchPage() {
     }
 
     useEffect(() => {
-        fetchData();
-    },);
+        if (documentTypes?.length === 0) {
+            fetchData();
+        }
+
+        formik.setFieldValue("inputSetting.documentSetting.detailSetting.endPage", fileDocumentProperty?.pageLength);
+        formik.setFieldValue("inputSetting.documentSetting.documentId", document?.id);
+        formik.setFieldValue("inputSetting.accountId", account?.id);
+        formik.setFieldValue("outputSetting.documentTypeId", documentTypes?.find((documentType) => documentType.name === "file")?.id);
+    }, [account, document, fileDocumentProperty, documentTypes]);
+
 
     const getSearchRequest = (values: any): SearchRequest => {
         let detailSetting: FileDocumentSetting | TextDocumentSetting | WebDocumentSetting | undefined = undefined
