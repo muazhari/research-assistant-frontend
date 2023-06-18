@@ -95,7 +95,7 @@ export default function LongFormQaPage() {
                         queryModel: "vblagoje/dpr-question_encoder-single-lfqa-wiki",
                         passageModel: "vblagoje/dpr-ctx_encoder-single-lfqa-wiki",
                         apiKey: "",
-                        model: "sentence-transformers/all-mpnet-base-v2",
+                        model: "intfloat/e5-large-v2",
                         numIterations: 2,
                     }
                 },
@@ -108,7 +108,7 @@ export default function LongFormQaPage() {
                 },
                 ranker: {
                     sourceType: "sentence_transformers",
-                    model: "naver/trecdl22-crossencoder-electra",
+                    model: "sentence-transformers/all-mpnet-base-v2",
                     topK: 15
                 },
                 generator: {
@@ -152,7 +152,7 @@ export default function LongFormQaPage() {
                         queryModel: "voidful/dpr-question_encoder-bert-base-multilingual",
                         passageModel: "voidful/dpr-ctx_encoder-bert-base-multilingual",
                         apiKey: "",
-                        model: "sentence-transformers/paraphrase-multilingual-mpnet-base-v2",
+                        model: "intfloat/multilingual-e5-base",
                         numIterations: 2,
                     }
                 },
@@ -165,7 +165,7 @@ export default function LongFormQaPage() {
                 },
                 ranker: {
                     sourceType: "sentence_transformers",
-                    model: "cross-encoder/mmarco-mMiniLMv2-L12-H384-v1",
+                    model: "intfloat/multilingual-e5-base",
                     topK: 15
                 },
                 generator: {
