@@ -106,7 +106,7 @@ export default function PassageSearchPage() {
                 },
                 ranker: {
                     sourceType: "sentence_transformers",
-                    model: "sentence-transformers/all-mpnet-base-v2",
+                    model: "naver/trecdl22-crossencoder-electra",
                     topK: 15
                 },
             },
@@ -153,7 +153,7 @@ export default function PassageSearchPage() {
                 },
                 ranker: {
                     sourceType: "sentence_transformers",
-                    model: "intfloat/multilingual-e5-base",
+                    model: "cross-encoder/mmarco-mMiniLMv2-L12-H384-v1",
                     topK: 15
                 },
             },
