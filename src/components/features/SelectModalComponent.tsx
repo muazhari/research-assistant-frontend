@@ -10,7 +10,7 @@ import WebDocumentService from "../../services/WebDocumentService.ts";
 import {AuthenticationState} from "../../slices/AuthenticationSlice.ts";
 import domainSlice, {DocumentTableRow, DomainState, getDocumentTableRows} from "../../slices/DomainSlice.ts";
 import {RootState} from "../../slices/Store.ts";
-import {useEffect} from "react";
+import React, {useEffect} from "react";
 import Content from "../../models/value_objects/contracts/Content.ts";
 import DocumentTypeService from "../../services/DocumentTypeService.ts";
 import DocumentService from "../../services/DocumentService.ts";
@@ -18,6 +18,7 @@ import FileDocumentPropertyResponse
     from "../../models/value_objects/contracts/response/managements/FileDocumentPropertyResponse.ts";
 import DataTable, {TableColumn} from "react-data-table-component";
 import {useFormik} from "formik";
+import processSlice, {ProcessState} from "../../slices/ProcessSlice.ts";
 
 
 export default function SelectModalComponent() {
@@ -32,9 +33,16 @@ export default function SelectModalComponent() {
 
     const domainState: DomainState = useSelector((state: RootState) => state.domain);
     const authenticationState: AuthenticationState = useSelector((state: RootState) => state.authentication);
+    const processState: ProcessState = useSelector((state: RootState) => state.process);
+
+    const {
+        isLoading
+    } = processState;
+
     const {
         account
     } = authenticationState;
+
     const {
         accountDocuments,
         documentTypes
@@ -95,6 +103,9 @@ export default function SelectModalComponent() {
         })
 
         if (documentType?.name === "file") {
+            dispatch(processSlice.actions.set({
+                isLoading: true
+            }));
             fileDocumentService.readOnePropertyById({
                 id: row.id
             }).then((response) => {
@@ -108,6 +119,10 @@ export default function SelectModalComponent() {
                 alert("Document selected.")
             }).catch((error) => {
                 console.log(error)
+            }).finally(() => {
+                dispatch(processSlice.actions.set({
+                    isLoading: false
+                }));
             })
         } else if (documentType?.name === "text") {
             dispatch(domainSlice.actions.setCurrentDomain({
@@ -175,15 +190,27 @@ export default function SelectModalComponent() {
                         id={row.id}
                         className="btn btn-info me-3"
                         onClick={() => handleClickDetail(row)}
-                    >
-                        Detail
+                    >{
+                        isLoading ?
+                            <div className="spinner-border text-light" role="status">
+                                <span className="visually-hidden">Loading...</span>
+                            </div>
+                            :
+                            "Detail"
+                    }
                     </button>
                     <button
                         id={row.id}
                         className="btn btn-primary"
                         onClick={() => handleClickSelect(row)}
-                    >
-                        Select
+                    >{
+                        isLoading ?
+                            <div className="spinner-border text-light" role="status">
+                                <span className="visually-hidden">Loading...</span>
+                            </div>
+                            :
+                            "Select"
+                    }
                     </button>
                 </>,
         }
