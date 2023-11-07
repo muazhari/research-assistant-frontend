@@ -139,7 +139,7 @@ export default function PassageSearchPage() {
                 denseRetriever: {
                     topK: 100,
                     similarityFunction: "dot_product",
-                    sourceType: "dense_passage",
+                    sourceType: "multihop",
                     isRefresh: true,
                     embeddingModel: {
                         dimension: 1024,

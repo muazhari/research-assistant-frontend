@@ -5,7 +5,7 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="67558acb-1948-4a06-8aee-1a140c430703" name="Changes" comment="">
-      <change beforePath="$PROJECT_DIR$/src/pages/managements/LongFormQa.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/pages/managements/LongFormQa.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/pages/managements/PassageSearch.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/pages/managements/PassageSearch.tsx" afterDir="false" />
     </list>
     <list id="a7cadf68-e7dd-4100-82ff-87108b6e6aff" name="Changes by avwan" comment="" />
     <option name="SHOW_DIALOG" value="false" />
@@ -144,7 +144,7 @@
       <workItem from="1695993738254" duration="3000" />
       <workItem from="1698660287746" duration="634000" />
       <workItem from="1698681249837" duration="11000" />
-      <workItem from="1699378281221" duration="6953000" />
+      <workItem from="1699378281221" duration="7464000" />
     </task>
     <servers />
   </component>
