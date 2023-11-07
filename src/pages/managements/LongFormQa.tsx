@@ -150,7 +150,7 @@ export default function LongFormQaPage() {
                 windowSizes: "1,2,3,4,5",
                 denseRetriever: {
                     topK: 100,
-                    similarityFunction: "cosine",
+                    similarityFunction: "dot_product",
                     sourceType: "multihop",
                     isRefresh: true,
                     embeddingModel: {

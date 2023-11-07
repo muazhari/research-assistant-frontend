@@ -5,16 +5,7 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="67558acb-1948-4a06-8aee-1a140c430703" name="Changes" comment="">
-      <change afterPath="$PROJECT_DIR$/src/models/value_objects/contracts/requests/passage_searchs/BaseRankerModel.ts" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/models/value_objects/contracts/requests/passage_searchs/OnlineRankerModel.ts" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/models/value_objects/contracts/requests/passage_searchs/SentenceTransformersRankerModel.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.gitignore" beforeDir="false" afterPath="$PROJECT_DIR$/.gitignore" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/dist/assets/index-f81b622d.js" beforeDir="false" afterPath="$PROJECT_DIR$/dist/assets/index-24b23a36.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/dist/index.html" beforeDir="false" afterPath="$PROJECT_DIR$/dist/index.html" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/models/value_objects/contracts/requests/passage_searchs/Ranker.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/models/value_objects/contracts/requests/passage_searchs/Ranker.ts" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/pages/managements/LongFormQa.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/pages/managements/LongFormQa.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/pages/managements/PassageSearch.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/pages/managements/PassageSearch.tsx" afterDir="false" />
     </list>
     <list id="a7cadf68-e7dd-4100-82ff-87108b6e6aff" name="Changes by avwan" comment="" />
     <option name="SHOW_DIALOG" value="false" />
@@ -153,7 +144,7 @@
       <workItem from="1695993738254" duration="3000" />
       <workItem from="1698660287746" duration="634000" />
       <workItem from="1698681249837" duration="11000" />
-      <workItem from="1699378281221" duration="6578000" />
+      <workItem from="1699378281221" duration="6953000" />
     </task>
     <servers />
   </component>
