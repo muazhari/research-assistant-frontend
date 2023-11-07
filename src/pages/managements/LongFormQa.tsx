@@ -29,6 +29,9 @@ import OnlineEmbeddingModel
     from "../../models/value_objects/contracts/requests/passage_searchs/OnlineEmbeddingModel.ts";
 import OnlineGeneratorModel from "../../models/value_objects/contracts/requests/long_form_qas/OnlineGeneratorModel.ts";
 import processSlice, {ProcessState} from "../../slices/ProcessSlice.ts";
+import SentenceTransformersRankerModel
+    from "../../models/value_objects/contracts/requests/passage_searchs/SentenceTransformersRankerModel.ts";
+import OnlineRankerModel from "../../models/value_objects/contracts/requests/passage_searchs/OnlineRankerModel.ts";
 
 
 export default function LongFormQaPage() {
@@ -88,14 +91,14 @@ export default function LongFormQaPage() {
                 denseRetriever: {
                     topK: 100,
                     similarityFunction: "dot_product",
-                    sourceType: "dense_passage",
+                    sourceType: "multihop",
                     isRefresh: true,
                     embeddingModel: {
-                        dimension: 128,
+                        dimension: 1024,
                         queryModel: "vblagoje/dpr-question_encoder-single-lfqa-wiki",
                         passageModel: "vblagoje/dpr-ctx_encoder-single-lfqa-wiki",
                         apiKey: "",
-                        model: "intfloat/e5-large-v2",
+                        model: "BAAI/bge-large-en-v1.5",
                         numIterations: 2,
                     }
                 },
@@ -108,7 +111,10 @@ export default function LongFormQaPage() {
                 },
                 ranker: {
                     sourceType: "sentence_transformers",
-                    model: "naver/trecdl22-crossencoder-electra",
+                    rankerModel: {
+                        model: "BAAI/bge-reranker-large",
+                        apiKey: ""
+                    },
                     topK: 15
                 },
                 generator: {
@@ -118,8 +124,8 @@ export default function LongFormQaPage() {
                         apiKey: ""
                     },
                     prompt:
-                        "Create a concise and informative answer for a given question based solely on the given documents. You must only use information from the given documents. Use an unbiased and journalistic tone. Do not repeat text. Cite at least one document in each sentence. Cite the documents using [document number] notation. If multiple documents contain the answer, cite those documents like \"as stated in [document number, document number, etc.]\". If the documents do not contain the answer to the question, say that answering is not possible given the available information and explain why.\n" +
-                        "Paragraphs: {join(documents, delimiter=new_line, pattern='Document[$idx]: $content')}\n" +
+                        "Create a concise and informative answer for a given question based solely on the given passages. You must only use information from the given passages. Use an unbiased and journalistic tone. Do not repeat text. Cite at least one document in each sentence. Cite the passages using [passage number] notation. If multiple passages contain the answer, cite those passages like \"as stated in [passage number, passage number, etc.]\". If the passages do not contain the answer to the question, then say that answering is not possible given the available information with the explanation.\n" +
+                        "Passages: {join(documents, delimiter=new_line, pattern='Document[$idx]: $content')}\n" +
                         "Question: {query}\n" +
                         "Answer:",
                     answerMaxLength: 300
@@ -144,15 +150,15 @@ export default function LongFormQaPage() {
                 windowSizes: "1,2,3,4,5",
                 denseRetriever: {
                     topK: 100,
-                    similarityFunction: "dot_product",
-                    sourceType: "dense_passage",
+                    similarityFunction: "cosine",
+                    sourceType: "multihop",
                     isRefresh: true,
                     embeddingModel: {
-                        dimension: 768,
+                        dimension: 1024,
                         queryModel: "voidful/dpr-question_encoder-bert-base-multilingual",
                         passageModel: "voidful/dpr-ctx_encoder-bert-base-multilingual",
                         apiKey: "",
-                        model: "intfloat/multilingual-e5-base",
+                        model: "intfloat/multilingual-e5-large",
                         numIterations: 2,
                     }
                 },
@@ -165,7 +171,10 @@ export default function LongFormQaPage() {
                 },
                 ranker: {
                     sourceType: "sentence_transformers",
-                    model: "cross-encoder/mmarco-mMiniLMv2-L12-H384-v1",
+                    rankerModel: {
+                        model: "intfloat/multilingual-e5-large",
+                        apiKey: ""
+                    },
                     topK: 15
                 },
                 generator: {
@@ -175,8 +184,8 @@ export default function LongFormQaPage() {
                         apiKey: ""
                     },
                     prompt:
-                        "Buat jawaban yang ringkas dan informatif untuk pertanyaan yang diberikan dengan hanya berdasarkan dokumen yang diberikan. Anda hanya boleh menggunakan informasi dari dokumen yang diberikan. Gunakan nada yang tidak memihak dan jurnalistik. Jangan ulangi teks. Mengutip setidaknya satu dokumen di setiap kalimat. Kutip dokumen menggunakan notasi [nomor dokumen]. Jika beberapa dokumen memuat jawabannya, kutip dokumen tersebut seperti \"sebagaimana dinyatakan dalam [nomor dokumen, nomor dokumen, dll.]\". Jika dokumen tidak berisi jawaban atas pertanyaan, katakan bahwa menjawab tidak mungkin dapat diberikan dari informasi yang tersedia dan jelaskan alasannya.\n" +
-                        "Paragraf-paragraf: {join(documents, delimiter=new_line, pattern='Dokumen[$idx]: $content')}\n" +
+                        "Buat jawaban yang ringkas dan informatif untuk pertanyaan yang diberikan dengan hanya berdasarkan subteks yang diberikan. Anda hanya boleh menggunakan informasi dari subteks yang diberikan. Gunakan nada yang tidak memihak dan jurnalistik. Jangan ulangi teks. Mengutip setidaknya satu subteks di setiap kalimat. Kutip subteks menggunakan notasi [nomor subteks]. Jika beberapa subteks memuat jawabannya, kutip subteks tersebut seperti \"sebagaimana dinyatakan dalam [nomor subteks, nomor subteks, dll.]\". Jika subteks tidak berisi jawaban atas pertanyaan, maka katakan bahwa menjawab tidak mungkin dapat diberikan dari informasi beserta penjelasannya.\n" +
+                        "Subteks: {join(documents, delimiter=new_line, pattern='subteks[$idx]: $content')}\n" +
                         "Pertanyaan: {query}\n" +
                         "Jawaban:",
                     answerMaxLength: 300
@@ -282,9 +291,21 @@ export default function LongFormQaPage() {
             model: values.inputSetting.sparseRetriever.model
         }
 
+        let rankerModel: SentenceTransformersRankerModel | OnlineRankerModel | undefined
+        if (values.inputSetting.ranker.sourceType == "sentence_transformers") {
+            rankerModel = {
+                model: values.inputSetting.ranker.rankerModel.model
+            }
+        } else if (values.inputSetting.ranker.sourceType == "online") {
+            rankerModel = {
+                model: values.inputSetting.ranker.rankerModel.model,
+                apiKey: values.inputSetting.ranker.rankerModel.apiKey
+            }
+        }
+
         const ranker: Ranker = {
             sourceType: values.inputSetting.ranker.sourceType,
-            model: values.inputSetting.ranker.model,
+            rankerModel: rankerModel,
             topK: values.inputSetting.ranker.topK
         }
 
@@ -609,7 +630,7 @@ export default function LongFormQaPage() {
                             />
                         </fieldset>
                     </>,
-                    "default": <div className="text-danger">Please Select the supported embedding model.</div>
+                    "default": <div className="text-danger">Please select the supported dense retriever source type.</div>
                 }[formik.values.inputSetting.denseRetriever.sourceType || "default"]}
                 <hr/>
                 <h4 className="mb-2">Sparse Retriever</h4>
@@ -693,20 +714,53 @@ export default function LongFormQaPage() {
                         value={formik.values.inputSetting.ranker.sourceType}
                     >
                         <option selected value="sentence_transformers">Sentence Transformers</option>
+                        <option value="online">Online</option>
                     </select>
                 </fieldset>
-                <fieldset className="mb-2">
-                    <label htmlFor="inputSetting.ranker.model">Model</label>
-                    <input
-                        type="text"
-                        id="inputSetting.ranker.model"
-                        name="inputSetting.ranker.model"
-                        className="form-control"
-                        onChange={formik.handleChange}
-                        onBlur={formik.handleBlur}
-                        value={formik.values.inputSetting.ranker.model}
-                    />
-                </fieldset>
+                {{
+                    "sentence_transformers":
+                        <>
+                            <fieldset className="mb-2">
+                                <label htmlFor="inputSetting.ranker.rankerModel.model">Model</label>
+                                <input
+                                    type="text"
+                                    id="inputSetting.ranker.rankerModel.model"
+                                    name="inputSetting.ranker.rankerModel.model"
+                                    className="form-control"
+                                    onChange={formik.handleChange}
+                                    onBlur={formik.handleBlur}
+                                    value={formik.values.inputSetting.ranker.rankerModel.model}
+                                />
+                            </fieldset>
+                        </>,
+                    "online": <>
+                        <fieldset className="mb-2">
+                            <label htmlFor="inputSetting.ranker.rankerModel.model">Model</label>
+                            <input
+                                type="text"
+                                id="inputSetting.ranker.rankerModel.model"
+                                name="inputSetting.ranker.rankerModel.model"
+                                className="form-control"
+                                onChange={formik.handleChange}
+                                onBlur={formik.handleBlur}
+                                value={formik.values.inputSetting.ranker.rankerModel.model}
+                            />
+                        </fieldset>
+                        <fieldset className="mb-2">
+                            <label htmlFor="inputSetting.denseRetriever.embeddingModel.apiKey">API Key</label>
+                            <input
+                                type="number"
+                                id="inputSetting.ranker.rankerModel.apiKey"
+                                name="inputSetting.ranker.rankerModel.apiKey"
+                                className="form-control"
+                                onChange={formik.handleChange}
+                                onBlur={formik.handleBlur}
+                                value={formik.values.inputSetting.ranker.rankerModel.apiKey}
+                            />
+                        </fieldset>
+                    </>,
+                    "default": <div className="text-danger">Please select the supported ranker source type.</div>
+                }[formik.values.inputSetting.ranker.sourceType || "default"]}
                 <fieldset className="mb-2">
                     <label htmlFor="inputSetting.ranker.topK">Top K</label>
                     <input
@@ -789,8 +843,7 @@ export default function LongFormQaPage() {
                                     />
                                 </fieldset>
                             </>,
-                        "default": <div className="text-danger">Please select the supported source type.</div>
-
+                        "default": <div className="text-danger">Please select the supported generator source type.</div>
                     }[formik.values.inputSetting.generator.sourceType || "default"]
                 }
                 <hr/>

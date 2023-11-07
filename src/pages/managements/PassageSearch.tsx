@@ -31,6 +31,9 @@ import DocumentType from "../../models/entities/DocumentType.ts";
 import processSlice, {ProcessState} from "../../slices/ProcessSlice.ts";
 import b64toBlob from "b64-to-blob";
 import FileDocument from "../../models/entities/FileDocument.ts";
+import SentenceTransformersRankerModel
+    from "../../models/value_objects/contracts/requests/passage_searchs/SentenceTransformersRankerModel.ts";
+import OnlineRankerModel from "../../models/value_objects/contracts/requests/passage_searchs/OnlineRankerModel.ts";
 
 export default function PassageSearchPage() {
     const dispatch = useDispatch();
@@ -86,14 +89,14 @@ export default function PassageSearchPage() {
                 denseRetriever: {
                     topK: 100,
                     similarityFunction: "dot_product",
-                    sourceType: "dense_passage",
+                    sourceType: "multihop",
                     isRefresh: true,
                     embeddingModel: {
-                        dimension: 128,
+                        dimension: 1024,
                         queryModel: "vblagoje/dpr-question_encoder-single-lfqa-wiki",
                         passageModel: "vblagoje/dpr-ctx_encoder-single-lfqa-wiki",
                         apiKey: "",
-                        model: "intfloat/e5-large-v2",
+                        model: "BAAI/bge-large-en-v1.5",
                         numIterations: 2,
                     }
                 },
@@ -106,7 +109,10 @@ export default function PassageSearchPage() {
                 },
                 ranker: {
                     sourceType: "sentence_transformers",
-                    model: "naver/trecdl22-crossencoder-electra",
+                    rankerModel: {
+                        model: "BAAI/bge-reranker-large",
+                        apiKey: "",
+                    },
                     topK: 15
                 },
             },
@@ -136,11 +142,11 @@ export default function PassageSearchPage() {
                     sourceType: "dense_passage",
                     isRefresh: true,
                     embeddingModel: {
-                        dimension: 768,
+                        dimension: 1024,
                         queryModel: "voidful/dpr-question_encoder-bert-base-multilingual",
                         passageModel: "voidful/dpr-ctx_encoder-bert-base-multilingual",
                         apiKey: "",
-                        model: "intfloat/multilingual-e5-base",
+                        model: "intfloat/multilingual-e5-large",
                         numIterations: 2,
                     }
                 },
@@ -153,7 +159,10 @@ export default function PassageSearchPage() {
                 },
                 ranker: {
                     sourceType: "sentence_transformers",
-                    model: "cross-encoder/mmarco-mMiniLMv2-L12-H384-v1",
+                    rankerModel: {
+                        model: "intfloat/multilingual-e5-large",
+                        apiKey: "",
+                    },
                     topK: 15
                 },
             },
@@ -280,9 +289,21 @@ export default function PassageSearchPage() {
             model: values.inputSetting.sparseRetriever.model
         }
 
+        let rankerModel: SentenceTransformersRankerModel | OnlineRankerModel | undefined
+        if (values.inputSetting.ranker.sourceType == "sentence_transformers") {
+            rankerModel = {
+                model: values.inputSetting.ranker.rankerModel.model
+            }
+        } else if (values.inputSetting.ranker.sourceType == "online") {
+            rankerModel = {
+                model: values.inputSetting.ranker.rankerModel.model,
+                apiKey: values.inputSetting.ranker.rankerModel.apiKey
+            }
+        }
+
         const ranker: Ranker = {
             sourceType: values.inputSetting.ranker.sourceType,
-            model: values.inputSetting.ranker.model,
+            rankerModel: rankerModel,
             topK: values.inputSetting.ranker.topK
         }
 
@@ -601,7 +622,7 @@ export default function PassageSearchPage() {
                             />
                         </fieldset>
                     </>,
-                    "default": <div className="text-danger">Please Select the supported embedding model.</div>
+                    "default": <div className="text-danger">Please select the supported embedding source type.</div>
                 }[formik.values.inputSetting.denseRetriever.sourceType || "default"]}
                 <hr/>
                 <h4 className="mb-2">Sparse Retriever</h4>
@@ -685,20 +706,53 @@ export default function PassageSearchPage() {
                         value={formik.values.inputSetting.ranker.sourceType}
                     >
                         <option selected value="sentence_transformers">Sentence Transformers</option>
+                        <option value="online">Online</option>
                     </select>
                 </fieldset>
-                <fieldset className="mb-2">
-                    <label htmlFor="inputSetting.ranker.model">Model</label>
-                    <input
-                        type="text"
-                        id="inputSetting.ranker.model"
-                        name="inputSetting.ranker.model"
-                        className="form-control"
-                        onChange={formik.handleChange}
-                        onBlur={formik.handleBlur}
-                        value={formik.values.inputSetting.ranker.model}
-                    />
-                </fieldset>
+                {{
+                    "sentence_transformers":
+                        <>
+                            <fieldset className="mb-2">
+                                <label htmlFor="inputSetting.ranker.rankerModel.model">Model</label>
+                                <input
+                                    type="text"
+                                    id="inputSetting.ranker.rankerModel.model"
+                                    name="inputSetting.ranker.rankerModel.model"
+                                    className="form-control"
+                                    onChange={formik.handleChange}
+                                    onBlur={formik.handleBlur}
+                                    value={formik.values.inputSetting.ranker.rankerModel.model}
+                                />
+                            </fieldset>
+                        </>,
+                    "online": <>
+                        <fieldset className="mb-2">
+                            <label htmlFor="inputSetting.ranker.rankerModel.model">Model</label>
+                            <input
+                                type="text"
+                                id="inputSetting.ranker.rankerModel.model"
+                                name="inputSetting.ranker.rankerModel.model"
+                                className="form-control"
+                                onChange={formik.handleChange}
+                                onBlur={formik.handleBlur}
+                                value={formik.values.inputSetting.ranker.rankerModel.model}
+                            />
+                        </fieldset>
+                        <fieldset className="mb-2">
+                            <label htmlFor="inputSetting.denseRetriever.embeddingModel.apiKey">API Key</label>
+                            <input
+                                type="number"
+                                id="inputSetting.ranker.rankerModel.apiKey"
+                                name="inputSetting.ranker.rankerModel.apiKey"
+                                className="form-control"
+                                onChange={formik.handleChange}
+                                onBlur={formik.handleBlur}
+                                value={formik.values.inputSetting.ranker.rankerModel.apiKey}
+                            />
+                        </fieldset>
+                    </>,
+                    "default": <div className="text-danger">Please select the supported ranker source type.</div>
+                }[formik.values.inputSetting.ranker.sourceType || "default"]}
                 <fieldset className="mb-2">
                     <label htmlFor="inputSetting.ranker.topK">Top K</label>
                     <input
