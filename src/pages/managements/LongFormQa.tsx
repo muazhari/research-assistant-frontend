@@ -125,7 +125,7 @@ export default function LongFormQaPage() {
                     },
                     prompt:
                         "Create a concise and informative answer for a given question based solely on the given passages. You must only use information from the given passages. Use an unbiased and journalistic tone. Do not repeat text. Cite at least one document in each sentence. Cite the passages using [passage number] notation. If multiple passages contain the answer, cite those passages like \"as stated in [passage number, passage number, etc.]\". If the passages do not contain the answer to the question, then say that answering is not possible given the available information with the explanation.\n" +
-                        "Passages: {join(documents, delimiter=new_line, pattern='Document[$idx]: $content')}\n" +
+                        "Passages: {join(documents, delimiter=new_line, pattern='passage[$idx]: $content')}\n" +
                         "Question: {query}\n" +
                         "Answer:",
                     answerMaxLength: 300
