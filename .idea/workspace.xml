@@ -6,9 +6,10 @@
   <component name="ChangeListManager">
     <list default="true" id="67558acb-1948-4a06-8aee-1a140c430703" name="Changes" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/dist/assets/index-24b23a36.js" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Dockerfile" beforeDir="false" afterPath="$PROJECT_DIR$/Dockerfile" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/dist/assets/index-8240ca7a.js" beforeDir="false" />
       <change beforePath="$PROJECT_DIR$/dist/index.html" beforeDir="false" afterPath="$PROJECT_DIR$/dist/index.html" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/pages/managements/LongFormQa.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/pages/managements/LongFormQa.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/package.json" beforeDir="false" afterPath="$PROJECT_DIR$/package.json" afterDir="false" />
     </list>
     <list id="a7cadf68-e7dd-4100-82ff-87108b6e6aff" name="Changes by avwan" comment="" />
     <option name="SHOW_DIALOG" value="false" />
@@ -148,7 +149,10 @@
       <workItem from="1698660287746" duration="634000" />
       <workItem from="1698681249837" duration="11000" />
       <workItem from="1699378281221" duration="8717000" />
-      <workItem from="1699417355740" duration="32000" />
+      <workItem from="1699417355740" duration="97000" />
+      <workItem from="1699445225041" duration="603000" />
+      <workItem from="1699530051134" duration="3000" />
+      <workItem from="1699610384356" duration="289000" />
     </task>
     <servers />
   </component>
