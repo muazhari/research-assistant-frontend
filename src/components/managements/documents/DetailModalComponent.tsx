@@ -317,9 +317,8 @@ export default function DetailModalComponent() {
                     </fieldset>
                     <fieldset className="mb-2">
                         <label className="form-label" htmlFor="description">Description:</label>
-                        <input
+                        <textarea
                             className="form-control"
-                            type="text"
                             name="description"
                             id="description"
                             onBlur={formik.handleBlur}

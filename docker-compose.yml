@@ -6,7 +6,7 @@ services:
     volumes:
       - ".:/app"
       - "/app/node_modules"
+    entrypoint: [ "/bin/bash", "-c" ]
     command:
-      - "/bin/bash"
-      - "-c"
-      - "yarn build && yarn serve"
+      - | 
+        yarn build && yarn serve
