@@ -120,11 +120,11 @@ export default function LongFormQaPage() {
                 generator: {
                     sourceType: "online",
                     generatorModel: {
-                        model: "gpt-3.5-turbo",
+                        model: "gpt-4",
                         apiKey: ""
                     },
                     prompt:
-                        "Create a concise and informative answer for a given question based solely on the given passages. You must only use information from the given passages. Use an unbiased and journalistic tone. Do not repeat text. Cite at least one document in each sentence. Cite the passages using [passage number] notation. If multiple passages contain the answer, cite those passages like \"as stated in [passage number, passage number, etc.]\". If the passages do not contain the answer to the question, then say that answering is not possible given the available information with the explanation.\n" +
+                        "Create a concise and informative answer for a given question based solely on the given passages. You must only use information from the given passages. Use an unbiased and journalistic tone. Do not repeat text. Cite at least one document in each sentence. Cite the passages using passage [number] notation. If multiple passages contain the answer, cite those passages like \"as stated in the passage [number, number, etc.]\". If the passages do not contain the answer to the question, then say that answering is not possible given the available information with the explanation.\n" +
                         "Passages: {join(documents, delimiter=new_line, pattern='passage[$idx]: $content')}\n" +
                         "Question: {query}\n" +
                         "Answer:",
@@ -180,11 +180,11 @@ export default function LongFormQaPage() {
                 generator: {
                     sourceType: "online",
                     generatorModel: {
-                        model: "gpt-3.5-turbo",
+                        model: "gpt-4",
                         apiKey: ""
                     },
                     prompt:
-                        "Buat jawaban yang ringkas dan informatif untuk pertanyaan yang diberikan dengan hanya berdasarkan subteks yang diberikan. Anda hanya boleh menggunakan informasi dari subteks yang diberikan. Gunakan nada yang tidak memihak dan jurnalistik. Jangan ulangi teks. Mengutip setidaknya satu subteks di setiap kalimat. Kutip subteks menggunakan notasi [nomor subteks]. Jika beberapa subteks memuat jawabannya, kutip subteks tersebut seperti \"sebagaimana dinyatakan dalam [nomor subteks, nomor subteks, dll.]\". Jika subteks tidak berisi jawaban atas pertanyaan, maka katakan bahwa menjawab tidak mungkin dapat diberikan dari informasi beserta penjelasannya.\n" +
+                        "Buat jawaban yang ringkas dan informatif untuk pertanyaan yang diberikan dengan hanya berdasarkan subteks yang diberikan. Anda hanya boleh menggunakan informasi dari subteks yang diberikan. Gunakan nada yang tidak memihak dan jurnalistik. Jangan ulangi teks. Mengutip setidaknya satu subteks di setiap kalimat. Kutip subteks menggunakan notasi [nomor] subteks. Jika beberapa subteks memuat jawabannya, kutip subteks tersebut seperti \"sebagaimana dinyatakan dalam [nomor, nomor, dll.] subteks\". Jika subteks tidak berisi jawaban atas pertanyaan, maka katakan bahwa menjawab tidak mungkin dapat diberikan dari informasi beserta penjelasannya.\n" +
                         "Subteks: {join(documents, delimiter=new_line, pattern='subteks[$idx]: $content')}\n" +
                         "Pertanyaan: {query}\n" +
                         "Jawaban:",
