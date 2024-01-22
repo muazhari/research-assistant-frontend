@@ -25,8 +25,7 @@ import WebDocumentSetting from "../../models/value_objects/contracts/requests/ba
 import DenseEmbeddingModel from "../../models/value_objects/contracts/requests/basic_settings/DenseEmbeddingModel.ts";
 import MultihopEmbeddingModel
     from "../../models/value_objects/contracts/requests/basic_settings/MultihopEmbeddingModel.ts";
-import OnlineEmbeddingModel
-    from "../../models/value_objects/contracts/requests/basic_settings/OnlineEmbeddingModel.ts";
+import OnlineEmbeddingModel from "../../models/value_objects/contracts/requests/basic_settings/OnlineEmbeddingModel.ts";
 import OnlineGeneratorModel from "../../models/value_objects/contracts/requests/basic_settings/OnlineGeneratorModel.ts";
 import processSlice, {ProcessState} from "../../slices/ProcessSlice.ts";
 import SentenceTransformersRankerModel

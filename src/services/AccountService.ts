@@ -5,10 +5,8 @@ import CreateOneRequest from "../models/value_objects/contracts/requests/managem
 import DeleteOneByIdRequest
     from "../models/value_objects/contracts/requests/managements/accounts/DeleteOneByIdRequest.ts";
 import {AxiosResponse} from "axios";
-import ReadOneByIdRequest
-    from "../models/value_objects/contracts/requests/managements/accounts/ReadOneByIdRequest.ts";
-import PatchOneByIdRequest
-    from "../models/value_objects/contracts/requests/managements/accounts/PatchOneById.ts";
+import ReadOneByIdRequest from "../models/value_objects/contracts/requests/managements/accounts/ReadOneByIdRequest.ts";
+import PatchOneByIdRequest from "../models/value_objects/contracts/requests/managements/accounts/PatchOneById.ts";
 import Account from "../models/entities/Account.ts";
 import Content from "../models/value_objects/contracts/Content.ts";
 

@@ -21,8 +21,7 @@ import WebDocumentSetting from "../../models/value_objects/contracts/requests/ba
 import DenseEmbeddingModel from "../../models/value_objects/contracts/requests/basic_settings/DenseEmbeddingModel.ts";
 import MultihopEmbeddingModel
     from "../../models/value_objects/contracts/requests/basic_settings/MultihopEmbeddingModel.ts";
-import OnlineEmbeddingModel
-    from "../../models/value_objects/contracts/requests/basic_settings/OnlineEmbeddingModel.ts";
+import OnlineEmbeddingModel from "../../models/value_objects/contracts/requests/basic_settings/OnlineEmbeddingModel.ts";
 import SearchRequest from "../../models/value_objects/contracts/requests/passage_searchs/SearchRequest.ts";
 import OutputSetting from "../../models/value_objects/contracts/requests/basic_settings/OutputSeting.ts";
 import PassageSearchService from "../../services/PassageSearchService.ts";
