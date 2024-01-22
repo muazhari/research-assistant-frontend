@@ -2,11 +2,11 @@ import Request from "../Request.ts";
 
 export default class RegisterBody extends Request {
 
-    name: string | undefined;
-    email: string | undefined;
-    password: string | undefined;
+    name?: string;
+    email?: string;
+    password?: string;
 
-    constructor(name: string | undefined, email: string | undefined, password: string | undefined) {
+    constructor(name?: string, email?: string, password?: string) {
         super();
         this.name = name;
         this.email = email;

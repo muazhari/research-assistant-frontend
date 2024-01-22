@@ -3,5 +3,5 @@ import LoginBody from "./LoginBody.ts";
 
 export default class LoginRequest extends Request {
 
-    body: LoginBody | undefined;
+    body?: LoginBody;
 }

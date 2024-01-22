@@ -1,12 +1,12 @@
 import Entity from "./Entity.ts";
 
 export default class Account extends Entity {
-    id: string | undefined;
-    name: string | undefined;
-    email: string | undefined;
-    password: string | undefined;
+    id?: string;
+    name?: string;
+    email?: string;
+    password?: string;
 
-    constructor(id: string | undefined, name: string | undefined, email: string | undefined, password: string | undefined) {
+    constructor(id?: string, name?: string, email?: string, password?: string) {
         super();
         this.id = id;
         this.name = name;

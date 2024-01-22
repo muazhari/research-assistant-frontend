@@ -1,9 +1,9 @@
 import Request from "../Request.ts";
 
 export default class EmbeddingModel extends Request {
-    dimension: number | undefined;
+    dimension?: number;
 
-    constructor(dimension: number | undefined) {
+    constructor(dimension?: number) {
         super()
         this.dimension = dimension;
     }

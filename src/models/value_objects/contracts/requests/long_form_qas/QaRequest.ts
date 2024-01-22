@@ -3,10 +3,10 @@ import InputSetting from "./InputSetting.ts";
 
 
 export default class QaRequest extends Request {
-    accountId: string | undefined;
-    inputSetting: InputSetting | undefined;
+    accountId?: string;
+    inputSetting?: InputSetting;
 
-    constructor(accountId: string | undefined, inputSetting: InputSetting | undefined) {
+    constructor(accountId?: string, inputSetting?: InputSetting) {
         super()
         this.accountId = accountId;
         this.inputSetting = inputSetting;

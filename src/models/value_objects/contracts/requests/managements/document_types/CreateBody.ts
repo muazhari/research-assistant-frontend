@@ -1,10 +1,10 @@
 import ValueObject from "../../../../ValueObject.ts";
 
 export default class CreateBody extends ValueObject {
-    name: string | undefined;
-    description: string | undefined;
+    name?: string;
+    description?: string;
 
-    constructor(name: string | undefined, description: string | undefined) {
+    constructor(name?: string, description?: string) {
         super();
         this.name = name;
         this.description = description;

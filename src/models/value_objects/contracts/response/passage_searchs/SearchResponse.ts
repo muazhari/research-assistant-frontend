@@ -5,15 +5,15 @@ import FileDocument from "../../../../entities/FileDocument.ts";
 import RetrievedDocument from "./RetrievedDocument.ts";
 
 export default class SearchResponse extends Response {
-    retrievedDocuments: RetrievedDocument[] | undefined;
-    outputDocument: FileDocument | TextDocument | WebDocument | undefined;
-    processDuration: number | undefined;
+    retrievedDocuments?: RetrievedDocument[];
+    outputDocument?: FileDocument | TextDocument | WebDocument;
+    processDuration?: number;
 
     constructor(
-        retrievedDocuments: RetrievedDocument[] | undefined,
-        outputDocument: FileDocument | TextDocument | WebDocument | undefined,
-        processDuration: number | undefined
-    ) {
+        retrievedDocuments?: RetrievedDocument[],
+        outputDocument?: FileDocument | TextDocument | WebDocument,
+        processDuration?: number 
+   ) {
         super()
         this.retrievedDocuments = retrievedDocuments;
         this.outputDocument = outputDocument;

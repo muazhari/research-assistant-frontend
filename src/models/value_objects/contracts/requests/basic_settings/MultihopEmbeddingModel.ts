@@ -1,10 +1,10 @@
 import EmbeddingModel from "./EmbeddingModel.ts";
 
 export default class MultihopEmbeddingModel extends EmbeddingModel {
-    model: string | undefined;
-    apiKey: string | undefined;
+    model?: string;
+    apiKey?: string;
 
-    constructor(dimension: number | undefined, model: string | undefined, apiKey: string | undefined) {
+    constructor(dimension?: number, model?: string, apiKey?: string) {
         super(dimension)
         this.model = model;
         this.apiKey = apiKey;

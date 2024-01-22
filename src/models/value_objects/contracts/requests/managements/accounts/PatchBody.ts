@@ -1,11 +1,11 @@
 import ValueObject from "../../../../ValueObject.ts";
 
 export default class PatchBody extends ValueObject {
-    name: string | undefined
-    email: string | undefined
-    password: string | undefined
+    name?: string 
+    email?: string 
+    password?: string 
 
-    constructor(name: string | undefined, email: string | undefined, password: string | undefined) {
+    constructor(name?: string, email?: string, password?: string) {
         super();
         this.name = name;
         this.email = email;

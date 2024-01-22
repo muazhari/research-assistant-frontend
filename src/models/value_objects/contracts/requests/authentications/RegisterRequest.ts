@@ -3,5 +3,5 @@ import RegisterBody from "./RegisterBody.ts";
 
 export default class RegisterRequest extends Request {
 
-    body: RegisterBody | undefined;
+    body?: RegisterBody;
 }

@@ -1,9 +1,9 @@
 import Request from "../Request.ts";
 
 export default class GeneratorModel extends Request {
-    model: string | undefined;
+    model?: string;
 
-    constructor(model: string | undefined) {
+    constructor(model?: string) {
         super()
         this.model = model;
     }

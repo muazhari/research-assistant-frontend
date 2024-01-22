@@ -4,9 +4,9 @@ import Account from "../../../../entities/Account.ts";
 
 export default class RegisterResponse extends Response {
 
-    account: Account | undefined;
+    account?: Account;
 
-    constructor(account: Account | undefined) {
+    constructor(account?: Account) {
         super();
         this.account = account;
     }

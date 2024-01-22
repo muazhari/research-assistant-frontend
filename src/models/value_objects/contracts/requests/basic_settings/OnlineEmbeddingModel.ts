@@ -1,10 +1,10 @@
 import EmbeddingModel from "./EmbeddingModel.ts";
 
 export default class OnlineEmbeddingModel extends EmbeddingModel {
-    model: string | undefined;
-    num_iterations: number | undefined;
+    model?: string;
+    num_iterations?: number;
 
-    constructor(dimension: number | undefined, model: string | undefined, num_iterations: number | undefined) {
+    constructor(dimension?: number, model?: string, num_iterations?: number) {
         super(dimension)
         this.model = model;
         this.num_iterations = num_iterations;

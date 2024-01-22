@@ -3,11 +3,11 @@ import SentenceTransformersRankerModel from "./SentenceTransformersRankerModel.t
 import OnlineRankerModel from "./OnlineRankerModel.ts";
 
 export default class Ranker extends Request {
-    sourceType: string | undefined;
-    rankerModel: SentenceTransformersRankerModel | OnlineRankerModel | undefined;
-    topK: number | undefined;
+    sourceType?: string;
+    rankerModel?: SentenceTransformersRankerModel | OnlineRankerModel;
+    topK?: number;
 
-    constructor(sourceType: string | undefined, rankerModel: SentenceTransformersRankerModel | OnlineRankerModel | undefined, topK: number | undefined) {
+    constructor(sourceType?: string, rankerModel?: SentenceTransformersRankerModel | OnlineRankerModel, topK?: number) {
         super()
         this.sourceType = sourceType;
         this.rankerModel = rankerModel;

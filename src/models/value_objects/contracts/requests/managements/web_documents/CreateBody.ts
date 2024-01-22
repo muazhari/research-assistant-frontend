@@ -1,9 +1,9 @@
 import DocumentCreateBody from "../documents/CreateBody.ts";
 
 export default class CreateBody extends DocumentCreateBody {
-    webUrl: string | undefined;
+    webUrl?: string;
 
-    constructor(name: string | undefined, description: string | undefined, documentTypeId: string | undefined, accountId: string | undefined, webUrl: string | undefined) {
+    constructor(name?: string, description?: string, documentTypeId?: string, accountId?: string, webUrl?: string) {
         super(name, description, documentTypeId, accountId);
         this.webUrl = webUrl;
     }

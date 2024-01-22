@@ -2,12 +2,12 @@ import Request from "../Request.ts";
 import OnlineGeneratorModel from "./OnlineGeneratorModel.ts";
 
 export default class Generator extends Request {
-    sourceType: string | undefined;
-    generatorModel: OnlineGeneratorModel | undefined;
-    answerMaxLength: number | undefined;
-    prompt: string | undefined;
+    sourceType?: string;
+    generatorModel?: OnlineGeneratorModel;
+    answerMaxLength?: number;
+    prompt?: string;
 
-    constructor(sourceType: string | undefined, generatorModel: OnlineGeneratorModel | undefined, answerMaxLength: number | undefined, prompt: string | undefined) {
+    constructor(sourceType?: string, generatorModel?: OnlineGeneratorModel, answerMaxLength?: number, prompt?: string) {
         super()
         this.sourceType = sourceType;
         this.generatorModel = generatorModel;

@@ -1,9 +1,9 @@
 import Document from "./Document.ts";
 
 export default class WebDocument extends Document {
-    webUrl: string | undefined;
+    webUrl?: string;
 
-    constructor(id: string | undefined, name: string | undefined, description: string | undefined, documentTypeId: string | undefined, accountId: string | undefined, webUrl: string | undefined) {
+    constructor(id?: string, name?: string, description?: string, documentTypeId?: string, accountId?: string, webUrl?: string) {
         super(id, name, description, documentTypeId, accountId);
         this.webUrl = webUrl;
     }

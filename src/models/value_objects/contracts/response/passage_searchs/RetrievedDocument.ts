@@ -2,23 +2,23 @@ import Response from "../Response.ts";
 
 
 export default class RetrievedDocument extends Response {
-    id: string | undefined;
-    content: string | undefined;
-    contentType: string | undefined;
-    meta: any | undefined;
-    idHashKeys: string[] | undefined;
-    score: number | undefined;
-    embedding: string | undefined;
+    id?: string;
+    content?: string;
+    contentType?: string;
+    meta?: any;
+    idHashKeys?: string[];
+    score?: number;
+    embedding?: string;
 
     constructor(
-        id: string | undefined,
-        content: string | undefined,
-        contentType: string | undefined,
-        meta: any | undefined,
-        idHashKeys: string[] | undefined,
-        score: number | undefined,
-        embedding: string | undefined
-    ) {
+        id?: string,
+        content?: string,
+        contentType?: string,
+        meta?: any,
+        idHashKeys?: string[],
+        score?: number,
+        embedding?: string 
+   ) {
         super()
         this.id = id;
         this.content = content;

@@ -14,24 +14,25 @@ import Content from "../../models/value_objects/contracts/Content.ts";
 import QaResponse from "../../models/value_objects/contracts/response/long_form_qas/QaResponse.ts";
 import QaRequest from "../../models/value_objects/contracts/requests/long_form_qas/QaRequest.ts";
 import InputSetting from "../../models/value_objects/contracts/requests/long_form_qas/InputSetting.ts";
-import DocumentSetting from "../../models/value_objects/contracts/requests/passage_searchs/DocumentSetting.ts";
-import DenseRetriever from "../../models/value_objects/contracts/requests/passage_searchs/DenseRetriever.ts";
-import SparseRetriever from "../../models/value_objects/contracts/requests/passage_searchs/SparseRetriever.ts";
-import Ranker from "../../models/value_objects/contracts/requests/passage_searchs/Ranker.ts";
-import Generator from "../../models/value_objects/contracts/requests/long_form_qas/Generator.ts";
-import FileDocumentSetting from "../../models/value_objects/contracts/requests/passage_searchs/FileDocumentSetting.ts";
-import TextDocumentSetting from "../../models/value_objects/contracts/requests/passage_searchs/TextDocumentSetting.ts";
-import WebDocumentSetting from "../../models/value_objects/contracts/requests/passage_searchs/WebDocumentSetting.ts";
-import DenseEmbeddingModel from "../../models/value_objects/contracts/requests/passage_searchs/DenseEmbeddingModel.ts";
+import DocumentSetting from "../../models/value_objects/contracts/requests/basic_settings/DocumentSetting.ts";
+import DenseRetriever from "../../models/value_objects/contracts/requests/basic_settings/DenseRetriever.ts";
+import SparseRetriever from "../../models/value_objects/contracts/requests/basic_settings/SparseRetriever.ts";
+import Ranker from "../../models/value_objects/contracts/requests/basic_settings/Ranker.ts";
+import Generator from "../../models/value_objects/contracts/requests/basic_settings/Generator.ts";
+import FileDocumentSetting from "../../models/value_objects/contracts/requests/basic_settings/FileDocumentSetting.ts";
+import TextDocumentSetting from "../../models/value_objects/contracts/requests/basic_settings/TextDocumentSetting.ts";
+import WebDocumentSetting from "../../models/value_objects/contracts/requests/basic_settings/WebDocumentSetting.ts";
+import DenseEmbeddingModel from "../../models/value_objects/contracts/requests/basic_settings/DenseEmbeddingModel.ts";
 import MultihopEmbeddingModel
-    from "../../models/value_objects/contracts/requests/passage_searchs/MultihopEmbeddingModel.ts";
+    from "../../models/value_objects/contracts/requests/basic_settings/MultihopEmbeddingModel.ts";
 import OnlineEmbeddingModel
-    from "../../models/value_objects/contracts/requests/passage_searchs/OnlineEmbeddingModel.ts";
-import OnlineGeneratorModel from "../../models/value_objects/contracts/requests/long_form_qas/OnlineGeneratorModel.ts";
+    from "../../models/value_objects/contracts/requests/basic_settings/OnlineEmbeddingModel.ts";
+import OnlineGeneratorModel from "../../models/value_objects/contracts/requests/basic_settings/OnlineGeneratorModel.ts";
 import processSlice, {ProcessState} from "../../slices/ProcessSlice.ts";
 import SentenceTransformersRankerModel
-    from "../../models/value_objects/contracts/requests/passage_searchs/SentenceTransformersRankerModel.ts";
-import OnlineRankerModel from "../../models/value_objects/contracts/requests/passage_searchs/OnlineRankerModel.ts";
+    from "../../models/value_objects/contracts/requests/basic_settings/SentenceTransformersRankerModel.ts";
+import OnlineRankerModel from "../../models/value_objects/contracts/requests/basic_settings/OnlineRankerModel.ts";
+import QuerySetting from "../../models/value_objects/contracts/requests/basic_settings/QuerySetting.ts";
 
 
 export default function LongFormQaPage() {
@@ -78,16 +79,20 @@ export default function LongFormQaPage() {
         return {
             accountId: account?.id,
             inputSetting: {
+                query: "",
+                granularity: "sentence",
+                windowSizes: "1,2,3,4,5",
+                querySetting: {
+                    prefix: "query: "
+                },
                 documentSetting: {
                     documentId: document?.id,
                     detailSetting: {
                         startPage: 1,
                         endPage: fileDocumentProperty?.pageLength,
-                    }
+                    },
+                    prefix: "passage: "
                 },
-                query: "",
-                granularity: "sentence",
-                windowSizes: "1,2,3,4,5",
                 denseRetriever: {
                     topK: 100,
                     similarityFunction: "dot_product",
@@ -138,16 +143,20 @@ export default function LongFormQaPage() {
         return {
             accountId: account?.id,
             inputSetting: {
+                query: "",
+                granularity: "sentence",
+                windowSizes: "1,2,3,4,5",
+                querySetting: {
+                    prefix: "query: "
+                },
                 documentSetting: {
                     documentId: document?.id,
                     detailSetting: {
                         startPage: 1,
                         endPage: fileDocumentProperty?.pageLength,
-                    }
+                    },
+                    prefix: "passage: "
                 },
-                query: "",
-                granularity: "sentence",
-                windowSizes: "1,2,3,4,5",
                 denseRetriever: {
                     topK: 100,
                     similarityFunction: "dot_product",
@@ -233,6 +242,10 @@ export default function LongFormQaPage() {
     }, [account, document, fileDocumentProperty]);
 
     const getQaRequest = (values: any): QaRequest => {
+        const querySetting: QuerySetting = {
+            prefix: values.inputSetting.querySetting.prefix
+        }
+
         let detailSetting: FileDocumentSetting | TextDocumentSetting | WebDocumentSetting | undefined = undefined
         if (documentType?.name === "file") {
             detailSetting = {
@@ -249,7 +262,8 @@ export default function LongFormQaPage() {
 
         const documentSetting: DocumentSetting = {
             documentId: values.inputSetting.documentSetting.documentId,
-            detailSetting: detailSetting
+            detailSetting: detailSetting,
+            prefix: values.inputSetting.documentSetting.prefix
         }
 
         let embeddingModel: DenseEmbeddingModel | MultihopEmbeddingModel | OnlineEmbeddingModel | undefined = undefined;
@@ -327,10 +341,11 @@ export default function LongFormQaPage() {
         }
 
         const inputSetting: InputSetting = {
-            documentSetting: documentSetting,
             query: values.inputSetting.query,
             granularity: values.inputSetting.granularity,
             windowSizes: values.inputSetting.windowSizes.split(",").map((value: string) => value.trim()).map((value: string) => parseInt(value)),
+            querySetting: querySetting,
+            documentSetting: documentSetting,
             denseRetriever: denseRetriever,
             sparseRetriever: sparseRetriever,
             ranker: ranker,
@@ -418,6 +433,20 @@ export default function LongFormQaPage() {
                     />
                 </fieldset>
                 <hr/>
+                <h4 className="mb-2">Query Setting</h4>
+                <fieldset className="mb-2">
+                    <label htmlFor="inputSetting.querySetting.prefix">Prefix</label>
+                    <input
+                        type="text"
+                        id="inputSetting.querySetting.prefix"
+                        name="inputSetting.querySetting.prefix"
+                        className="form-control"
+                        onChange={formik.handleChange}
+                        onBlur={formik.handleBlur}
+                        value={formik.values.inputSetting.querySetting.prefix}
+                    />
+                </fieldset>
+                <hr/>
                 <h4 className="mb-2">Document Setting</h4>
                 <fieldset className="mb-2">
                     <label htmlFor="inputSetting.documentSetting.documentId">Document ID</label>
@@ -436,6 +465,16 @@ export default function LongFormQaPage() {
                         onChange={formik.handleChange}
                         onBlur={formik.handleBlur}
                         value={formik.values.inputSetting.documentSetting.documentId}
+                    />
+                    <label htmlFor="inputSetting.documentSetting.prefix">Prefix</label>
+                    <input
+                        type="text"
+                        id="inputSetting.documentSetting.prefix"
+                        name="inputSetting.documentSetting.prefix"
+                        className="form-control"
+                        onChange={formik.handleChange}
+                        onBlur={formik.handleBlur}
+                        value={formik.values.inputSetting.documentSetting.prefix}
                     />
                 </fieldset>
                 <hr/>

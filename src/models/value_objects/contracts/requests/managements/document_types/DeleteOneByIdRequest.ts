@@ -1,9 +1,9 @@
 import Request from "../../Request.ts";
 
 export default class DeleteOneByIdRequest extends Request {
-    id: string | undefined
+    id?: string 
 
-    constructor(id: string | undefined) {
+    constructor(id?: string) {
         super();
         this.id = id;
     }

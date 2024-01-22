@@ -1,11 +1,11 @@
 import Entity from "./Entity.ts";
 
 export default class DocumentType extends Entity {
-    id: string | undefined;
-    name: string | undefined;
-    description: string | undefined;
+    id?: string;
+    name?: string;
+    description?: string;
 
-    constructor(id: string | undefined, name: string | undefined, description: string | undefined) {
+    constructor(id?: string, name?: string, description?: string) {
         super();
         this.id = id;
         this.name = name;
