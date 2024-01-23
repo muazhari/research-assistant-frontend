@@ -1,8 +1,8 @@
 import {BrowserRouter, Navigate, Route, Routes} from "react-router-dom";
 import DocumentManagementPage from "../pages/managements/DocumentManagementPage.tsx";
 import NotFoundPage from "../pages/NotFound.tsx";
-import PassageSearch from "../pages/managements/PassageSearch.tsx";
-import LongFormQA from "../pages/managements/LongFormQa.tsx";
+import PassageSearch from "../pages/features/PassageSearchPage.tsx";
+import LongFormQA from "../pages/features/LongFormQaPage.tsx";
 import AuthenticatedNavBarComponent from "../components/navigation_bars/AuthenticatedNavBarComponent.tsx";
 
 export default function AuthenticatedRouter() {

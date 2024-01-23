@@ -32,6 +32,7 @@ import SentenceTransformersRankerModel
     from "../../models/value_objects/contracts/requests/basic_settings/SentenceTransformersRankerModel.ts";
 import OnlineRankerModel from "../../models/value_objects/contracts/requests/basic_settings/OnlineRankerModel.ts";
 import QuerySetting from "../../models/value_objects/contracts/requests/basic_settings/QuerySetting.ts";
+import HydeSetting from "../../models/value_objects/contracts/requests/basic_settings/HydeSetting.ts";
 
 
 export default function LongFormQaPage() {
@@ -80,9 +81,23 @@ export default function LongFormQaPage() {
             inputSetting: {
                 query: "",
                 granularity: "sentence",
-                windowSizes: "1,2,3,4,5",
+                windowSizes: "1,3,6",
                 querySetting: {
-                    prefix: "query: "
+                    prefix: "query: ",
+                    hydeSetting: {
+                        isUse: true,
+                        generator: {
+                            sourceType: "online",
+                            generatorModel: {
+                                model: "gpt-4",
+                                apiKey: ""
+                            },
+                            prompt:
+                                "Question: {query}\n" +
+                                "Answer:",
+                            answerMaxLength: 100
+                        }
+                    }
                 },
                 documentSetting: {
                     documentId: document?.id,
@@ -144,9 +159,23 @@ export default function LongFormQaPage() {
             inputSetting: {
                 query: "",
                 granularity: "sentence",
-                windowSizes: "1,2,3,4,5",
+                windowSizes: "1,3,6",
                 querySetting: {
-                    prefix: "query: "
+                    prefix: "query: ",
+                    hydeSetting: {
+                        isUse: true,
+                        generator: {
+                            sourceType: "online",
+                            generatorModel: {
+                                model: "gpt-4",
+                                apiKey: ""
+                            },
+                            prompt:
+                                "Question: {query}\n" +
+                                "Answer:",
+                            answerMaxLength: 100
+                        }
+                    }
                 },
                 documentSetting: {
                     documentId: document?.id,
@@ -241,8 +270,19 @@ export default function LongFormQaPage() {
     }, [account, document, fileDocumentProperty]);
 
     const getQaRequest = (values: any): QaRequest => {
+        const hydeGenerator: Generator = {
+            sourceType: values.inputSetting.querySetting.hydeSetting.generator.sourceType,
+            generatorModel: values.inputSetting.querySetting.hydeSetting.generator.generatorModel,
+            prompt: values.inputSetting.querySetting.hydeSetting.generator.prompt,
+            answerMaxLength: values.inputSetting.querySetting.hydeSetting.generator.answerMaxLength
+        }
+        const hydeSetting: HydeSetting = {
+            isUse: values.inputSetting.querySetting.hydeSetting.isUse,
+            generator: hydeGenerator
+        }
         const querySetting: QuerySetting = {
-            prefix: values.inputSetting.querySetting.prefix
+            prefix: values.inputSetting.querySetting.prefix,
+            hydeSetting: hydeSetting
         }
 
         let detailSetting: FileDocumentSetting | TextDocumentSetting | WebDocumentSetting | undefined = undefined
@@ -445,6 +485,100 @@ export default function LongFormQaPage() {
                         value={formik.values.inputSetting.querySetting.prefix}
                     />
                 </fieldset>
+                <hr/>
+                <h5 className="mb-2">Hyde Setting</h5>
+                <fieldset className="mb-2 d-flex">
+                    <input
+                        type="checkbox"
+                        id="inputSetting.querySetting.hydeSetting.isUse"
+                        name="inputSetting.querySetting.hydeSetting.isUse"
+                        className="form-check"
+                        onChange={formik.handleChange}
+                        onBlur={formik.handleBlur}
+                        checked={formik.values.inputSetting.querySetting.hydeSetting.isUse}
+                    />
+                    <label htmlFor="inputSetting.querySetting.hydeSetting.isUse" className="ms-2">
+                        Is use?
+                    </label>
+                </fieldset>
+                {
+                    formik.values.inputSetting.querySetting.hydeSetting.isUse &&
+                    <>
+                        <hr/>
+                        <h6 className="mb-2">Generator</h6>
+                        <fieldset className="mb-2">
+                            <label htmlFor="inputSetting.querySetting.hydeSetting.generator.sourceType">Source Type</label>
+                            <select
+                                id="inputSetting.querySetting.hydeSetting.generator.sourceType"
+                                name="inputSetting.querySetting.hydeSetting.generator.sourceType"
+                                className="form-control"
+                                onChange={formik.handleChange}
+                                onBlur={formik.handleBlur}
+                                value={formik.values.inputSetting.querySetting.hydeSetting.generator.sourceType}
+                            >
+                                <option selected value="online">Online</option>
+                            </select>
+                        </fieldset>
+                        <fieldset className="mb-2">
+                            <label htmlFor="inputSetting.querySetting.hydeSetting.generator.answerMaxLength">Answer Max Length</label>
+                            <input
+                                type="number"
+                                id="inputSetting.querySetting.hydeSetting.generator.answerMaxLength"
+                                name="inputSetting.querySetting.hydeSetting.generator.answerMaxLength"
+                                className="form-control"
+                                onChange={formik.handleChange}
+                                onBlur={formik.handleBlur}
+                                value={formik.values.inputSetting.querySetting.hydeSetting.generator.answerMaxLength}
+                            />
+                        </fieldset>
+                        <fieldset className="mb-2">
+                            <label htmlFor="inputSetting.querySetting.hydeSetting.generator.prompt">Prompt</label>
+                            <textarea
+                                id="inputSetting.querySetting.hydeSetting.generator.prompt"
+                                name="inputSetting.querySetting.hydeSetting.generator.prompt"
+                                className="form-control"
+                                rows={2}
+                                onChange={formik.handleChange}
+                                onBlur={formik.handleBlur}
+                                value={formik.values.inputSetting.querySetting.hydeSetting.generator.prompt}
+                            />
+                        </fieldset>
+                        <hr/>
+                        <h6 className="mb-2">Generator Model</h6>
+                        {
+                            {
+                                "online":
+                                    <>
+                                        <fieldset className="mb-2">
+                                            <label htmlFor="inputSetting.querySetting.hydeSetting.generator.generatorModel.model">Model</label>
+                                            <input
+                                                type="text"
+                                                id="inputSetting.querySetting.hydeSetting.generator.generatorModel.model"
+                                                name="inputSetting.querySetting.hydeSetting.generator.generatorModel.model"
+                                                className="form-control"
+                                                onChange={formik.handleChange}
+                                                onBlur={formik.handleBlur}
+                                                value={formik.values.inputSetting.querySetting.hydeSetting.generator.generatorModel.model}
+                                            />
+                                        </fieldset>
+                                        <fieldset className="mb-2">
+                                            <label htmlFor="inputSetting.querySetting.hydeSetting.generator.generatorModel.apiKey">API Key</label>
+                                            <input
+                                                type="password"
+                                                id="inputSetting.querySetting.hydeSetting.generator.generatorModel.apiKey"
+                                                name="inputSetting.querySetting.hydeSetting.generator.generatorModel.apiKey"
+                                                className="form-control"
+                                                onChange={formik.handleChange}
+                                                onBlur={formik.handleBlur}
+                                                value={formik.values.inputSetting.querySetting.hydeSetting.generator.generatorModel.apiKey}
+                                            />
+                                        </fieldset>
+                                    </>,
+                                "default": <div className="text-danger">Please select the supported generator source type.</div>
+                            }[formik.values.inputSetting.querySetting.hydeSetting.generator.sourceType || "default"]
+                        }
+                    </>
+                }
                 <hr/>
                 <h4 className="mb-2">Document Setting</h4>
                 <fieldset className="mb-2">
