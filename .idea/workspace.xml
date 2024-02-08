@@ -5,14 +5,11 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="67558acb-1948-4a06-8aee-1a140c430703" name="Changes" comment="">
-      <change afterPath="$PROJECT_DIR$/src/models/value_objects/contracts/requests/basic_settings/HydeSetting.ts" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/dist/assets/index-6c6151f4.js" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/dist/assets/index-29c2b2bc.js" beforeDir="false" />
       <change beforePath="$PROJECT_DIR$/dist/index.html" beforeDir="false" afterPath="$PROJECT_DIR$/dist/index.html" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/models/value_objects/contracts/requests/basic_settings/QuerySetting.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/models/value_objects/contracts/requests/basic_settings/QuerySetting.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/pages/managements/LongFormQa.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/pages/features/LongFormQaPage.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/pages/managements/PassageSearch.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/pages/features/PassageSearchPage.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/router/AuthenticatedRouter.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/router/AuthenticatedRouter.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/pages/features/LongFormQaPage.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/pages/features/LongFormQaPage.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/pages/features/PassageSearchPage.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/pages/features/PassageSearchPage.tsx" afterDir="false" />
     </list>
     <list id="a7cadf68-e7dd-4100-82ff-87108b6e6aff" name="Changes by avwan" comment="" />
     <option name="SHOW_DIALOG" value="false" />
@@ -50,6 +47,8 @@
   </component>
   <component name="PropertiesComponent"><![CDATA[{
   "keyToString": {
+    "Docker.compose-1.executor": "Run",
+    "RunOnceActivity.OpenProjectViewOnStart": "true",
     "RunOnceActivity.ShowReadmeOnStart": "true",
     "SHARE_PROJECT_CONFIGURATION_FILES": "true",
     "WebServerToolWindowFactoryState": "false",
@@ -81,7 +80,7 @@
       <recent name="C:\Data\Apps\research-assistant-frontend\src\components\navigation_bars" />
     </key>
   </component>
-  <component name="RunManager" selected="npm.run-1">
+  <component name="RunManager" selected="Docker.compose-1">
     <configuration name="compose-1" type="docker-deploy" factoryName="docker-compose.yml" server-name="Docker">
       <deployment type="docker-compose.yml">
         <settings>
@@ -165,7 +164,10 @@
       <workItem from="1705049320950" duration="2988000" />
       <workItem from="1705912485120" duration="4676000" />
       <workItem from="1705944027953" duration="1306000" />
-      <workItem from="1705989846962" duration="7013000" />
+      <workItem from="1705989846962" duration="7777000" />
+      <workItem from="1706363566902" duration="40000" />
+      <workItem from="1707380561274" duration="20000" />
+      <workItem from="1707380587069" duration="1851000" />
     </task>
     <servers />
   </component>

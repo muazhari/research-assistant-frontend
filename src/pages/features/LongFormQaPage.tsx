@@ -83,7 +83,7 @@ export default function LongFormQaPage() {
                 granularity: "sentence",
                 windowSizes: "1,3,6",
                 querySetting: {
-                    prefix: "query: ",
+                    prefix: "Represent this sentence for searching relevant passages: ",
                     hydeSetting: {
                         isUse: true,
                         generator: {
@@ -105,7 +105,7 @@ export default function LongFormQaPage() {
                         startPage: 1,
                         endPage: fileDocumentProperty?.pageLength,
                     },
-                    prefix: "passage: "
+                    prefix: ""
                 },
                 denseRetriever: {
                     topK: 100,
@@ -118,7 +118,7 @@ export default function LongFormQaPage() {
                         passageModel: "vblagoje/dpr-ctx_encoder-single-lfqa-wiki",
                         apiKey: "",
                         model: "BAAI/bge-large-en-v1.5",
-                        numIterations: 2,
+                        numIterations: 1,
                     }
                 },
                 sparseRetriever: {
@@ -196,7 +196,7 @@ export default function LongFormQaPage() {
                         passageModel: "voidful/dpr-ctx_encoder-bert-base-multilingual",
                         apiKey: "",
                         model: "intfloat/multilingual-e5-large",
-                        numIterations: 2,
+                        numIterations: 1,
                     }
                 },
                 sparseRetriever: {
