@@ -1,10 +1,10 @@
-import DocumentCreateBody from "../documents/CreateBody.ts";
+import DocumentCreateBody from '../documents/CreateBody.ts'
 
 export default class CreateBody extends DocumentCreateBody {
-    webUrl?: string;
+  webUrl?: string
 
-    constructor(name?: string, description?: string, documentTypeId?: string, accountId?: string, webUrl?: string) {
-        super(name, description, documentTypeId, accountId);
-        this.webUrl = webUrl;
-    }
+  constructor (name?: string, description?: string, documentTypeId?: string, accountId?: string, webUrl?: string) {
+    super(name, description, documentTypeId, accountId)
+    this.webUrl = webUrl
+  }
 }

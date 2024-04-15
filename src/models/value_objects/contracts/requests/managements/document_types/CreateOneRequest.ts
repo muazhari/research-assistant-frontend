@@ -1,11 +1,11 @@
-import Request from "../../Request.ts";
-import CreateBody from "./CreateBody.ts";
+import Request from '../../Request.ts'
+import type CreateBody from './CreateBody.ts'
 
 export default class CreateOneRequest extends Request {
-    body?: CreateBody
+  body?: CreateBody
 
-    constructor(body?: CreateBody) {
-        super();
-        this.body = body;
-    }
+  constructor (body?: CreateBody) {
+    super()
+    this.body = body
+  }
 }

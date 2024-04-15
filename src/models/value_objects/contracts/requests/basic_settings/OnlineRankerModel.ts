@@ -1,10 +1,10 @@
-import BaseRankerModel from "./BaseRankerModel.ts";
+import BaseRankerModel from './BaseRankerModel.ts'
 
 export default class OnlineRankerModel extends BaseRankerModel {
-    apiKey?: string;
+  apiKey?: string
 
-    constructor(model?: string, apiKey?: string) {
-        super(model)
-        this.apiKey = apiKey;
-    }
+  constructor (model?: string, apiKey?: string) {
+    super(model)
+    this.apiKey = apiKey
+  }
 }

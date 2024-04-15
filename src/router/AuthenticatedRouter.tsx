@@ -1,14 +1,13 @@
-import {BrowserRouter, Navigate, Route, Routes} from "react-router-dom";
-import DocumentManagementPage from "../pages/managements/DocumentManagementPage.tsx";
-import NotFoundPage from "../pages/NotFound.tsx";
-import PassageSearch from "../pages/features/PassageSearchPage.tsx";
-import LongFormQA from "../pages/features/LongFormQaPage.tsx";
-import AuthenticatedNavBarComponent from "../components/navigation_bars/AuthenticatedNavBarComponent.tsx";
+import { BrowserRouter, Navigate, Route, Routes } from 'react-router-dom'
+import DocumentManagementPage from '../pages/managements/DocumentManagementPage.tsx'
+import NotFoundPage from '../pages/NotFound.tsx'
+import PassageSearch from '../pages/features/PassageSearchPage.tsx'
+import LongFormQA from '../pages/features/LongFormQaPage.tsx'
+import AuthenticatedNavBarComponent from '../components/navigation_bars/AuthenticatedNavBarComponent.tsx'
+import React from 'react'
 
-export default function AuthenticatedRouter() {
-
-
-    return (
+export default function AuthenticatedRouter (): React.JSX.Element {
+  return (
         <BrowserRouter>
             <AuthenticatedNavBarComponent/>
             <Routes>
@@ -19,5 +18,5 @@ export default function AuthenticatedRouter() {
                 <Route path="*" element={<NotFoundPage/>}/>
             </Routes>
         </BrowserRouter>
-    )
+  )
 }

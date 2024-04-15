@@ -1,10 +1,10 @@
-import Request from "../../Request.ts";
+import Request from '../../Request.ts'
 
 export default class DeleteOneByIdRequest extends Request {
-    id?: string 
+  id?: string
 
-    constructor(id?: string) {
-        super();
-        this.id = id;
-    }
+  constructor (id?: string) {
+    super()
+    this.id = id
+  }
 }

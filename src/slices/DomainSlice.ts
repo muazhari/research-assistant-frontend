@@ -1,118 +1,114 @@
-import {createSlice} from '@reduxjs/toolkit';
-import Account from "../models/entities/Account.ts";
-import Document from "../models/entities/Document.ts";
-import DocumentType from "../models/entities/DocumentType.ts";
-import FileDocument from "../models/entities/FileDocument.ts";
-import TextDocument from "../models/entities/TextDocument.ts";
-import WebDocument from "../models/entities/WebDocument.ts";
-import FileDocumentPropertyResponse
-    from "../models/value_objects/contracts/response/managements/FileDocumentPropertyResponse.ts";
-import QaResponse from "../models/value_objects/contracts/response/long_form_qas/QaResponse.ts";
-import SearchResponse from "../models/value_objects/contracts/response/passage_searchs/SearchResponse.ts";
+import { createSlice } from '@reduxjs/toolkit'
+import type Account from '../models/entities/Account.ts'
+import type Document from '../models/entities/Document.ts'
+import type DocumentType from '../models/entities/DocumentType.ts'
+import type FileDocument from '../models/entities/FileDocument.ts'
+import type TextDocument from '../models/entities/TextDocument.ts'
+import type WebDocument from '../models/entities/WebDocument.ts'
+import type FileDocumentPropertyResponse
+  from '../models/value_objects/contracts/response/managements/FileDocumentPropertyResponse.ts'
+import type QaResponse from '../models/value_objects/contracts/response/long_form_qas/QaResponse.ts'
+import type SearchResponse from '../models/value_objects/contracts/response/passage_searchs/SearchResponse.ts'
 
-
-export function getDocumentTableRows(documents: Document[], documentTypes: DocumentType[]) {
-    return documents.map((document) => {
-        return {
-            id: document.id,
-            name: document.name,
-            description: document.description,
-            documentTypeId: document.documentTypeId,
-            accountId: document.accountId,
-            documentTypeName: documentTypes?.find((documentType) => {
-                return documentType.id === document.documentTypeId
-            })?.name
-        }
-    })
+export function getDocumentTableRows (documents: Document[], documentTypes: DocumentType[]): DocumentTableRow[] {
+  return documents.map((document) => {
+    return {
+      id: document.id,
+      name: document.name,
+      description: document.description,
+      documentTypeId: document.documentTypeId,
+      accountId: document.accountId,
+      documentTypeName: documentTypes.find((documentType) => {
+        return documentType.id === document.documentTypeId
+      })!.name
+    }
+  })
 }
 
 export interface DocumentTableRow {
-    id: string | undefined,
-    name: string | undefined,
-    description: string | undefined,
-    documentTypeName: string | undefined,
-    documentTypeId: string | undefined,
-    accountId: string | undefined,
+  id?: string
+  name?: string
+  description?: string
+  documentTypeName?: string
+  documentTypeId?: string
+  accountId?: string
 }
 
-
 export interface AccountDomain {
-    currentAccount: Account | undefined
+  currentAccount?: Account
 }
 
 export interface DocumentDomain {
-    accountDocuments: Document[] | undefined
-    documentTypes: DocumentType[] | undefined
+  accountDocuments?: Document[]
+  documentTypes?: DocumentType[]
 }
 
 export interface ModalDomain {
-    isShow: boolean | undefined;
-    name: string | undefined;
+  isShow?: boolean
+  name?: string
 }
 
 export interface CurrentDomain {
-    account: Account | undefined
-    document: Document | undefined
-    documentType: DocumentType | undefined
-    fileDocument: FileDocument | undefined,
-    textDocument: TextDocument | undefined,
-    webDocument: WebDocument | undefined,
-    qaResponse: QaResponse | undefined,
-    searchResponse: SearchResponse | undefined,
-    fileDocumentProperty: FileDocumentPropertyResponse | undefined,
-    documentTableRows: DocumentTableRow[] | undefined,
+  account?: Account
+  document?: Document
+  documentType?: DocumentType
+  fileDocument?: FileDocument
+  textDocument?: TextDocument
+  webDocument?: WebDocument
+  qaResponse?: QaResponse
+  searchResponse?: SearchResponse
+  fileDocumentProperty?: FileDocumentPropertyResponse
+  documentTableRows?: DocumentTableRow[]
 }
 
-
 export interface DomainState {
-    accountDomain: AccountDomain
-    documentDomain: DocumentDomain
-    currentDomain: CurrentDomain
-    modalDomain: ModalDomain
+  accountDomain?: AccountDomain
+  documentDomain?: DocumentDomain
+  currentDomain?: CurrentDomain
+  modalDomain?: ModalDomain
+}
+
+const initialState: DomainState = {
+  accountDomain: {
+    currentAccount: undefined
+  },
+  documentDomain: {
+    accountDocuments: [],
+    documentTypes: []
+  },
+  modalDomain: {
+    isShow: false,
+    name: undefined
+  },
+  currentDomain: {
+    account: undefined,
+    document: undefined,
+    documentType: undefined,
+    fileDocument: undefined,
+    textDocument: undefined,
+    webDocument: undefined,
+    qaResponse: undefined,
+    searchResponse: undefined,
+    fileDocumentProperty: undefined,
+    documentTableRows: []
+  }
 }
 
 export default createSlice({
-    name: 'domain',
-    initialState: <DomainState>{
-        accountDomain: <AccountDomain>{
-            currentAccount: undefined
-        },
-        documentDomain: <DocumentDomain>{
-            accountDocuments: [],
-            documentTypes: []
-        },
-        modalDomain: <ModalDomain>{
-            isShow: false,
-            name: undefined
-        },
-        currentDomain: <CurrentDomain>{
-            account: undefined,
-            document: undefined,
-            documentType: undefined,
-            fileDocument: undefined,
-            textDocument: undefined,
-            webDocument: undefined,
-            qaResponse: undefined,
-            searchResponse: undefined,
-            fileDocumentProperty: undefined,
-            documentTableRows: [],
-        }
+  name: 'domain',
+  initialState,
+  reducers: {
+    setAccountDomain: (state, action) => {
+      state.accountDomain = { ...state.accountDomain, ...action.payload }
     },
-    reducers: {
-        setAccountDomain: (state, action) => {
-            state.accountDomain = {...state.accountDomain, ...action.payload};
-        },
-        setDocumentDomain: (state, action) => {
-            state.documentDomain = {...state.documentDomain, ...action.payload};
-        },
-        setModalDomain: (state, action) => {
-            state.modalDomain = {...state.modalDomain, ...action.payload};
-        },
-        setCurrentDomain: (state, action) => {
-            state.currentDomain = {...state.currentDomain, ...action.payload};
-        },
+    setDocumentDomain: (state, action) => {
+      state.documentDomain = { ...state.documentDomain, ...action.payload }
     },
-});
-
-
-
+    setModalDomain: (state, action) => {
+      state.modalDomain = { ...state.modalDomain, ...action.payload }
+    },
+    setCurrentDomain: (state, action) => {
+      state.currentDomain = { ...state.currentDomain, ...action.payload }
+    }
+  }
+})

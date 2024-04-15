@@ -5,11 +5,20 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="67558acb-1948-4a06-8aee-1a140c430703" name="Changes" comment="">
+      <change beforePath="$PROJECT_DIR$/.env" beforeDir="false" afterPath="$PROJECT_DIR$/.env" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.env.production" beforeDir="false" afterPath="$PROJECT_DIR$/.env.production" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.eslintrc.json" beforeDir="false" afterPath="$PROJECT_DIR$/.eslintrc.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/research-assistant-frontend.iml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/research-assistant-frontend.iml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/dist/assets/index-29c2b2bc.js" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/dist/index.html" beforeDir="false" afterPath="$PROJECT_DIR$/dist/index.html" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/pages/features/LongFormQaPage.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/pages/features/LongFormQaPage.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/pages/features/PassageSearchPage.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/pages/features/PassageSearchPage.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/bun.lockb" beforeDir="false" afterPath="$PROJECT_DIR$/bun.lockb" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/docker-compose.yml" beforeDir="false" afterPath="$PROJECT_DIR$/docker-compose.yml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/package-lock.json" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/package.json" beforeDir="false" afterPath="$PROJECT_DIR$/package.json" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/App.scss" beforeDir="false" afterPath="$PROJECT_DIR$/src/App.scss" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/App.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/App.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/index.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/index.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/main.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/tsconfig.json" beforeDir="false" afterPath="$PROJECT_DIR$/tsconfig.json" afterDir="false" />
     </list>
     <list id="a7cadf68-e7dd-4100-82ff-87108b6e6aff" name="Changes by avwan" comment="" />
     <option name="SHOW_DIALOG" value="false" />
@@ -53,10 +62,14 @@
     "SHARE_PROJECT_CONFIGURATION_FILES": "true",
     "WebServerToolWindowFactoryState": "false",
     "codeWithMe.voiceChat.enabledByDefault": "false",
-    "last_opened_file_path": "C:/Data/Apps/research-assistant-frontend/src/models/value_objects/contracts/requests/basic_settings",
+    "javascript.nodejs.core.library.configured.version": "21.7.1",
+    "javascript.nodejs.core.library.typings.version": "20.12.7",
+    "last_opened_file_path": "C:/Data/Apps/research-assistant-frontend",
     "node.js.detected.package.eslint": "true",
+    "node.js.detected.package.standard": "true",
     "node.js.detected.package.tslint": "true",
     "node.js.selected.package.eslint": "(autodetect)",
+    "node.js.selected.package.standard": "",
     "node.js.selected.package.tslint": "(autodetect)",
     "nodejs_package_manager_path": "yarn",
     "run.code.analysis.last.selected.profile": "pProject Default",
@@ -67,11 +80,11 @@
 }]]></component>
   <component name="RecentsManager">
     <key name="CopyFile.RECENT_KEYS">
+      <recent name="C:\Data\Apps\research-assistant-frontend" />
       <recent name="C:\Data\Apps\research-assistant-frontend\src\models\value_objects\contracts\requests\basic_settings" />
       <recent name="C:\Data\Apps\research-assistant-frontend\src\models\value_objects\contracts\requests\passage_searchs" />
       <recent name="C:\Data\Apps\research-assistant-frontend\src\slices" />
       <recent name="C:\Data\Apps\research-assistant-frontend\src\models\value_objects\contracts\response\managements" />
-      <recent name="C:\Data\Apps\research-assistant-frontend\src\components\long_form_qas" />
     </key>
     <key name="MoveFile.RECENT_KEYS">
       <recent name="C:\Data\Apps\research-assistant-frontend\src\pages\features" />
@@ -106,6 +119,13 @@
       <item itemvalue="Docker.compose-1" />
       <item itemvalue="npm.run-1" />
     </list>
+  </component>
+  <component name="SharedIndexes">
+    <attachedChunks>
+      <set>
+        <option value="bundled-js-predefined-1d06a55b98c1-74d2a5396914-JavaScript-WS-241.14494.235" />
+      </set>
+    </attachedChunks>
   </component>
   <component name="SpellCheckerSettings" RuntimeDictionaries="0" Folders="0" CustomDictionaries="0" DefaultDictionary="application-level" UseSingleDictionary="true" transferred="true" />
   <component name="TaskManager">

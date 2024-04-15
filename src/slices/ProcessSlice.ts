@@ -1,21 +1,19 @@
-import {createSlice} from '@reduxjs/toolkit';
-
+import { createSlice } from '@reduxjs/toolkit'
 
 export interface ProcessState {
-    isLoading: boolean | undefined;
+  isLoading?: boolean
+}
+
+const initialState: ProcessState = {
+  isLoading: false
 }
 
 export default createSlice({
-    name: 'process',
-    initialState: <ProcessState>{
-        isLoading: false,
-    },
-    reducers: {
-        set(state, action) {
-            state.isLoading = action.payload.isLoading;
-        }
-    },
-});
-
-
-
+  name: 'process',
+  initialState,
+  reducers: {
+    set (state, action) {
+      state.isLoading = action.payload.isLoading
+    }
+  }
+})

@@ -1,13 +1,12 @@
-import {BrowserRouter, Navigate, Route, Routes} from "react-router-dom";
-import LoginPage from "../pages/authentications/LoginPage.tsx";
-import RegisterPage from "../pages/authentications/RegisterPage.tsx";
-import NotFoundPage from "../pages/NotFound.tsx";
-import UnAuthenticatedNavBarComponent from "../components/navigation_bars/UnAuthenticatedNavBarComponent.tsx";
+import { BrowserRouter, Navigate, Route, Routes } from 'react-router-dom'
+import LoginPage from '../pages/authentications/LoginPage.tsx'
+import RegisterPage from '../pages/authentications/RegisterPage.tsx'
+import NotFoundPage from '../pages/NotFound.tsx'
+import UnAuthenticatedNavBarComponent from '../components/navigation_bars/UnAuthenticatedNavBarComponent.tsx'
+import React from 'react'
 
-export default function UnAuthenticatedRouter() {
-
-
-    return (
+export default function UnAuthenticatedRouter (): React.JSX.Element {
+  return (
         <BrowserRouter>
             <UnAuthenticatedNavBarComponent/>
             <Routes>
@@ -17,5 +16,5 @@ export default function UnAuthenticatedRouter() {
                 <Route path="*" element={<NotFoundPage/>}/>
             </Routes>
         </BrowserRouter>
-    )
+  )
 }

@@ -1,6 +1,6 @@
-import Client from "../clients/Client.ts";
+import type Client from '../clients/Client.ts'
 
 export default abstract class Service {
-    abstract client: Client;
-    abstract path: string;
+  abstract client: Client
+  abstract path: string
 }

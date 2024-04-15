@@ -1,10 +1,10 @@
-import Request from "../../Request.ts";
+import Request from '../../Request.ts'
 
 export default class ReadAllByAccountIdRequest extends Request {
-    accountId?: string 
+  accountId?: string
 
-    constructor(accountId?: string) {
-        super();
-        this.accountId = accountId;
-    }
+  constructor (accountId?: string) {
+    super()
+    this.accountId = accountId
+  }
 }

@@ -1,8 +1,7 @@
-import BaseRankerModel from "./BaseRankerModel.ts";
+import BaseRankerModel from './BaseRankerModel.ts'
 
 export default class SentenceTransformersRankerModel extends BaseRankerModel {
-
-    constructor(model?: string) {
-        super(model)
-    }
+  constructor (model?: string) {
+    super(model)
+  }
 }

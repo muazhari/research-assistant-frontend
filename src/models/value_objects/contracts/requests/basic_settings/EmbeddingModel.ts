@@ -1,10 +1,10 @@
-import Request from "../Request.ts";
+import Request from '../Request.ts'
 
 export default class EmbeddingModel extends Request {
-    dimension?: number;
+  dimension?: number
 
-    constructor(dimension?: number) {
-        super()
-        this.dimension = dimension;
-    }
+  constructor (dimension?: number) {
+    super()
+    this.dimension = dimension
+  }
 }

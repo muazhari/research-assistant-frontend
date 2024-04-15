@@ -1,10 +1,10 @@
-import Request from "../Request.ts";
+import Request from '../Request.ts'
 
 export default class GeneratorModel extends Request {
-    model?: string;
+  model?: string
 
-    constructor(model?: string) {
-        super()
-        this.model = model;
-    }
+  constructor (model?: string) {
+    super()
+    this.model = model
+  }
 }

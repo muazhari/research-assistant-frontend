@@ -2,11 +2,11 @@ services:
   app:
     build: .
     ports:
-      - "${APP_PORT}:3000"
+      - "${APP_PORT}:${APP_PORT}"
     volumes:
       - ".:/app"
       - "/app/node_modules"
-    entrypoint: [ "/bin/bash", "-c" ]
+    entrypoint: [ "bun" ]
     command:
-      - | 
-        yarn build && yarn serve
+      - run
+      - start 
