@@ -4,8 +4,8 @@ import * as Yup from 'yup'
 import { Link } from 'react-router-dom'
 import React from 'react'
 import AuthenticationService from '../../services/AuthenticationService.ts'
-import type Content from '../../models/value_objects/contracts/Content.ts'
-import type RegisterResponse from '../../models/value_objects/contracts/response/authentications/RegisterResponse.ts'
+import type Content from '../../models/dtos/contracts/Content.ts'
+import type RegisterResponse from '../../models/dtos/contracts/response/authentications/RegisterResponse.ts'
 
 export default function RegisterPage (): React.JSX.Element {
   const authenticationService = new AuthenticationService()

@@ -4,10 +4,10 @@ import domainSlice, { type DocumentTableRow, type DomainState, getDocumentTableR
 import { useDispatch, useSelector } from 'react-redux'
 import { type RootState } from '../../slices/Store.ts'
 import { type AuthenticationState } from '../../slices/AuthenticationSlice.ts'
-import type Content from '../../models/value_objects/contracts/Content.ts'
+import type Content from '../../models/dtos/contracts/Content.ts'
 
-import type Document from '../../models/entities/Document.ts'
-import type DocumentType from '../../models/entities/DocumentType.ts'
+import type Document from '../../models/daos/Document.ts'
+import type DocumentType from '../../models/daos/DocumentType.ts'
 import DetailModalComponent from '../../components/managements/documents/DetailModalComponent.tsx'
 import InsertModalComponent from '../../components/managements/documents/InsertModalComponent.tsx'
 import React, { useEffect } from 'react'

@@ -1,15 +1,13 @@
 import Service from './Service.ts'
 import type Client from '../clients/Client.ts'
 import BackendOneClient from '../clients/BackendOneClient.ts'
-import type CreateOneRequest from '../models/value_objects/contracts/requests/managements/accounts/CreateOneRequest.ts'
-import type DeleteOneByIdRequest
-  from '../models/value_objects/contracts/requests/managements/accounts/DeleteOneByIdRequest.ts'
+import type CreateOneRequest from '../models/dtos/contracts/requests/managements/accounts/CreateOneRequest.ts'
+import type DeleteOneByIdRequest from '../models/dtos/contracts/requests/managements/accounts/DeleteOneByIdRequest.ts'
 import { type AxiosResponse } from 'axios'
-import type ReadOneByIdRequest
-  from '../models/value_objects/contracts/requests/managements/accounts/ReadOneByIdRequest.ts'
-import type PatchOneByIdRequest from '../models/value_objects/contracts/requests/managements/accounts/PatchOneById.ts'
-import type Account from '../models/entities/Account.ts'
-import type Content from '../models/value_objects/contracts/Content.ts'
+import type ReadOneByIdRequest from '../models/dtos/contracts/requests/managements/accounts/ReadOneByIdRequest.ts'
+import type PatchOneByIdRequest from '../models/dtos/contracts/requests/managements/accounts/PatchOneById.ts'
+import type Account from '../models/daos/Account.ts'
+import type Content from '../models/dtos/contracts/Content.ts'
 
 export default class AccountService extends Service {
   client: Client

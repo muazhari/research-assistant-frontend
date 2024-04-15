@@ -5,20 +5,118 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="67558acb-1948-4a06-8aee-1a140c430703" name="Changes" comment="">
-      <change beforePath="$PROJECT_DIR$/.env" beforeDir="false" afterPath="$PROJECT_DIR$/.env" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.env.production" beforeDir="false" afterPath="$PROJECT_DIR$/.env.production" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.eslintrc.json" beforeDir="false" afterPath="$PROJECT_DIR$/.eslintrc.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/research-assistant-frontend.iml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/research-assistant-frontend.iml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/models/daos/DocumentProcess.ts" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/models/daos/Session.ts" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/models/dtos/contracts/requests/authentications/LoginBody.ts" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/models/dtos/contracts/requests/authentications/RegisterBody.ts" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/models/dtos/contracts/requests/long_form_qas/InputSetting.ts" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/models/dtos/contracts/requests/long_form_qas/ProcessBody.ts" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/models/dtos/contracts/requests/managements/accounts/CreateBody.ts" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/models/dtos/contracts/requests/managements/accounts/PatchBody.ts" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/models/dtos/contracts/requests/passage_searches/ProcessBody.ts" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/bun.lockb" beforeDir="false" afterPath="$PROJECT_DIR$/bun.lockb" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/docker-compose.yml" beforeDir="false" afterPath="$PROJECT_DIR$/docker-compose.yml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/package-lock.json" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/package.json" beforeDir="false" afterPath="$PROJECT_DIR$/package.json" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/App.scss" beforeDir="false" afterPath="$PROJECT_DIR$/src/App.scss" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/App.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/App.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/index.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/index.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/main.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/tsconfig.json" beforeDir="false" afterPath="$PROJECT_DIR$/tsconfig.json" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/components/features/SelectModalComponent.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/features/SelectModalComponent.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/components/managements/documents/DetailModalComponent.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/managements/documents/DetailModalComponent.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/components/managements/documents/InsertModalComponent.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/managements/documents/InsertModalComponent.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/models/entities/Account.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/models/daos/Account.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/models/entities/Document.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/models/daos/Document.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/models/entities/DocumentType.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/models/daos/DocumentType.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/models/entities/Entity.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/models/daos/Dao.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/models/entities/FileDocument.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/models/daos/FileDocument.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/models/entities/TextDocument.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/models/daos/TextDocument.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/models/entities/WebDocument.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/models/daos/WebDocument.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/models/value_objects/ValueObject.ts" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/models/value_objects/contracts/Content.ts" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/models/value_objects/contracts/requests/Request.ts" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/models/value_objects/contracts/requests/authentications/LoginBody.ts" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/models/value_objects/contracts/requests/authentications/LoginRequest.ts" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/models/value_objects/contracts/requests/authentications/RegisterBody.ts" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/models/value_objects/contracts/requests/authentications/RegisterRequest.ts" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/models/value_objects/contracts/requests/basic_settings/BaseRankerModel.ts" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/models/value_objects/contracts/requests/basic_settings/DenseEmbeddingModel.ts" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/models/value_objects/contracts/requests/basic_settings/DenseRetriever.ts" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/models/value_objects/contracts/requests/basic_settings/DocumentSetting.ts" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/models/value_objects/contracts/requests/basic_settings/EmbeddingModel.ts" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/models/value_objects/contracts/requests/basic_settings/FileDocumentSetting.ts" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/models/value_objects/contracts/requests/basic_settings/Generator.ts" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/models/value_objects/contracts/requests/basic_settings/GeneratorModel.ts" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/models/value_objects/contracts/requests/basic_settings/HydeSetting.ts" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/models/value_objects/contracts/requests/basic_settings/MultihopEmbeddingModel.ts" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/models/value_objects/contracts/requests/basic_settings/OnlineEmbeddingModel.ts" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/models/value_objects/contracts/requests/basic_settings/OnlineGeneratorModel.ts" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/models/value_objects/contracts/requests/basic_settings/OnlineRankerModel.ts" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/models/value_objects/contracts/requests/basic_settings/OutputSeting.ts" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/models/value_objects/contracts/requests/basic_settings/QuerySetting.ts" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/models/value_objects/contracts/requests/basic_settings/Ranker.ts" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/models/value_objects/contracts/requests/basic_settings/Retriever.ts" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/models/value_objects/contracts/requests/basic_settings/SentenceTransformersRankerModel.ts" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/models/value_objects/contracts/requests/basic_settings/SparseRetriever.ts" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/models/value_objects/contracts/requests/basic_settings/TextDocumentSetting.ts" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/models/value_objects/contracts/requests/basic_settings/WebDocumentSetting.ts" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/models/value_objects/contracts/requests/long_form_qas/InputSetting.ts" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/models/value_objects/contracts/requests/long_form_qas/QaRequest.ts" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/models/value_objects/contracts/requests/managements/accounts/CreateBody.ts" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/models/value_objects/contracts/requests/managements/accounts/CreateOneRequest.ts" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/models/value_objects/contracts/requests/managements/accounts/DeleteOneByIdRequest.ts" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/models/value_objects/contracts/requests/managements/accounts/PatchBody.ts" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/models/value_objects/contracts/requests/managements/accounts/PatchOneById.ts" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/models/value_objects/contracts/requests/managements/accounts/ReadAllByAccountIdRequest.ts" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/models/value_objects/contracts/requests/managements/accounts/ReadOneByIdRequest.ts" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/models/value_objects/contracts/requests/managements/document_types/CreateBody.ts" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/models/value_objects/contracts/requests/managements/document_types/CreateOneRequest.ts" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/models/value_objects/contracts/requests/managements/document_types/DeleteOneByIdRequest.ts" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/models/value_objects/contracts/requests/managements/document_types/PatchBody.ts" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/models/value_objects/contracts/requests/managements/document_types/PatchOneById.ts" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/models/value_objects/contracts/requests/managements/document_types/ReadOneByIdRequest.ts" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/models/value_objects/contracts/requests/managements/documents/CreateBody.ts" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/models/value_objects/contracts/requests/managements/documents/CreateOneRequest.ts" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/models/value_objects/contracts/requests/managements/documents/DeleteOneByIdRequest.ts" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/models/value_objects/contracts/requests/managements/documents/PatchBody.ts" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/models/value_objects/contracts/requests/managements/documents/PatchOneById.ts" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/models/value_objects/contracts/requests/managements/documents/ReadOneByIdRequest.ts" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/models/value_objects/contracts/requests/managements/file_documents/CreateBody.ts" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/models/value_objects/contracts/requests/managements/file_documents/CreateOneRequest.ts" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/models/value_objects/contracts/requests/managements/file_documents/DeleteOneByIdRequest.ts" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/models/value_objects/contracts/requests/managements/file_documents/PatchBody.ts" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/models/value_objects/contracts/requests/managements/file_documents/PatchOneById.ts" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/models/value_objects/contracts/requests/managements/file_documents/ReadOneByIdRequest.ts" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/models/value_objects/contracts/requests/managements/text_documents/CreateBody.ts" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/models/value_objects/contracts/requests/managements/text_documents/CreateOneRequest.ts" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/models/value_objects/contracts/requests/managements/text_documents/DeleteOneByIdRequest.ts" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/models/value_objects/contracts/requests/managements/text_documents/PatchBody.ts" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/models/value_objects/contracts/requests/managements/text_documents/PatchOneById.ts" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/models/value_objects/contracts/requests/managements/text_documents/ReadOneByIdRequest.ts" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/models/value_objects/contracts/requests/managements/web_documents/CreateBody.ts" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/models/value_objects/contracts/requests/managements/web_documents/CreateOneRequest.ts" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/models/value_objects/contracts/requests/managements/web_documents/DeleteOneByIdRequest.ts" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/models/value_objects/contracts/requests/managements/web_documents/PatchBody.ts" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/models/value_objects/contracts/requests/managements/web_documents/PatchOneById.ts" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/models/value_objects/contracts/requests/managements/web_documents/ReadOneByIdRequest.ts" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/models/value_objects/contracts/requests/passage_searchs/InputSetting.ts" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/models/value_objects/contracts/requests/passage_searchs/SearchRequest.ts" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/models/value_objects/contracts/response/Response.ts" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/models/value_objects/contracts/response/authentications/LoginResponse.ts" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/models/value_objects/contracts/response/authentications/RegisterResponse.ts" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/models/value_objects/contracts/response/long_form_qas/QaResponse.ts" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/models/value_objects/contracts/response/managements/FileDocumentPropertyResponse.ts" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/models/value_objects/contracts/response/passage_searchs/RetrievedDocument.ts" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/models/value_objects/contracts/response/passage_searchs/SearchResponse.ts" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/pages/authentications/LoginPage.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/pages/authentications/LoginPage.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/pages/authentications/RegisterPage.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/pages/authentications/RegisterPage.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/pages/features/LongFormQaPage.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/pages/features/LongFormQaPage.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/pages/features/PassageSearchPage.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/pages/features/PassageSearchPage.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/pages/managements/DocumentManagementPage.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/pages/managements/DocumentManagementPage.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/services/AccountService.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/services/AccountService.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/services/AuthenticationService.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/services/AuthenticationService.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/services/DocumentService.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/services/DocumentService.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/services/DocumentTypeService.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/services/DocumentTypeService.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/services/FileDocumentService.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/services/FileDocumentService.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/services/LongFormQaService.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/services/LongFormQaService.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/services/PassageSearchService.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/services/PassageSearchService.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/services/TextDocumentService.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/services/TextDocumentService.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/services/WebDocumentService.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/services/WebDocumentService.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/slices/AuthenticationSlice.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/slices/AuthenticationSlice.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/slices/DomainSlice.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/slices/DomainSlice.ts" afterDir="false" />
     </list>
     <list id="a7cadf68-e7dd-4100-82ff-87108b6e6aff" name="Changes by avwan" comment="" />
     <option name="SHOW_DIALOG" value="false" />
@@ -64,7 +162,7 @@
     "codeWithMe.voiceChat.enabledByDefault": "false",
     "javascript.nodejs.core.library.configured.version": "21.7.1",
     "javascript.nodejs.core.library.typings.version": "20.12.7",
-    "last_opened_file_path": "C:/Data/Apps/research-assistant-frontend",
+    "last_opened_file_path": "C:/Data/Apps/research-assistant-frontend/src/models/daos",
     "node.js.detected.package.eslint": "true",
     "node.js.detected.package.standard": "true",
     "node.js.detected.package.tslint": "true",
@@ -80,13 +178,14 @@
 }]]></component>
   <component name="RecentsManager">
     <key name="CopyFile.RECENT_KEYS">
+      <recent name="C:\Data\Apps\research-assistant-frontend\src\models\daos" />
+      <recent name="C:\Data\Apps\research-assistant-frontend\src\models\dtos\contracts\requests\long_form_qas" />
+      <recent name="C:\Data\Apps\research-assistant-frontend\src\models\dtos\contracts\requests\passage_searchs" />
       <recent name="C:\Data\Apps\research-assistant-frontend" />
       <recent name="C:\Data\Apps\research-assistant-frontend\src\models\value_objects\contracts\requests\basic_settings" />
-      <recent name="C:\Data\Apps\research-assistant-frontend\src\models\value_objects\contracts\requests\passage_searchs" />
-      <recent name="C:\Data\Apps\research-assistant-frontend\src\slices" />
-      <recent name="C:\Data\Apps\research-assistant-frontend\src\models\value_objects\contracts\response\managements" />
     </key>
     <key name="MoveFile.RECENT_KEYS">
+      <recent name="C:\Data\Apps\research-assistant-frontend\src\models\dtos" />
       <recent name="C:\Data\Apps\research-assistant-frontend\src\pages\features" />
       <recent name="C:\Data\Apps\research-assistant-frontend\src\models\value_objects\contracts\requests\basic_settings" />
       <recent name="C:\Data\Apps\research-assistant-frontend\src\models\value_objects\contracts\response\passage_searchs" />

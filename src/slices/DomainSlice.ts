@@ -1,14 +1,14 @@
 import { createSlice } from '@reduxjs/toolkit'
-import type Account from '../models/entities/Account.ts'
-import type Document from '../models/entities/Document.ts'
-import type DocumentType from '../models/entities/DocumentType.ts'
-import type FileDocument from '../models/entities/FileDocument.ts'
-import type TextDocument from '../models/entities/TextDocument.ts'
-import type WebDocument from '../models/entities/WebDocument.ts'
+import type Account from '../models/daos/Account.ts'
+import type Document from '../models/daos/Document.ts'
+import type DocumentType from '../models/daos/DocumentType.ts'
+import type FileDocument from '../models/daos/FileDocument.ts'
+import type TextDocument from '../models/daos/TextDocument.ts'
+import type WebDocument from '../models/daos/WebDocument.ts'
 import type FileDocumentPropertyResponse
-  from '../models/value_objects/contracts/response/managements/FileDocumentPropertyResponse.ts'
-import type QaResponse from '../models/value_objects/contracts/response/long_form_qas/QaResponse.ts'
-import type SearchResponse from '../models/value_objects/contracts/response/passage_searchs/SearchResponse.ts'
+  from '../models/dtos/contracts/response/managements/FileDocumentPropertyResponse.ts'
+import type ProcessResponse from '../models/dtos/contracts/response/long_form_qas/ProcessResponse.ts'
+import type ProcessResponse from '../models/dtos/contracts/response/passage_searchs/ProcessResponse.ts'
 
 export function getDocumentTableRows (documents: Document[], documentTypes: DocumentType[]): DocumentTableRow[] {
   return documents.map((document) => {
@@ -20,7 +20,7 @@ export function getDocumentTableRows (documents: Document[], documentTypes: Docu
       accountId: document.accountId,
       documentTypeName: documentTypes.find((documentType) => {
         return documentType.id === document.documentTypeId
-      })!.name
+      })!.id
     }
   })
 }
@@ -55,8 +55,8 @@ export interface CurrentDomain {
   fileDocument?: FileDocument
   textDocument?: TextDocument
   webDocument?: WebDocument
-  qaResponse?: QaResponse
-  searchResponse?: SearchResponse
+  qaProcess?: ProcessResponse
+  searchProcess?: ProcessResponse
   fileDocumentProperty?: FileDocumentPropertyResponse
   documentTableRows?: DocumentTableRow[]
 }
@@ -87,8 +87,8 @@ const initialState: DomainState = {
     fileDocument: undefined,
     textDocument: undefined,
     webDocument: undefined,
-    qaResponse: undefined,
-    searchResponse: undefined,
+    qaProcess: undefined,
+    searchProcess: undefined,
     fileDocumentProperty: undefined,
     documentTableRows: []
   }

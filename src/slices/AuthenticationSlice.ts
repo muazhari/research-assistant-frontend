@@ -1,5 +1,5 @@
 import { createSlice } from '@reduxjs/toolkit'
-import type Account from '../models/entities/Account.ts'
+import type Account from '../models/daos/Account.ts'
 import storage from 'redux-persist/lib/storage'
 
 export interface AuthenticationState {

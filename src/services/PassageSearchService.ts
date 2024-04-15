@@ -2,9 +2,9 @@ import Service from './Service.ts'
 import type Client from '../clients/Client.ts'
 import BackendOneClient from '../clients/BackendOneClient.ts'
 import { type AxiosResponse } from 'axios'
-import type Content from '../models/value_objects/contracts/Content.ts'
-import type SearchRequest from '../models/value_objects/contracts/requests/passage_searchs/SearchRequest.ts'
-import type SearchResponse from '../models/value_objects/contracts/response/passage_searchs/SearchResponse.ts'
+import type Content from '../models/dtos/contracts/Content.ts'
+import type ProcessRequest from '../models/dtos/contracts/requests/passage_searches/ProcessRequest.ts'
+import type ProcessResponse from '../models/dtos/contracts/response/passage_searchs/ProcessResponse.ts'
 
 export default class PassageSearchService extends Service {
   client: Client
@@ -17,7 +17,7 @@ export default class PassageSearchService extends Service {
     this.path = '/passage-search'
   }
 
-  async search (request: SearchRequest): Promise<AxiosResponse<Content<SearchResponse>>> {
+  async search (request: ProcessRequest): Promise<AxiosResponse<Content<ProcessResponse>>> {
     return await this.client.instance.post(`${this.path}`, request)
   }
 }

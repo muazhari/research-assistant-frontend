@@ -7,34 +7,28 @@ import { useFormik } from 'formik'
 import SelectModalComponent from '../../components/features/SelectModalComponent.tsx'
 import DetailModalComponent from '../../components/managements/documents/DetailModalComponent.tsx'
 import LongFormQaService from '../../services/LongFormQaService.ts'
-import type Content from '../../models/value_objects/contracts/Content.ts'
-import type QaResponse from '../../models/value_objects/contracts/response/long_form_qas/QaResponse.ts'
-import type QaRequest from '../../models/value_objects/contracts/requests/long_form_qas/QaRequest.ts'
-import type InputSetting from '../../models/value_objects/contracts/requests/long_form_qas/InputSetting.ts'
-import type DocumentSetting from '../../models/value_objects/contracts/requests/basic_settings/DocumentSetting.ts'
-import type DenseRetriever from '../../models/value_objects/contracts/requests/basic_settings/DenseRetriever.ts'
-import type SparseRetriever from '../../models/value_objects/contracts/requests/basic_settings/SparseRetriever.ts'
-import type Ranker from '../../models/value_objects/contracts/requests/basic_settings/Ranker.ts'
-import type Generator from '../../models/value_objects/contracts/requests/basic_settings/Generator.ts'
-import type FileDocumentSetting
-  from '../../models/value_objects/contracts/requests/basic_settings/FileDocumentSetting.ts'
-import type TextDocumentSetting
-  from '../../models/value_objects/contracts/requests/basic_settings/TextDocumentSetting.ts'
-import type WebDocumentSetting from '../../models/value_objects/contracts/requests/basic_settings/WebDocumentSetting.ts'
-import type DenseEmbeddingModel
-  from '../../models/value_objects/contracts/requests/basic_settings/DenseEmbeddingModel.ts'
-import type MultihopEmbeddingModel
-  from '../../models/value_objects/contracts/requests/basic_settings/MultihopEmbeddingModel.ts'
-import type OnlineEmbeddingModel
-  from '../../models/value_objects/contracts/requests/basic_settings/OnlineEmbeddingModel.ts'
-import type OnlineGeneratorModel
-  from '../../models/value_objects/contracts/requests/basic_settings/OnlineGeneratorModel.ts'
+import type Content from '../../models/dtos/contracts/Content.ts'
+import type ProcessResponse from '../../models/dtos/contracts/response/long_form_qas/ProcessResponse.ts'
+import type ProcessRequest from '../../models/dtos/contracts/requests/long_form_qas/ProcessRequest.ts'
+import type InputSetting from '../../models/dtos/contracts/requests/long_form_qas/InputSetting.ts'
+import type DocumentSetting from '../../models/dtos/contracts/requests/basic_settings/DocumentSetting.ts'
+import type DenseRetriever from '../../models/dtos/contracts/requests/basic_settings/DenseRetriever.ts'
+import type SparseRetriever from '../../models/dtos/contracts/requests/basic_settings/SparseRetriever.ts'
+import type Ranker from '../../models/dtos/contracts/requests/basic_settings/Ranker.ts'
+import type Generator from '../../models/dtos/contracts/requests/basic_settings/Generator.ts'
+import type FileDocumentSetting from '../../models/dtos/contracts/requests/basic_settings/FileDocumentSetting.ts'
+import type TextDocumentSetting from '../../models/dtos/contracts/requests/basic_settings/TextDocumentSetting.ts'
+import type WebDocumentSetting from '../../models/dtos/contracts/requests/basic_settings/WebDocumentSetting.ts'
+import type DenseEmbeddingModel from '../../models/dtos/contracts/requests/basic_settings/DenseEmbeddingModel.ts'
+import type MultihopEmbeddingModel from '../../models/dtos/contracts/requests/basic_settings/MultihopEmbeddingModel.ts'
+import type OnlineEmbeddingModel from '../../models/dtos/contracts/requests/basic_settings/OnlineEmbeddingModel.ts'
+import type OnlineGeneratorModel from '../../models/dtos/contracts/requests/basic_settings/OnlineGeneratorModel.ts'
 import processSlice, { type ProcessState } from '../../slices/ProcessSlice.ts'
 import type SentenceTransformersRankerModel
-  from '../../models/value_objects/contracts/requests/basic_settings/SentenceTransformersRankerModel.ts'
-import type OnlineRankerModel from '../../models/value_objects/contracts/requests/basic_settings/OnlineRankerModel.ts'
-import type QuerySetting from '../../models/value_objects/contracts/requests/basic_settings/QuerySetting.ts'
-import type HydeSetting from '../../models/value_objects/contracts/requests/basic_settings/HydeSetting.ts'
+  from '../../models/dtos/contracts/requests/basic_settings/SentenceTransformersRankerModel.ts'
+import type OnlineRankerModel from '../../models/dtos/contracts/requests/basic_settings/OnlineRankerModel.ts'
+import type QuerySetting from '../../models/dtos/contracts/requests/basic_settings/QuerySetting.ts'
+import type HydeSetting from '../../models/dtos/contracts/requests/basic_settings/HydeSetting.ts'
 
 export default function LongFormQaPage (): React.JSX.Element {
   const dispatch = useDispatch()
@@ -55,7 +49,7 @@ export default function LongFormQaPage (): React.JSX.Element {
   const {
     document,
     documentType,
-    qaResponse,
+    qaProcess,
     fileDocumentProperty
   } = domainState.currentDomain!
 
@@ -228,11 +222,11 @@ export default function LongFormQaPage (): React.JSX.Element {
       dispatch(processSlice.actions.set({
         isLoading: true
       }))
-      const qaRequest: QaRequest = getQaRequest(values)
+      const qaRequest: ProcessRequest = getQaRequest(values)
       longFormQaService
         .qa(qaRequest)
         .then((response) => {
-          const content: Content<QaResponse> = response.data
+          const content: Content<ProcessResponse> = response.data
           if (response.status === 200) {
             dispatch(domainSlice.actions.setCurrentDomain({
               qaResponse: content.data
@@ -266,7 +260,7 @@ export default function LongFormQaPage (): React.JSX.Element {
       })
   }, [account, document, fileDocumentProperty])
 
-  const getQaRequest = (values: any): QaRequest => {
+  const getQaRequest = (values: any): ProcessRequest => {
     const hydeGenerator: Generator = {
       sourceType: values.inputSetting.querySetting.hydeSetting.generator.sourceType,
       generatorModel: values.inputSetting.querySetting.hydeSetting.generator.generatorModel,
@@ -1025,14 +1019,14 @@ export default function LongFormQaPage (): React.JSX.Element {
             <div className="d-flex flex-column justify-content-center align-items-center w-75">
                 <h3>Process Duration</h3>
                 <p className="text-center">
-                    {qaResponse!.processDuration === undefined ? qaResponse!.processDuration + ' second(s).' : '...'}
+                    {qaProcess!.processDuration === undefined ? qaProcess!.processDuration + ' second(s).' : '...'}
                 </p>
             </div>
             <hr className="w-75 mb-3"/>
             <div className="d-flex flex-column justify-content-center align-items-center w-75">
                 <h3>Answer</h3>
                 <p style={{ textAlign: 'justify' }}>
-                    {qaResponse!.generatedAnswer ?? '...'}
+                    {qaProcess!.generatedAnswer ?? '...'}
                 </p>
             </div>
             <hr className="w-75 mb-3"/>
@@ -1049,8 +1043,8 @@ export default function LongFormQaPage (): React.JSX.Element {
                     </thead>
                     <tbody>
                     {
-                        qaResponse!.retrievedDocuments !== undefined
-                          ? [...qaResponse!.retrievedDocuments]
+                        qaProcess!.retrievedDocuments !== undefined
+                          ? [...qaProcess!.retrievedDocuments]
                               .sort((a, b) => b.score! - a.score!)
                               .map((document, index) => {
                                 return (

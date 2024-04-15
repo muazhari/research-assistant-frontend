@@ -7,37 +7,32 @@ import { type AuthenticationState } from '../../slices/AuthenticationSlice.ts'
 import { useFormik } from 'formik'
 import SelectModalComponent from '../../components/features/SelectModalComponent.tsx'
 import DetailModalComponent from '../../components/managements/documents/DetailModalComponent.tsx'
-import type Content from '../../models/value_objects/contracts/Content.ts'
-import type InputSetting from '../../models/value_objects/contracts/requests/passage_searchs/InputSetting.ts'
-import type DocumentSetting from '../../models/value_objects/contracts/requests/basic_settings/DocumentSetting.ts'
-import type DenseRetriever from '../../models/value_objects/contracts/requests/basic_settings/DenseRetriever.ts'
-import type SparseRetriever from '../../models/value_objects/contracts/requests/basic_settings/SparseRetriever.ts'
-import type Ranker from '../../models/value_objects/contracts/requests/basic_settings/Ranker.ts'
-import type FileDocumentSetting
-  from '../../models/value_objects/contracts/requests/basic_settings/FileDocumentSetting.ts'
-import type TextDocumentSetting
-  from '../../models/value_objects/contracts/requests/basic_settings/TextDocumentSetting.ts'
-import type WebDocumentSetting from '../../models/value_objects/contracts/requests/basic_settings/WebDocumentSetting.ts'
-import type DenseEmbeddingModel
-  from '../../models/value_objects/contracts/requests/basic_settings/DenseEmbeddingModel.ts'
-import type MultihopEmbeddingModel
-  from '../../models/value_objects/contracts/requests/basic_settings/MultihopEmbeddingModel.ts'
-import type OnlineEmbeddingModel
-  from '../../models/value_objects/contracts/requests/basic_settings/OnlineEmbeddingModel.ts'
-import type SearchRequest from '../../models/value_objects/contracts/requests/passage_searchs/SearchRequest.ts'
-import type OutputSetting from '../../models/value_objects/contracts/requests/basic_settings/OutputSeting.ts'
+import type Content from '../../models/dtos/contracts/Content.ts'
+import type InputSetting from '../../models/dtos/contracts/requests/passage_searches/InputSetting.ts'
+import type DocumentSetting from '../../models/dtos/contracts/requests/basic_settings/DocumentSetting.ts'
+import type DenseRetriever from '../../models/dtos/contracts/requests/basic_settings/DenseRetriever.ts'
+import type SparseRetriever from '../../models/dtos/contracts/requests/basic_settings/SparseRetriever.ts'
+import type Ranker from '../../models/dtos/contracts/requests/basic_settings/Ranker.ts'
+import type FileDocumentSetting from '../../models/dtos/contracts/requests/basic_settings/FileDocumentSetting.ts'
+import type TextDocumentSetting from '../../models/dtos/contracts/requests/basic_settings/TextDocumentSetting.ts'
+import type WebDocumentSetting from '../../models/dtos/contracts/requests/basic_settings/WebDocumentSetting.ts'
+import type DenseEmbeddingModel from '../../models/dtos/contracts/requests/basic_settings/DenseEmbeddingModel.ts'
+import type MultihopEmbeddingModel from '../../models/dtos/contracts/requests/basic_settings/MultihopEmbeddingModel.ts'
+import type OnlineEmbeddingModel from '../../models/dtos/contracts/requests/basic_settings/OnlineEmbeddingModel.ts'
+import type ProcessRequest from '../../models/dtos/contracts/requests/passage_searches/ProcessRequest.ts'
+import type OutputSetting from '../../models/dtos/contracts/requests/basic_settings/OutputSeting.ts'
 import PassageSearchService from '../../services/PassageSearchService.ts'
-import type SearchResponse from '../../models/value_objects/contracts/response/passage_searchs/SearchResponse.ts'
-import type DocumentType from '../../models/entities/DocumentType.ts'
+import type ProcessResponse from '../../models/dtos/contracts/response/passage_searchs/ProcessResponse.ts'
+import type DocumentType from '../../models/daos/DocumentType.ts'
 import processSlice, { type ProcessState } from '../../slices/ProcessSlice.ts'
 import b64toBlob from 'b64-to-blob'
-import type FileDocument from '../../models/entities/FileDocument.ts'
+import type FileDocument from '../../models/daos/FileDocument.ts'
 import type SentenceTransformersRankerModel
-  from '../../models/value_objects/contracts/requests/basic_settings/SentenceTransformersRankerModel.ts'
-import type OnlineRankerModel from '../../models/value_objects/contracts/requests/basic_settings/OnlineRankerModel.ts'
-import type QuerySetting from '../../models/value_objects/contracts/requests/basic_settings/QuerySetting.ts'
-import type HydeSetting from '../../models/value_objects/contracts/requests/basic_settings/HydeSetting.ts'
-import type Generator from '../../models/value_objects/contracts/requests/basic_settings/Generator.ts'
+  from '../../models/dtos/contracts/requests/basic_settings/SentenceTransformersRankerModel.ts'
+import type OnlineRankerModel from '../../models/dtos/contracts/requests/basic_settings/OnlineRankerModel.ts'
+import type QuerySetting from '../../models/dtos/contracts/requests/basic_settings/QuerySetting.ts'
+import type HydeSetting from '../../models/dtos/contracts/requests/basic_settings/HydeSetting.ts'
+import type Generator from '../../models/dtos/contracts/requests/basic_settings/Generator.ts'
 
 export default function PassageSearchPage (): React.JSX.Element {
   const dispatch = useDispatch()
@@ -56,7 +51,7 @@ export default function PassageSearchPage (): React.JSX.Element {
   const {
     document,
     documentType,
-    searchResponse,
+    searchProcess,
     fileDocumentProperty
   } = domainState.currentDomain!
 
@@ -213,11 +208,11 @@ export default function PassageSearchPage (): React.JSX.Element {
       dispatch(processSlice.actions.set({
         isLoading: true
       }))
-      const searchRequest: SearchRequest = getSearchRequest(values)
+      const searchRequest: ProcessRequest = getSearchRequest(values)
       passageSearchService
         .search(searchRequest)
         .then((response) => {
-          const content: Content<SearchResponse> = response.data
+          const content: Content<ProcessResponse> = response.data
           if (response.status === 200) {
             dispatch(domainSlice.actions.setCurrentDomain({
               searchResponse: content.data
@@ -269,7 +264,7 @@ export default function PassageSearchPage (): React.JSX.Element {
       })
   }, [account, document, fileDocumentProperty, documentTypes])
 
-  const getSearchRequest = (values: any): SearchRequest => {
+  const getSearchRequest = (values: any): ProcessRequest => {
     const hydeGenerator: Generator = {
       sourceType: values.inputSetting.querySetting.hydeSetting.generator.sourceType,
       generatorModel: values.inputSetting.querySetting.hydeSetting.generator.generatorModel,
@@ -970,17 +965,17 @@ export default function PassageSearchPage (): React.JSX.Element {
             <div className="d-flex flex-column justify-content-center align-items-center w-75">
                 <h3>Process Duration</h3>
                 <p className="text-center">
-                    {searchResponse!.processDuration === undefined ? searchResponse!.processDuration + ' second(s).' : '...'}
+                    {searchProcess!.processDuration === undefined ? searchProcess!.processDuration + ' second(s).' : '...'}
                 </p>
             </div>
             <hr className="w-75 mb-3"/>
             <div className="d-flex flex-column justify-content-center align-items-center w-75">
                 <h3>Highlighted Document</h3>
                 {
-                    searchResponse!.outputDocument !== undefined
+                    searchProcess!.outputDocument !== undefined
                       ? <embed
                             style={{ width: '100%', height: '100vh' }}
-                            src={base64PdfToBlobUrl((searchResponse!.outputDocument as FileDocument).fileBytes!)}
+                            src={base64PdfToBlobUrl((searchProcess!.outputDocument as FileDocument).fileBytes)}
                         />
                       : '...'
                 }
@@ -998,8 +993,8 @@ export default function PassageSearchPage (): React.JSX.Element {
                     </thead>
                     <tbody>
                     {
-                        searchResponse!.retrievedDocuments !== undefined
-                          ? [...searchResponse!.retrievedDocuments]
+                        searchProcess!.retrievedDocuments !== undefined
+                          ? [...searchProcess!.retrievedDocuments]
                               .sort((a, b) => b.score! - a.score!)
                               .map((document, index) => {
                                 return (

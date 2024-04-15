@@ -1,21 +1,18 @@
 import Service from './Service.ts'
 import type Client from '../clients/Client.ts'
 import BackendOneClient from '../clients/BackendOneClient.ts'
-import type CreateOneRequest
-  from '../models/value_objects/contracts/requests/managements/file_documents/CreateOneRequest.ts'
+import type CreateOneRequest from '../models/dtos/contracts/requests/managements/file_documents/CreateOneRequest.ts'
 import type DeleteOneByIdRequest
-  from '../models/value_objects/contracts/requests/managements/file_documents/DeleteOneByIdRequest.ts'
+  from '../models/dtos/contracts/requests/managements/file_documents/DeleteOneByIdRequest.ts'
 import { type AxiosResponse } from 'axios'
-import type ReadOneByIdRequest
-  from '../models/value_objects/contracts/requests/managements/file_documents/ReadOneByIdRequest.ts'
-import type PatchOneByIdRequest
-  from '../models/value_objects/contracts/requests/managements/file_documents/PatchOneById.ts'
-import type FileDocument from '../models/entities/FileDocument.ts'
-import type Content from '../models/value_objects/contracts/Content.ts'
+import type ReadOneByIdRequest from '../models/dtos/contracts/requests/managements/file_documents/ReadOneByIdRequest.ts'
+import type PatchOneByIdRequest from '../models/dtos/contracts/requests/managements/file_documents/PatchOneById.ts'
+import type FileDocument from '../models/daos/FileDocument.ts'
+import type Content from '../models/dtos/contracts/Content.ts'
 import type ReadAllByAccountIdRequest
-  from '../models/value_objects/contracts/requests/managements/accounts/ReadAllByAccountIdRequest.ts'
+  from '../models/dtos/contracts/requests/managements/accounts/ReadAllByAccountIdRequest.ts'
 import type FileDocumentPropertyResponse
-  from '../models/value_objects/contracts/response/managements/FileDocumentPropertyResponse.ts'
+  from '../models/dtos/contracts/response/managements/FileDocumentPropertyResponse.ts'
 
 export default class FileDocumentService extends Service {
   client: Client

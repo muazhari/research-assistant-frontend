@@ -5,12 +5,12 @@ import domainSlice, { type DomainState, getDocumentTableRows } from '../../../sl
 import { type RootState } from '../../../slices/Store.ts'
 import { type AuthenticationState } from '../../../slices/AuthenticationSlice.ts'
 import { useFormik } from 'formik'
-import type Content from '../../../models/value_objects/contracts/Content.ts'
+import type Content from '../../../models/dtos/contracts/Content.ts'
 import React, { useEffect } from 'react'
 import FileDocumentService from '../../../services/FileDocumentService.ts'
-import type FileDocument from '../../../models/entities/FileDocument.ts'
-import type WebDocument from '../../../models/entities/WebDocument.ts'
-import type TextDocument from '../../../models/entities/TextDocument.ts'
+import type FileDocument from '../../../models/daos/FileDocument.ts'
+import type WebDocument from '../../../models/daos/WebDocument.ts'
+import type TextDocument from '../../../models/daos/TextDocument.ts'
 import TextDocumentService from '../../../services/TextDocumentService.ts'
 import WebDocumentService from '../../../services/WebDocumentService.ts'
 import processSlice, { type ProcessState } from '../../../slices/ProcessSlice.ts'
@@ -262,7 +262,7 @@ export default function DetailModalComponent (): React.JSX.Element {
   }
 
   const getFileDownloadUrl = (): string => {
-    const blob = b64toBlob(fileDocument!.fileBytes!, 'application/octet-stream')
+    const blob = b64toBlob(fileDocument!.fileBytes, 'application/octet-stream')
     return URL.createObjectURL(blob)
   }
 
