@@ -5,8 +5,7 @@ module.exports = {
   },
   extends: [
     'standard-with-typescript',
-    'plugin:react/recommended',
-    'plugin:tailwindcss/recommended'
+    'plugin:react/recommended'
   ],
   parserOptions: {
     ecmaVersion: 'latest',
@@ -18,6 +17,7 @@ module.exports = {
   rules: {
     '@typescript-eslint/no-extraneous-class': 'off',
     '@typescript-eslint/no-non-null-assertion': 'off',
-    '@typescript-eslint/no-misused-promises': 'off'
+    '@typescript-eslint/no-misused-promises': 'off',
+    '@typescript-eslint/no-floating-promises': 'off',
   }
 }

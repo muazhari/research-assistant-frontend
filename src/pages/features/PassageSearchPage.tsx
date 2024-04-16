@@ -222,7 +222,7 @@ export default function PassageSearchPage (): React.JSX.Element {
           }
         })
         .catch((error) => {
-          console.log(error)
+          console.error(error)
         })
         .finally(() => {
           dispatch(processSlice.actions.set({
@@ -234,7 +234,7 @@ export default function PassageSearchPage (): React.JSX.Element {
 
   const fetchData = (): void => {
     documentTypeService
-      .readAll()
+      .findMany()
       .then((response) => {
         const content: Content<DocumentType[]> = response.data
         dispatch(domainSlice.actions.setDocumentDomain({
@@ -242,7 +242,7 @@ export default function PassageSearchPage (): React.JSX.Element {
         }))
       })
       .catch((error) => {
-        console.log(error)
+        console.error(error)
       })
   }
 
@@ -260,7 +260,7 @@ export default function PassageSearchPage (): React.JSX.Element {
     setter()
       .then()
       .catch((error) => {
-        console.log(error)
+        console.error(error)
       })
   }, [account, document, fileDocumentProperty, documentTypes])
 

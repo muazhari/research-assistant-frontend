@@ -11,7 +11,7 @@ export class LlmSetting extends Request {
   }
 }
 
-export class PreprocessSetting extends Request {
+export class PreprocessorSetting extends Request {
   isForceRefreshCategorizedElement?: boolean
   isForceRefreshCategorizedDocument?: boolean
   chunkSize?: number
@@ -70,17 +70,19 @@ export class RerankerSetting extends Request {
 }
 
 export default class InputSetting extends Request {
+  documentIds?: string[]
   llmSetting?: LlmSetting
-  preprocessSetting?: PreprocessSetting
+  preprocessorSetting?: PreprocessorSetting
   embedderSetting?: EmbedderSetting
   retrieverSetting?: RetrieverSetting
   rerankerSetting?: RerankerSetting
   question?: string
 
-  constructor (llmSetting?: LlmSetting, preprocessSetting?: PreprocessSetting, embedderSetting?: EmbedderSetting, retrieverSetting?: RetrieverSetting, rerankerSetting?: RerankerSetting, question?: string) {
+  constructor (documentIds?: string[], llmSetting?: LlmSetting, preprocessSetting?: PreprocessorSetting, embedderSetting?: EmbedderSetting, retrieverSetting?: RetrieverSetting, rerankerSetting?: RerankerSetting, question?: string) {
     super()
+    this.documentIds = documentIds
     this.llmSetting = llmSetting
-    this.preprocessSetting = preprocessSetting
+    this.preprocessorSetting = preprocessSetting
     this.embedderSetting = embedderSetting
     this.retrieverSetting = retrieverSetting
     this.rerankerSetting = rerankerSetting

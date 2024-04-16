@@ -1,11 +1,19 @@
-import type PatchBody from './PatchBody.ts'
 import Request from '../../Request.ts'
+import Dto from '../../../../Dto.ts'
 
-export default class PatchOneByIdRequest extends Request {
+export class Body extends Dto {
+  description?: string
+
+  constructor (description?: string) {
+    super()
+    this.description = description
+  }
+}
+export default class PatchOneById extends Request {
   id?: string
-  body?: PatchBody
+  body?: Body
 
-  constructor (id?: string, body?: PatchBody) {
+  constructor (id?: string, body?: Body) {
     super()
     this.id = id
     this.body = body

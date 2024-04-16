@@ -2,7 +2,7 @@ import Request from '../Request.ts'
 import PassageSearchInputSetting, {
   type EmbedderSetting,
   type LlmSetting,
-  type PreprocessSetting,
+  type PreprocessorSetting,
   type RerankerSetting,
   type RetrieverSetting
 } from '../passage_searches/InputSetting.ts'
@@ -35,8 +35,9 @@ export default class InputSetting extends PassageSearchInputSetting {
   transformQuestionMaxRetry?: number
 
   constructor (
+    documentIds?: string[],
     llmSetting?: LlmSetting,
-    preprocessSetting?: PreprocessSetting,
+    preprocessorSetting?: PreprocessorSetting,
     embedderSetting?: EmbedderSetting,
     retrieverSetting?: RetrieverSetting,
     rerankerSetting?: RerankerSetting,
@@ -44,7 +45,7 @@ export default class InputSetting extends PassageSearchInputSetting {
     generatorSetting?: GeneratorSetting,
     transformQuestionMaxRetry?: number
   ) {
-    super(llmSetting, preprocessSetting, embedderSetting, retrieverSetting, rerankerSetting, question)
+    super(documentIds, llmSetting, preprocessorSetting, embedderSetting, retrieverSetting, rerankerSetting, question)
     this.generatorSetting = generatorSetting
     this.transformQuestionMaxRetry = transformQuestionMaxRetry
   }

@@ -1,55 +1,73 @@
 import Service from './Service.ts'
 import type Client from '../clients/Client.ts'
-import BackendOneClient from '../clients/BackendOneClient.ts'
-import type CreateOneRequest from '../models/dtos/contracts/requests/managements/file_documents/CreateOneRequest.ts'
-import type DeleteOneByIdRequest
-  from '../models/dtos/contracts/requests/managements/file_documents/DeleteOneByIdRequest.ts'
-import { type AxiosResponse } from 'axios'
-import type ReadOneByIdRequest from '../models/dtos/contracts/requests/managements/file_documents/ReadOneByIdRequest.ts'
+import type CreateOne from '../models/dtos/contracts/requests/managements/file_documents/CreateOne.ts'
+import type DeleteOneById from '../models/dtos/contracts/requests/managements/file_documents/DeleteOneById.ts'
+import {type AxiosResponse} from 'axios'
+import type FindOneById from '../models/dtos/contracts/requests/managements/file_documents/FindOneById.ts'
 import type PatchOneByIdRequest from '../models/dtos/contracts/requests/managements/file_documents/PatchOneById.ts'
 import type FileDocument from '../models/daos/FileDocument.ts'
 import type Content from '../models/dtos/contracts/Content.ts'
-import type ReadAllByAccountIdRequest
-  from '../models/dtos/contracts/requests/managements/accounts/ReadAllByAccountIdRequest.ts'
-import type FileDocumentPropertyResponse
-  from '../models/dtos/contracts/response/managements/FileDocumentPropertyResponse.ts'
+import type FindManyWithPagination
+  from '../models/dtos/contracts/requests/managements/file_documents/FindManyWithPagination.ts'
 
 export default class FileDocumentService extends Service {
   client: Client
 
   path: string
 
-  constructor () {
+  constructor (client: Client) {
     super()
-    this.client = new BackendOneClient()
+    this.client = client
     this.path = '/documents/files'
   }
 
-  async createOne (request: CreateOneRequest): Promise<AxiosResponse<Content<FileDocument>>> {
-    return await this.client.instance.post(`${this.path}`, request.body)
+  async createOne (request: CreateOne): Promise<AxiosResponse<Content<FileDocument>>> {
+    const data: FormData = new FormData()
+    for (const entry of Object.entries(request.body!)) {
+      if (entry[1] === undefined) {
+        continue
+      }
+      data.append(entry[0], entry[1] as string | Blob)
+    }
+    return await this.client.instance.post(
+      this.path,
+      data,
+      {
+        headers: {
+          'Content-Type': 'multipart/form-data'
+        }
+      }
+    )
   }
 
-  async deleteOneById (request: DeleteOneByIdRequest): Promise<AxiosResponse<Content<FileDocument>>> {
+  async deleteOneById (request: DeleteOneById): Promise<AxiosResponse<Content<FileDocument>>> {
     return await this.client.instance.delete(`${this.path}/${request.id}`)
   }
 
-  async readAll (): Promise<AxiosResponse<Content<FileDocument[]>>> {
-    return await this.client.instance.get(`${this.path}`)
+  async findManyWithPagination (request: FindManyWithPagination): Promise<AxiosResponse<Content<FileDocument[]>>> {
+    return await this.client.instance.get(`${this.path}?&page_position=${request.pagePosition}&page_size=${request.pageSize}`)
   }
 
-  async readAllByAccountId (request: ReadAllByAccountIdRequest): Promise<AxiosResponse<Content<FileDocument[]>>> {
-    return await this.client.instance.get(`${this.path}?account_id=${request.accountId}`)
-  }
-
-  async readOneById (request: ReadOneByIdRequest): Promise<AxiosResponse<Content<FileDocument>>> {
+  async findOneById (request: FindOneById): Promise<AxiosResponse<Content<FileDocument>>> {
     return await this.client.instance.get(`${this.path}/${request.id}`)
   }
 
-  async readOnePropertyById (request: ReadOneByIdRequest): Promise<AxiosResponse<Content<FileDocumentPropertyResponse>>> {
-    return await this.client.instance.get(`${this.path}/${request.id}/property`)
-  }
-
   async patchOneById (request: PatchOneByIdRequest): Promise<AxiosResponse<Content<FileDocument>>> {
-    return await this.client.instance.patch(`${this.path}/${request.id}`, request.body)
+    const data: FormData = new FormData()
+    for (const entry of Object.entries(request.body!)) {
+      if (entry[1] === undefined) {
+        continue
+      }
+      data.append(entry[0], entry[1] as string | Blob)
+    }
+    return await this.client.instance.patch(
+        `${this.path}/${request.id}`,
+        data,
+        {
+          headers: {
+            'Content-Type': 'multipart/form-data'
+          }
+        }
+    )
   }
 }

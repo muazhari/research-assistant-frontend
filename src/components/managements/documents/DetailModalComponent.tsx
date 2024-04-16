@@ -1,9 +1,8 @@
 import { Modal, ModalBody, ModalFooter, ModalHeader } from 'react-bootstrap'
 import { useDispatch, useSelector } from 'react-redux'
 import { useLocation } from 'react-router-dom'
-import domainSlice, { type DomainState, getDocumentTableRows } from '../../../slices/DomainSlice.ts'
+import domainSlice, { type DomainState } from '../../../slices/DomainSlice.ts'
 import { type RootState } from '../../../slices/Store.ts'
-import { type AuthenticationState } from '../../../slices/AuthenticationSlice.ts'
 import { useFormik } from 'formik'
 import type Content from '../../../models/dtos/contracts/Content.ts'
 import React, { useEffect } from 'react'
@@ -14,7 +13,8 @@ import type TextDocument from '../../../models/daos/TextDocument.ts'
 import TextDocumentService from '../../../services/TextDocumentService.ts'
 import WebDocumentService from '../../../services/WebDocumentService.ts'
 import processSlice, { type ProcessState } from '../../../slices/ProcessSlice.ts'
-import b64toBlob from 'b64-to-blob'
+import DocumentTypeConstant from '../../../models/dtos/constants/DocumentTypeConstant.ts'
+import type Document from '../../../models/daos/Document.ts'
 
 export default function DetailModalComponent (): React.JSX.Element {
   const dispatch = useDispatch()
@@ -26,23 +26,17 @@ export default function DetailModalComponent (): React.JSX.Element {
 
   const processState: ProcessState = useSelector((state: RootState) => state.process)
   const domainState: DomainState = useSelector((state: RootState) => state.domain)
-  const authenticationState: AuthenticationState = useSelector((state: RootState) => state.authentication)
 
   const {
     isLoading
   } = processState
 
   const {
-    account
-  } = authenticationState
-  const {
-    accountDocuments,
-    documentTypes
+    documents
   } = domainState.documentDomain!
 
   const {
     document,
-    documentType,
     fileDocument,
     textDocument,
     webDocument
@@ -66,14 +60,14 @@ export default function DetailModalComponent (): React.JSX.Element {
 
   useEffect(() => {
     fetchData()
-  }, [documentType, document])
+  }, [document])
 
   const fetchData = (): void => {
     dispatch(processSlice.actions.set({
       isLoading: true
     }))
-    if (documentType!.name === 'file') {
-      fileDocumentService.readOneById({
+    if (document!.documentTypeId! === DocumentTypeConstant.FILE) {
+      fileDocumentService.findOneById({
         id: document!.id
       }).then((response) => {
         const content: Content<FileDocument> = response.data
@@ -81,14 +75,16 @@ export default function DetailModalComponent (): React.JSX.Element {
           fileDocument: content.data!
         }))
       }).catch((error) => {
-        console.log(error)
+        console.error(error)
+        const content: Content<null> = error.response.data
+        alert(content.message)
       }).finally(() => {
         dispatch(processSlice.actions.set({
           isLoading: false
         }))
       })
-    } else if (documentType!.name === 'text') {
-      textDocumentService.readOneById({
+    } else if (document!.documentTypeId! === DocumentTypeConstant.TEXT) {
+      textDocumentService.findOneById({
         id: document!.id
       }).then((response) => {
         const content: Content<TextDocument> = response.data
@@ -96,14 +92,16 @@ export default function DetailModalComponent (): React.JSX.Element {
           textDocument: content.data!
         }))
       }).catch((error) => {
-        console.log(error)
+        console.error(error)
+        const content: Content<null> = error.response.data
+        alert(content.message)
       }).finally(() => {
         dispatch(processSlice.actions.set({
           isLoading: false
         }))
       })
-    } else if (documentType!.name === 'web') {
-      webDocumentService.readOneById({
+    } else if (document!.documentTypeId! === DocumentTypeConstant.WEB) {
+      webDocumentService.findOneById({
         id: document!.id
       }).then((response) => {
         const content: Content<WebDocument> = response.data
@@ -111,160 +109,132 @@ export default function DetailModalComponent (): React.JSX.Element {
           webDocument: content.data!
         }))
       }).catch((error) => {
-        console.log(error)
+        console.error(error)
+        const content: Content<null> = error.response.data
+        alert(content.message)
       }).finally(() => {
         dispatch(processSlice.actions.set({
           isLoading: false
         }))
       })
     } else {
-      alert('Document type is not supported.')
+      console.error('Document type is not supported.')
+    }
+  }
+
+  const getInitialValues = (): FileDocument | TextDocument | WebDocument => {
+    if (document!.documentTypeId! === DocumentTypeConstant.FILE) {
+      return fileDocument!
+    } else if (document!.documentTypeId! === DocumentTypeConstant.TEXT) {
+      return textDocument!
+    } else if (document!.documentTypeId! === DocumentTypeConstant.WEB) {
+      return webDocument!
+    } else {
+      console.error('Document type is not supported.')
+      return {}
     }
   }
 
   const formik = useFormik({
-    initialValues: {
-      id: document!.id,
-      name: document!.name,
-      description: document!.description,
-      documentTypeId: documentType!.id,
-      fileName: fileDocument!.fileName,
-      fileExtension: fileDocument!.fileExtension,
-      fileBytes: '',
-      textContent: textDocument!.textContent,
-      webUrl: webDocument!.webUrl
-    },
+    initialValues: getInitialValues(),
     enableReinitialize: true,
-    onSubmit: (values) => {
+    onSubmit: (values: FileDocument | TextDocument | WebDocument) => {
       dispatch(processSlice.actions.set({
         isLoading: true
       }))
-
-      if (documentType!.name === 'file') {
+      if (document!.documentTypeId! === DocumentTypeConstant.FILE) {
+        const { fileMetadata, ...filteredValues } = values as FileDocument
         fileDocumentService.patchOneById({
           id: document!.id,
-          body: {
-            name: values.name,
-            description: values.description,
-            documentTypeId: values.documentTypeId,
-            accountId: account!.id,
-            fileName: values.fileName,
-            fileExtension: values.fileExtension,
-            fileBytes: values.fileBytes
-          }
+          body: filteredValues
         }).then((response) => {
           const content: Content<FileDocument> = response.data
-          const newAccountDocuments = accountDocuments!.map((document) => {
+          const newDocuments: Document[] = documents!.map((document: Document): Document => {
             if (document.id === content.data!.id) {
-              return content.data!
+              return content.data! as Document
             }
             return document
           })
           dispatch(domainSlice.actions.setCurrentDomain({
-            document: content.data!,
-            fileDocument: content.data!,
-            accountDocuments: newAccountDocuments,
-            documentTableRows: getDocumentTableRows(newAccountDocuments, documentTypes!)
+            document: content.data! as Document,
+            fileDocument: content.data!
+          }))
+          dispatch(domainSlice.actions.setDocumentDomain({
+            documents: newDocuments
           }))
           alert(content.message)
         }).catch((error) => {
-          console.log(error)
+          console.error(error)
+          const content: Content<null> = error.response.data
+          alert(content.message)
         }).finally(() => {
           dispatch(processSlice.actions.set({
             isLoading: false
           }))
         })
-      } else if (documentType!.name === 'text') {
+      } else if (document!.documentTypeId! === DocumentTypeConstant.TEXT) {
         textDocumentService.patchOneById({
           id: document!.id,
-          body: {
-            name: values.name,
-            description: values.description,
-            documentTypeId: values.documentTypeId,
-            accountId: account!.id,
-            textContent: values.textContent
-          }
+          body: values as TextDocument
         }).then((response) => {
           const content: Content<TextDocument> = response.data
-          const newAccountDocuments = accountDocuments!.map((document) => {
+          const newDocuments = documents!.map((document: Document): Document => {
             if (document.id === content.data!.id) {
-              return content.data!
+              return content.data! as Document
             }
             return document
           })
           dispatch(domainSlice.actions.setCurrentDomain({
-            document: content.data!,
-            textDocument: content.data!,
-            accountDocuments: newAccountDocuments,
-            documentTableRows: getDocumentTableRows(newAccountDocuments, documentTypes!)
+            document: content.data! as Document,
+            textDocument: content.data!
+          }))
+          dispatch(domainSlice.actions.setDocumentDomain({
+            documents: newDocuments
           }))
           alert(content.message)
         }).catch((error) => {
-          console.log(error)
+          console.error(error)
+          const content: Content<null> = error.response.data
+          alert(content.message)
         }).finally(() => {
           dispatch(processSlice.actions.set({
             isLoading: false
           }))
         })
-      } else if (documentType!.name === 'web') {
+      } else if (document!.documentTypeId! === DocumentTypeConstant.WEB) {
         webDocumentService.patchOneById({
           id: document!.id,
-          body: {
-            name: values.name,
-            description: values.description,
-            documentTypeId: values.documentTypeId,
-            accountId: account!.id,
-            webUrl: values.webUrl
-          }
+          body: values as WebDocument
         }).then((response) => {
           const content: Content<WebDocument> = response.data
-          const newAccountDocuments = accountDocuments!.map((document) => {
+          const newDocuments: Document[] = documents!.map((document: Document): Document => {
             if (document.id === content.data!.id) {
-              return content.data!
+              return content.data! as Document
             }
             return document
           })
           dispatch(domainSlice.actions.setCurrentDomain({
-            document: content.data!,
-            webDocument: content.data!,
-            accountDocuments: newAccountDocuments,
-            documentTableRows: getDocumentTableRows(newAccountDocuments, documentTypes!)
+            document: content.data! as Document,
+            webDocument: content.data!
+          }))
+          dispatch(domainSlice.actions.setDocumentDomain({
+            documents: newDocuments
           }))
           alert(content.message)
         }).catch((error) => {
-          console.log(error)
+          console.error(error)
+          const content: Content<null> = error.response.data
+          alert(content.message)
         }).finally(() => {
           dispatch(processSlice.actions.set({
             isLoading: false
           }))
         })
       } else {
-        alert('Document type is not supported.')
+        console.error('Document type is not supported.')
       }
     }
   })
-
-  const convertToBase64 = async (file: File): Promise<string> => {
-    return await new Promise((resolve, reject) => {
-      const fileReader = new FileReader()
-      fileReader.readAsDataURL(file)
-      fileReader.onload = () => {
-        if (typeof fileReader.result === 'string') {
-          resolve(fileReader.result.split(',')[1])
-        } else {
-          reject(Error('Cannot convert file to base64.'))
-        }
-      }
-      fileReader.onerror = (error) => {
-        reject(error)
-      }
-    })
-  }
-
-  const getFileDownloadUrl = (): string => {
-    const blob = b64toBlob(fileDocument!.fileBytes, 'application/octet-stream')
-    return URL.createObjectURL(blob)
-  }
 
   return (
         <Modal
@@ -279,7 +249,6 @@ export default function DetailModalComponent (): React.JSX.Element {
                     <fieldset className="mb-2">
                         <label className="form-label" htmlFor="id">ID:</label>
                         <input
-                            disabled={true}
                             className="form-control"
                             type="text"
                             name="id"
@@ -324,24 +293,21 @@ export default function DetailModalComponent (): React.JSX.Element {
                             value={formik.values.documentTypeId}
                         >
                             {
-                                documentTypes!.map((documentType) => {
+                                DocumentTypeConstant.getValues().map((documentTypeId: string) => {
                                   return (
                                             <option
-                                                key={documentType.id}
-                                                value={documentType.id}
+                                                key={documentTypeId}
+                                                value={documentTypeId}
                                             >
-                                                {documentType.name}
+                                                {documentTypeId.charAt(0).toUpperCase() + documentTypeId.slice(1)}
                                             </option>
                                   )
-                                }
-                                )
+                                })
                             }
                         </select>
                     </fieldset>
-                    {
-                        {
-                          file:
-                                <>
+                    { document!.documentTypeId === DocumentTypeConstant.FILE &&
+                          <>
                                     <fieldset className="mb-2">
                                         <label className="form-label" htmlFor="file-name">File Name:</label>
                                         <input
@@ -352,52 +318,36 @@ export default function DetailModalComponent (): React.JSX.Element {
                                             id="file-name"
                                             onBlur={formik.handleBlur}
                                             onChange={formik.handleChange}
-                                            value={formik.values.fileName}
+                                            value={(formik.values as FileDocument).fileName}
                                         />
                                     </fieldset>
                                     <fieldset className="mb-2">
-                                        <label className="form-label" htmlFor="file-extension">File Extension:</label>
-                                        <input
-                                            disabled={true}
-                                            className="form-control"
-                                            type="text"
-                                            name="fileExtension"
-                                            id="file-extension"
-                                            onBlur={formik.handleBlur}
-                                            onChange={formik.handleChange}
-                                            value={formik.values.fileExtension}
-                                        />
-                                    </fieldset>
-                                    <fieldset className="mb-2">
-                                        <label className="form-label" htmlFor="file-bytes">File Bytes:</label>
+                                        <label className="form-label" htmlFor="file-data">File Data:</label>
                                         <input
                                             className="form-control"
                                             type="file"
-                                            name="fileBytes"
-                                            id="file-bytes"
+                                            name="fileData"
+                                            id="file-data"
                                             onBlur={formik.handleBlur}
-                                            onChange={async (event) => {
+                                            onChange={(event) => {
                                               formik.handleChange(event)
-                                              const fileBytes: string = await convertToBase64(event.target.files![0])
-                                              await formik.setFieldValue('fileBytes', fileBytes)
-                                              const fileBase: string = event.target.files![0].name
-                                              const fileName: string = fileBase.substring(0, fileBase.lastIndexOf('.'))
-                                              const fileExtension: string = fileBase.substring(fileBase.lastIndexOf('.'))
-                                              await formik.setFieldValue('fileName', fileName)
-                                              await formik.setFieldValue('fileExtension', fileExtension)
+                                              const fileData: File = event.target.files![0]
+                                              formik.setFieldValue('fileData', fileData)
+                                              formik.setFieldValue('fileName', fileData.name)
                                             }}
                                         />
                                     </fieldset>
                                     <div className="d-flex justify-content-center align-items-center mt-3">
                                         <a
-                                            download={`${formik.values.fileName}${formik.values.fileExtension}`}
-                                            href={getFileDownloadUrl()}
+                                            download={`${(formik.values as FileDocument).fileName}`}
+                                            href={(formik.values as FileDocument).fileMetadata!.fileUrl}
                                         >
                                             <button className="btn btn-success" type="button">Download</button>
                                         </a>
                                     </div>
-                                </>,
-                          text:
+                                </>
+                            }
+                  { document!.documentTypeId === DocumentTypeConstant.TEXT &&
                                 <>
                                     <fieldset className="mb-2">
                                         <label className="form-label" htmlFor="text-content">Text Content:</label>
@@ -407,11 +357,12 @@ export default function DetailModalComponent (): React.JSX.Element {
                                             id="text-content"
                                             onBlur={formik.handleBlur}
                                             onChange={formik.handleChange}
-                                            value={formik.values.textContent}
+                                            value={(formik.values as TextDocument).textContent}
                                         />
                                     </fieldset>
-                                </>,
-                          web:
+                                </>
+                  }
+                  { document!.documentTypeId === DocumentTypeConstant.WEB &&
                                 <>
                                     <fieldset className="mb-2">
                                         <label className="form-label" htmlFor="web-url">Web Url:</label>
@@ -421,13 +372,11 @@ export default function DetailModalComponent (): React.JSX.Element {
                                             id="web-url"
                                             onBlur={formik.handleBlur}
                                             onChange={formik.handleChange}
-                                            value={formik.values.webUrl}
+                                            value={(formik.values as WebDocument).webUrl}
                                         />
                                     </fieldset>
-                                </>,
-                          default: undefined
-                        }[documentType!.name!]
-                    }
+                                </>
+                  }
                 </form>
             </ModalBody>
             <ModalFooter>

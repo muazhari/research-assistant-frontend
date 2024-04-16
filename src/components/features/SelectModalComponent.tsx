@@ -62,11 +62,11 @@ export default function SelectModalComponent (): React.JSX.Element {
   const fetchData = (): void => {
     Promise.all([
       documentService
-        .readAllByAccountId({
+        .findManyByAccountId({
           accountId: account!.id
         }),
       documentTypeService
-        .readAll()
+        .findMany()
     ])
       .then((response) => {
         const accountDocumentsContent: Content<Document[]> = response[0].data
@@ -80,7 +80,7 @@ export default function SelectModalComponent (): React.JSX.Element {
         }))
       })
       .catch((error) => {
-        console.log(error)
+        console.error(error)
       })
   }
 
@@ -93,7 +93,7 @@ export default function SelectModalComponent (): React.JSX.Element {
       dispatch(processSlice.actions.set({
         isLoading: true
       }))
-      fileDocumentService.readOnePropertyById({
+      fileDocumentService.findOnePropertyById({
         id: row.id
       }).then((response) => {
         const content: Content<FileDocumentPropertyResponse> = response.data
@@ -105,7 +105,7 @@ export default function SelectModalComponent (): React.JSX.Element {
         handleOnHide()
         alert('Document selected.')
       }).catch((error) => {
-        console.log(error)
+        console.error(error)
       }).finally(() => {
         dispatch(processSlice.actions.set({
           isLoading: false

@@ -1,47 +1,32 @@
-import DocumentService from '../../services/DocumentService.ts'
-import DocumentTypeService from '../../services/DocumentTypeService.ts'
-import domainSlice, { type DocumentTableRow, type DomainState, getDocumentTableRows } from '../../slices/DomainSlice.ts'
+import domainSlice, { type DomainState } from '../../slices/DomainSlice.ts'
 import { useDispatch, useSelector } from 'react-redux'
 import { type RootState } from '../../slices/Store.ts'
-import { type AuthenticationState } from '../../slices/AuthenticationSlice.ts'
 import type Content from '../../models/dtos/contracts/Content.ts'
 
 import type Document from '../../models/daos/Document.ts'
-import type DocumentType from '../../models/daos/DocumentType.ts'
 import DetailModalComponent from '../../components/managements/documents/DetailModalComponent.tsx'
 import InsertModalComponent from '../../components/managements/documents/InsertModalComponent.tsx'
 import React, { useEffect } from 'react'
+
 import DataTable, { type TableColumn } from 'react-data-table-component'
 import { useFormik } from 'formik'
 import processSlice, { type ProcessState } from '../../slices/ProcessSlice.ts'
 
+import * as serviceContainer from '../../containers/ServiceContainer.ts'
+
 export default function DocumentManagementPage (): React.JSX.Element {
   const dispatch = useDispatch()
 
-  const documentService = new DocumentService()
-  const documentTypeService = new DocumentTypeService()
-
   const processState: ProcessState = useSelector((state: RootState) => state.process)
   const domainState: DomainState = useSelector((state: RootState) => state.domain)
-  const authenticationState: AuthenticationState = useSelector((state: RootState) => state.authentication)
 
   const {
     isLoading
   } = processState
 
   const {
-    account
-  } = authenticationState
-
-  const {
-    accountDocuments,
-    documentTypes
+    documents
   } = domainState.documentDomain!
-
-  const {
-
-    documentTableRows
-  } = domainState.currentDomain!
 
   const {
     name
@@ -52,72 +37,58 @@ export default function DocumentManagementPage (): React.JSX.Element {
   }, [])
 
   const fetchData = (): void => {
-    Promise.all([
-      documentService
-        .readAllByAccountId({
-          accountId: account!.id
-        }),
-      documentTypeService
-        .readAll()
-    ])
+    serviceContainer
+      .document
+      .findManyWithPagination({
+        pagePosition: 1,
+        pageSize: 10
+      })
       .then((response) => {
-        const accountDocumentsContent: Content<Document[]> = response[0].data
-        const documentTypesContent: Content<DocumentType[]> = response[1].data
+        const content: Content<Document[]> = response.data
         dispatch(domainSlice.actions.setDocumentDomain({
-          accountDocuments: accountDocumentsContent.data,
-          documentTypes: documentTypesContent.data
-        }))
-        dispatch(domainSlice.actions.setCurrentDomain({
-          documentTableRows: getDocumentTableRows(accountDocumentsContent.data!, documentTypesContent.data!)
+          documents: content.data!
         }))
       })
       .catch((error) => {
-        console.log(error)
+        console.error(error)
+        const content: Content<null> = error.response.data
+        alert(content.message)
       })
   }
 
-  const handleClickDetail = (row: DocumentTableRow): void => {
+  const handleClickDetail = (row: Document): void => {
     dispatch(domainSlice.actions.setModalDomain({
       name: 'detail',
       isShow: true
     }))
     dispatch(domainSlice.actions.setCurrentDomain({
-      document: {
-        id: row.id,
-        name: row.name,
-        description: row.description,
-        documentTypeId: row.documentTypeId,
-        accountId: row.accountId
-      },
-      documentType: documentTypes!.find((documentType) => {
-        return documentType.id === row.documentTypeId
-      })
+      document: row
     }))
   }
 
-  const handleClickDelete = (row: DocumentTableRow): void => {
+  const handleClickDelete = (row: Document): void => {
     dispatch(processSlice.actions.set({
       isLoading: true
     }))
-    documentService
+    serviceContainer
+      .document
       .deleteOneById({
         id: row.id
       })
       .then((response) => {
         const content: Content<Document> = response.data
-        const newAccountDocuments = accountDocuments!.filter((document) => {
+        const newDocuments = documents!.filter((document: Document) => {
           return document.id !== content.data!.id
         })
         dispatch(domainSlice.actions.setDocumentDomain({
-          accountDocuments: newAccountDocuments
-        }))
-        dispatch(domainSlice.actions.setCurrentDomain({
-          documentTableRows: getDocumentTableRows(newAccountDocuments, documentTypes!)
+          documents: newDocuments
         }))
         alert(content.message)
       })
       .catch((error) => {
-        console.log(error)
+        console.error(error)
+        const content: Content<null> = error.response.data
+        alert(content.message)
       })
       .finally(() => {
         dispatch(processSlice.actions.set({
@@ -133,35 +104,35 @@ export default function DocumentManagementPage (): React.JSX.Element {
     }))
   }
 
-  const columns: Array<TableColumn<DocumentTableRow>> = [
+  const columns: Array<TableColumn<Document>> = [
     {
       name: 'ID',
       width: '10%',
-      selector: (row: DocumentTableRow) => row.id!,
+      selector: (row: Document) => row.id!,
       sortable: true
     },
     {
       name: 'Name',
       width: '23%',
-      selector: (row: DocumentTableRow) => row.name!,
+      selector: (row: Document) => row.name!,
       sortable: true
     },
     {
       name: 'Description',
       width: '27%',
-      selector: (row: DocumentTableRow) => row.description!,
+      selector: (row: Document) => row.description!,
       sortable: true
     },
     {
       name: 'Document Type Name',
       width: '15%',
-      selector: (row: DocumentTableRow) => row.documentTypeName!,
+      selector: (row: Document) => row.documentTypeId!,
       sortable: true
     },
     {
       name: 'Actions',
       width: '25%',
-      cell: (row: DocumentTableRow) =>
+      cell: (row: Document) =>
                 <>
                     <button
                         id={row.id}
@@ -200,10 +171,11 @@ export default function DocumentManagementPage (): React.JSX.Element {
       search: ''
     },
     onSubmit: (values) => {
+      const filteredDocuments: Document[] = documents!.filter((document: Document) => {
+        return JSON.stringify(document).toLowerCase().includes(values.search.toLowerCase())
+      })
       dispatch(domainSlice.actions.setCurrentDomain({
-        documentTableRows: getDocumentTableRows(accountDocuments!, documentTypes!).filter((documentTableRow) => {
-          return JSON.stringify(documentTableRow).toLowerCase().includes(values.search.toLowerCase())
-        })
+        documents: filteredDocuments
       }))
     }
   })
@@ -235,7 +207,7 @@ export default function DocumentManagementPage (): React.JSX.Element {
             <DataTable
                 pagination={true}
                 columns={columns}
-                data={documentTableRows!}
+                data={documents!}
             />
         </div>
   )

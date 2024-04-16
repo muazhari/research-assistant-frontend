@@ -1,6 +1,5 @@
 import Service from './Service.ts'
 import type Client from '../clients/Client.ts'
-import BackendOneClient from '../clients/BackendOneClient.ts'
 import { type AxiosResponse } from 'axios'
 import type Content from '../models/dtos/contracts/Content.ts'
 import type ProcessRequest from '../models/dtos/contracts/requests/long_form_qas/ProcessRequest.ts'
@@ -11,13 +10,13 @@ export default class LongFormQaService extends Service {
 
   path: string
 
-  constructor () {
+  constructor (client: Client) {
     super()
-    this.client = new BackendOneClient()
-    this.path = '/long-form-qa'
+    this.client = client
+    this.path = '/long-form-qas'
   }
 
-  async qa (request: ProcessRequest): Promise<AxiosResponse<Content<ProcessResponse>>> {
+  async process (request: ProcessRequest): Promise<AxiosResponse<Content<ProcessResponse>>> {
     return await this.client.instance.post(`${this.path}`, request)
   }
 }

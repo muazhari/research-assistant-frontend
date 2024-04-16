@@ -2,15 +2,15 @@ import { useFormik } from 'formik'
 
 import * as Yup from 'yup'
 import { Link, useNavigate } from 'react-router-dom'
-import AuthenticationService from '../../services/AuthenticationService.ts'
 import type Content from '../../models/dtos/contracts/Content.ts'
 import type LoginResponse from '../../models/dtos/contracts/response/authentications/LoginResponse.ts'
 import authenticationSlice from '../../slices/AuthenticationSlice.ts'
 import { useDispatch } from 'react-redux'
 import React from 'react'
 
+import * as serviceContainer from '../../containers/ServiceContainer.ts'
+
 export default function LoginPage (): React.JSX.Element {
-  const authenticationService = new AuthenticationService()
   const dispatch = useDispatch()
   const navigate = useNavigate()
   const formik = useFormik({
@@ -23,7 +23,8 @@ export default function LoginPage (): React.JSX.Element {
       password: Yup.string().required()
     }),
     onSubmit: (values) => {
-      authenticationService
+      serviceContainer
+        .authentication
         .login({
           body: {
             email: values.email,
@@ -32,13 +33,17 @@ export default function LoginPage (): React.JSX.Element {
         })
         .then((response) => {
           const content: Content<LoginResponse> = response.data
-          alert(content.message)
-          dispatch(authenticationSlice.actions.login(content.data!.account))
+          dispatch(authenticationSlice.actions.login({
+            account: content.data!.account,
+            session: content.data!.session
+          }))
           navigate('/managements/documents')
         }
         )
         .catch((error) => {
-          console.log(error)
+          console.error(error)
+          const content: Content<null> = error.response.data
+          alert(content.message)
         })
     }
   })
@@ -59,9 +64,8 @@ export default function LoginPage (): React.JSX.Element {
                         value={formik.values.email}
                     />
                     {
-                        (formik.errors.email != null) && (formik.touched.email === true)
-                          ? <div className="text-danger">{formik.errors.email}</div>
-                          : null
+                        (formik.errors.email !== null && formik.touched.email === true) &&
+                          <div className="text-danger">{formik.errors.email}</div>
                     }
                 </fieldset>
                 <fieldset className="mb-3">
@@ -76,9 +80,8 @@ export default function LoginPage (): React.JSX.Element {
                         value={formik.values.password}
                     />
                     {
-                        (formik.errors.password != null) && (formik.touched.password === true)
-                          ? <div className="text-danger">{formik.errors.password}</div>
-                          : null
+                        (formik.errors.password !== null && formik.touched.password === true) &&
+                          <div className="text-danger">{formik.errors.password}</div>
                     }
                 </fieldset>
                 <div className="mb-3">Did not have any account?{' '}

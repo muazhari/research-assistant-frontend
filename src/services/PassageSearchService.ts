@@ -1,7 +1,6 @@
 import Service from './Service.ts'
 import type Client from '../clients/Client.ts'
-import BackendOneClient from '../clients/BackendOneClient.ts'
-import { type AxiosResponse } from 'axios'
+import {type AxiosResponse} from 'axios'
 import type Content from '../models/dtos/contracts/Content.ts'
 import type ProcessRequest from '../models/dtos/contracts/requests/passage_searches/ProcessRequest.ts'
 import type ProcessResponse from '../models/dtos/contracts/response/passage_searchs/ProcessResponse.ts'
@@ -11,9 +10,9 @@ export default class PassageSearchService extends Service {
 
   path: string
 
-  constructor () {
+  constructor (client: Client) {
     super()
-    this.client = new BackendOneClient()
+    this.client = client
     this.path = '/passage-search'
   }
 
