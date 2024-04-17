@@ -18,7 +18,7 @@ export default class TextDocumentService extends Service {
   constructor (client: Client) {
     super()
     this.client = client
-    this.path = '/documents/texts'
+    this.path = '/document-texts'
   }
 
   async createOne (request: CreateOne): Promise<AxiosResponse<Content<TextDocument>>> {

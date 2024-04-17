@@ -8,7 +8,7 @@ import authenticationSlice from '../../slices/AuthenticationSlice.ts'
 import { useDispatch } from 'react-redux'
 import React from 'react'
 
-import * as serviceContainer from '../../containers/ServiceContainer.ts'
+import { authenticationService } from '../../containers/ServiceContainer.ts'
 
 export default function LoginPage (): React.JSX.Element {
   const dispatch = useDispatch()
@@ -23,8 +23,7 @@ export default function LoginPage (): React.JSX.Element {
       password: Yup.string().required()
     }),
     onSubmit: (values) => {
-      serviceContainer
-        .authentication
+      authenticationService
         .login({
           body: {
             email: values.email,

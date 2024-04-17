@@ -23,9 +23,7 @@ export interface ModalDomain {
 export interface CurrentDomain {
   account?: Account
   document?: Document
-  fileDocument?: FileDocument
-  textDocument?: TextDocument
-  webDocument?: WebDocument
+  documentDetail?: FileDocument | TextDocument | WebDocument
   qaProcess?: LongFormQaProcessResponse
   searchProcess?: PassageSearchProcessResponse
 }
@@ -51,9 +49,7 @@ const initialState: DomainState = {
   currentDomain: {
     account: undefined,
     document: undefined,
-    fileDocument: undefined,
-    textDocument: undefined,
-    webDocument: undefined,
+    documentDetail: undefined,
     qaProcess: undefined,
     searchProcess: undefined
   }

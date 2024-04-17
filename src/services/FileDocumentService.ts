@@ -18,7 +18,7 @@ export default class FileDocumentService extends Service {
   constructor (client: Client) {
     super()
     this.client = client
-    this.path = '/documents/files'
+    this.path = '/document-files'
   }
 
   async createOne (request: CreateOne): Promise<AxiosResponse<Content<FileDocument>>> {

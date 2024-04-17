@@ -1,6 +1,6 @@
 import { useSelector } from 'react-redux'
 import { type AuthenticationState } from '../slices/AuthenticationSlice.ts'
-import { type RootState } from '../slices/Store.ts'
+import { type RootState } from '../slices/StoreConfiguration.ts'
 import React from 'react'
 import UnAuthenticatedRoute from './UnAuthenticatedRoute.tsx'
 import AuthenticatedRoute from './AuthenticatedRoute.tsx'

@@ -1,6 +1,6 @@
 import domainSlice, { type DomainState } from '../../slices/DomainSlice.ts'
 import { useDispatch, useSelector } from 'react-redux'
-import { type RootState } from '../../slices/Store.ts'
+import { type RootState } from '../../slices/StoreConfiguration.ts'
 import type Content from '../../models/dtos/contracts/Content.ts'
 
 import type Document from '../../models/daos/Document.ts'
@@ -12,7 +12,7 @@ import DataTable, { type TableColumn } from 'react-data-table-component'
 import { useFormik } from 'formik'
 import processSlice, { type ProcessState } from '../../slices/ProcessSlice.ts'
 
-import * as serviceContainer from '../../containers/ServiceContainer.ts'
+import { documentService } from '../../containers/ServiceContainer.ts'
 
 export default function DocumentManagementPage (): React.JSX.Element {
   const dispatch = useDispatch()
@@ -37,8 +37,7 @@ export default function DocumentManagementPage (): React.JSX.Element {
   }, [])
 
   const fetchData = (): void => {
-    serviceContainer
-      .document
+    documentService
       .findManyWithPagination({
         pagePosition: 1,
         pageSize: 10
@@ -56,13 +55,13 @@ export default function DocumentManagementPage (): React.JSX.Element {
       })
   }
 
-  const handleClickDetail = (row: Document): void => {
+  const handleClickDetail = async (row: Document): Promise<void> => {
+    dispatch(domainSlice.actions.setCurrentDomain({
+      document: row
+    }))
     dispatch(domainSlice.actions.setModalDomain({
       name: 'detail',
       isShow: true
-    }))
-    dispatch(domainSlice.actions.setCurrentDomain({
-      document: row
     }))
   }
 
@@ -70,8 +69,7 @@ export default function DocumentManagementPage (): React.JSX.Element {
     dispatch(processSlice.actions.set({
       isLoading: true
     }))
-    serviceContainer
-      .document
+    documentService
       .deleteOneById({
         id: row.id
       })

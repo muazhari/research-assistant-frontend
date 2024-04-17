@@ -10,6 +10,7 @@
   },
   "dependencies": {
     "@reduxjs/toolkit": "^2.2.3",
+    "async-wait-until": "^2.0.12",
     "axios": "^1.6.8",
     "axios-case-converter": "^1.1.1",
     "b64-to-blob": "^1.2.19",

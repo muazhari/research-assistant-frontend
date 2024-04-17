@@ -5,7 +5,7 @@ import { Link } from 'react-router-dom'
 import React from 'react'
 import type Content from '../../models/dtos/contracts/Content.ts'
 import type RegisterResponse from '../../models/dtos/contracts/response/authentications/RegisterResponse.ts'
-import * as serviceContainer from '../../containers/ServiceContainer.ts'
+import { authenticationService } from '../../containers/ServiceContainer.ts'
 
 export default function RegisterPage (): React.JSX.Element {
   const formik = useFormik({
@@ -18,8 +18,7 @@ export default function RegisterPage (): React.JSX.Element {
       password: Yup.string().required()
     }),
     onSubmit: (values) => {
-      serviceContainer
-        .authentication
+      authenticationService
         .register({
           body: {
             email: values.email,

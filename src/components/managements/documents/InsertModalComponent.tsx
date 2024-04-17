@@ -1,26 +1,21 @@
 import { Modal, ModalBody, ModalFooter, ModalHeader } from 'react-bootstrap'
 import { useDispatch, useSelector } from 'react-redux'
 import domainSlice, { type DomainState } from '../../../slices/DomainSlice.ts'
-import { type RootState } from '../../../slices/Store.ts'
+import { type RootState } from '../../../slices/StoreConfiguration.ts'
 import { type AuthenticationState } from '../../../slices/AuthenticationSlice.ts'
 import { useFormik } from 'formik'
 import type Content from '../../../models/dtos/contracts/Content.ts'
-import FileDocumentService from '../../../services/FileDocumentService.ts'
 import type FileDocument from '../../../models/daos/FileDocument.ts'
 import type WebDocument from '../../../models/daos/WebDocument.ts'
 import type TextDocument from '../../../models/daos/TextDocument.ts'
-import TextDocumentService from '../../../services/TextDocumentService.ts'
-import WebDocumentService from '../../../services/WebDocumentService.ts'
 import React from 'react'
 import processSlice, { type ProcessState } from '../../../slices/ProcessSlice.ts'
 import DocumentTypeConstant from '../../../models/dtos/constants/DocumentTypeConstant.ts'
 import type Document from '../../../models/daos/Document.ts'
+import { fileDocumentService, textDocumentService, webDocumentService } from '../../../containers/ServiceContainer.ts'
 
 export default function InsertModalComponent (): React.JSX.Element {
   const dispatch = useDispatch()
-  const fileDocumentService = new FileDocumentService()
-  const textDocumentService = new TextDocumentService()
-  const webDocumentService = new WebDocumentService()
 
   const processState: ProcessState = useSelector((state: RootState) => state.process)
   const domainState: DomainState = useSelector((state: RootState) => state.domain)
@@ -42,113 +37,119 @@ export default function InsertModalComponent (): React.JSX.Element {
     isShow
   } = domainState.modalDomain!
 
+  const [initialValues, setInitialValues] = React.useState({
+    name: '',
+    description: '',
+    documentTypeId: DocumentTypeConstant.FILE,
+    accountId: account!.id,
+    fileName: '',
+    fileData: undefined,
+    textContent: '',
+    webUrl: ''
+  })
+
   const formik = useFormik({
-    initialValues: {
-      name: undefined,
-      description: undefined,
-      documentTypeId: DocumentTypeConstant.FILE,
-      accountId: account!.id,
-      fileName: undefined,
-      fileData: undefined,
-      textContent: undefined,
-      webUrl: undefined
-    },
+    initialValues,
     enableReinitialize: true,
     onSubmit: (values) => {
+      setInitialValues(values)
       dispatch(processSlice.actions.set({
         isLoading: true
       }))
       if (values.documentTypeId === DocumentTypeConstant.FILE) {
-        fileDocumentService.createOne({
-          body: {
-            name: values.name,
-            description: values.description,
-            documentTypeId: values.documentTypeId,
-            accountId: values.accountId,
-            fileName: values.fileName,
-            fileData: values.fileData
-          }
-        }).then((response) => {
-          const content: Content<FileDocument> = response.data
-          const newDocuments: Document[] = [content.data!, ...(documents!)]
-          dispatch(domainSlice.actions.setCurrentDomain({
-            document: content.data! as Document,
-            fileDocument: content.data!
-          }))
-          dispatch(domainSlice.actions.setDocumentDomain({
-            documents: newDocuments
-          }))
-          alert(content.message)
-        }).catch((error) => {
-          console.error(error)
-          const content: Content<null> = error.response.data
-          alert(content.message)
-        }).finally(async () => {
-          dispatch(processSlice.actions.set({
-            isLoading: false
-          }))
-          formik.resetForm()
-        })
+        fileDocumentService
+          .createOne({
+            body: {
+              name: values.name,
+              description: values.description,
+              documentTypeId: values.documentTypeId,
+              accountId: values.accountId,
+              fileName: values.fileName,
+              fileData: values.fileData
+            }
+          }).then((response) => {
+            const content: Content<FileDocument> = response.data
+            const newDocuments: Document[] = [content.data!, ...(documents!)]
+            dispatch(domainSlice.actions.setCurrentDomain({
+              document: content.data! as Document,
+              fileDocument: content.data!
+            }))
+            dispatch(domainSlice.actions.setDocumentDomain({
+              documents: newDocuments
+            }))
+            alert(content.message)
+          }).catch((error) => {
+            console.error(error)
+            const content: Content<null> = error.response.data
+            alert(content.message)
+          }).finally(async () => {
+            dispatch(processSlice.actions.set({
+              isLoading: false
+            }))
+            formik.resetForm()
+          })
       } else if (values.documentTypeId === DocumentTypeConstant.TEXT) {
-        textDocumentService.createOne({
-          body: {
-            name: values.name,
-            description: values.description,
-            documentTypeId: values.documentTypeId,
-            accountId: values.accountId,
-            textContent: values.textContent
-          }
-        }).then((response) => {
-          const content: Content<TextDocument> = response.data
-          const newDocuments: Document[] = [content.data!, ...(documents!)]
-          dispatch(domainSlice.actions.setCurrentDomain({
-            document: content.data!,
-            textDocument: content.data!
-          }))
-          dispatch(domainSlice.actions.setDocumentDomain({
-            documents: newDocuments
-          }))
-          alert(content.message)
-        }).catch((error) => {
-          console.error(error)
-          const content: Content<null> = error.response.data
-          alert(content.message)
-        }).finally(async () => {
-          dispatch(processSlice.actions.set({
-            isLoading: false
-          }))
-          formik.resetForm()
-        })
+        textDocumentService
+          .createOne({
+            body: {
+              name: values.name,
+              description: values.description,
+              documentTypeId: values.documentTypeId,
+              accountId: values.accountId,
+              textContent: values.textContent
+            }
+          }).then((response) => {
+            const content: Content<TextDocument> = response.data
+            const newDocuments: Document[] = [content.data!, ...(documents!)]
+            dispatch(domainSlice.actions.setCurrentDomain({
+              document: content.data!,
+              textDocument: content.data!
+            }))
+            dispatch(domainSlice.actions.setDocumentDomain({
+              documents: newDocuments
+            }))
+            alert(content.message)
+          }).catch((error) => {
+            console.error(error)
+            const content: Content<null> = error.response.data
+            alert(content.message)
+          }).finally(async () => {
+            dispatch(processSlice.actions.set({
+              isLoading: false
+            }))
+            formik.resetForm()
+          })
       } else if (values.documentTypeId === DocumentTypeConstant.WEB) {
-        webDocumentService.createOne({
-          body: {
-            name: values.name,
-            description: values.description,
-            documentTypeId: values.documentTypeId,
-            accountId: values.accountId,
-            webUrl: values.webUrl
-          }
-        }).then((response) => {
-          const content: Content<WebDocument> = response.data
-          const newDocuments: Document[] = [content.data!, ...(documents!)]
-          dispatch(domainSlice.actions.setCurrentDomain({
-            document: content.data! as Document,
-            webDocument: content.data!
-          }))
-          dispatch(domainSlice.actions.setDocumentDomain({
-            documents: newDocuments
-          }))
-          alert(content.message)
-        }).catch((error) => {
-          console.error(error)
-          const content: Content<null> = error.response.data
-          alert(content.message)
-        }).finally(async () => {
-          dispatch(processSlice.actions.set({
-            isLoading: false
-          }))
-          formik.resetForm()
-        })
+        webDocumentService
+          .createOne({
+            body: {
+              name: values.name,
+              description: values.description,
+              documentTypeId: values.documentTypeId,
+              accountId: values.accountId,
+              webUrl: values.webUrl
+            }
+          }).then((response) => {
+            const content: Content<WebDocument> = response.data
+            const newDocuments: Document[] = [content.data!, ...(documents!)]
+            dispatch(domainSlice.actions.setCurrentDomain({
+              document: content.data! as Document,
+              webDocument: content.data!
+            }))
+            dispatch(domainSlice.actions.setDocumentDomain({
+              documents: newDocuments
+            }))
+            alert(content.message)
+          }).catch((error) => {
+            console.error(error)
+            const content: Content<null> = error.response.data
+            alert(content.message)
+          }).finally(async () => {
+            dispatch(processSlice.actions.set({
+              isLoading: false
+            }))
+            formik.resetForm()
+          })
       } else {
         console.error('Document Type is not supported.')
       }

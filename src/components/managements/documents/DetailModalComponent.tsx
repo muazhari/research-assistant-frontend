@@ -2,27 +2,22 @@ import { Modal, ModalBody, ModalFooter, ModalHeader } from 'react-bootstrap'
 import { useDispatch, useSelector } from 'react-redux'
 import { useLocation } from 'react-router-dom'
 import domainSlice, { type DomainState } from '../../../slices/DomainSlice.ts'
-import { type RootState } from '../../../slices/Store.ts'
+import { type RootState } from '../../../slices/StoreConfiguration.ts'
 import { useFormik } from 'formik'
 import type Content from '../../../models/dtos/contracts/Content.ts'
 import React, { useEffect } from 'react'
-import FileDocumentService from '../../../services/FileDocumentService.ts'
 import type FileDocument from '../../../models/daos/FileDocument.ts'
 import type WebDocument from '../../../models/daos/WebDocument.ts'
 import type TextDocument from '../../../models/daos/TextDocument.ts'
-import TextDocumentService from '../../../services/TextDocumentService.ts'
-import WebDocumentService from '../../../services/WebDocumentService.ts'
 import processSlice, { type ProcessState } from '../../../slices/ProcessSlice.ts'
 import DocumentTypeConstant from '../../../models/dtos/constants/DocumentTypeConstant.ts'
 import type Document from '../../../models/daos/Document.ts'
+import { fileDocumentService, textDocumentService, webDocumentService } from '../../../containers/ServiceContainer.ts'
+import { type AxiosResponse } from 'axios'
 
 export default function DetailModalComponent (): React.JSX.Element {
   const dispatch = useDispatch()
   const location = useLocation()
-
-  const fileDocumentService = new FileDocumentService()
-  const textDocumentService = new TextDocumentService()
-  const webDocumentService = new WebDocumentService()
 
   const processState: ProcessState = useSelector((state: RootState) => state.process)
   const domainState: DomainState = useSelector((state: RootState) => state.domain)
@@ -37,9 +32,7 @@ export default function DetailModalComponent (): React.JSX.Element {
 
   const {
     document,
-    fileDocument,
-    textDocument,
-    webDocument
+    documentDetail
   } = domainState.currentDomain!
 
   const {
@@ -58,87 +51,78 @@ export default function DetailModalComponent (): React.JSX.Element {
     }
   }
 
-  useEffect(() => {
-    fetchData()
-  }, [document])
-
-  const fetchData = (): void => {
+  const fetchDataDetail = (): void => {
     dispatch(processSlice.actions.set({
       isLoading: true
     }))
+    let documentDetail: Promise<AxiosResponse<Content<FileDocument | TextDocument | WebDocument>>>
     if (document!.documentTypeId! === DocumentTypeConstant.FILE) {
-      fileDocumentService.findOneById({
-        id: document!.id
-      }).then((response) => {
-        const content: Content<FileDocument> = response.data
-        dispatch(domainSlice.actions.setCurrentDomain({
-          fileDocument: content.data!
-        }))
-      }).catch((error) => {
-        console.error(error)
-        const content: Content<null> = error.response.data
-        alert(content.message)
-      }).finally(() => {
-        dispatch(processSlice.actions.set({
-          isLoading: false
-        }))
-      })
+      documentDetail = fileDocumentService
+        .findOneById({
+          id: document!.id
+        })
     } else if (document!.documentTypeId! === DocumentTypeConstant.TEXT) {
-      textDocumentService.findOneById({
-        id: document!.id
-      }).then((response) => {
-        const content: Content<TextDocument> = response.data
-        dispatch(domainSlice.actions.setCurrentDomain({
-          textDocument: content.data!
-        }))
-      }).catch((error) => {
-        console.error(error)
-        const content: Content<null> = error.response.data
-        alert(content.message)
-      }).finally(() => {
-        dispatch(processSlice.actions.set({
-          isLoading: false
-        }))
-      })
+      documentDetail = textDocumentService
+        .findOneById({
+          id: document!.id
+        })
     } else if (document!.documentTypeId! === DocumentTypeConstant.WEB) {
-      webDocumentService.findOneById({
-        id: document!.id
-      }).then((response) => {
-        const content: Content<WebDocument> = response.data
-        dispatch(domainSlice.actions.setCurrentDomain({
-          webDocument: content.data!
-        }))
-      }).catch((error) => {
-        console.error(error)
-        const content: Content<null> = error.response.data
-        alert(content.message)
-      }).finally(() => {
-        dispatch(processSlice.actions.set({
-          isLoading: false
-        }))
-      })
+      documentDetail = webDocumentService
+        .findOneById({
+          id: document!.id
+        })
     } else {
       console.error('Document type is not supported.')
+      return
     }
+    documentDetail
+      .then((response) => {
+        const content: Content<FileDocument | TextDocument | WebDocument> = response.data
+        dispatch(domainSlice.actions.setCurrentDomain({
+          documentDetail: content.data!
+        }))
+      }).catch((error) => {
+        console.error(error)
+        const content: Content<null> = error.response.data
+        alert(content.message)
+      }).finally(() => {
+        dispatch(processSlice.actions.set({
+          isLoading: false
+        }))
+      })
   }
 
-  const getInitialValues = (): FileDocument | TextDocument | WebDocument => {
-    if (document!.documentTypeId! === DocumentTypeConstant.FILE) {
-      return fileDocument!
-    } else if (document!.documentTypeId! === DocumentTypeConstant.TEXT) {
-      return textDocument!
-    } else if (document!.documentTypeId! === DocumentTypeConstant.WEB) {
-      return webDocument!
-    } else {
-      console.error('Document type is not supported.')
-      return {}
-    }
-  }
+  const [initialValues, setInitialValues] = React.useState({
+    id: document!.id!,
+    name: document!.name!,
+    description: document!.description!,
+    documentTypeId: document!.documentTypeId!,
+    accountId: document!.accountId!,
+    fileName: '',
+    fileData: undefined,
+    fileDataHash: '',
+    fileMetadata: {
+      fileUrl: ''
+    },
+    textContent: '',
+    textContentHash: '',
+    webUrl: '',
+    webUrlHash: ''
+  })
+
+  useEffect(() => {
+    fetchDataDetail()
+    setInitialValues({ ...initialValues, ...document })
+  }, [document])
+
+  useEffect(() => {
+    setInitialValues({ ...initialValues, ...(documentDetail as typeof initialValues), fileData: undefined })
+  }, [documentDetail])
 
   const formik = useFormik({
-    initialValues: getInitialValues(),
+    initialValues,
     enableReinitialize: true,
-    onSubmit: (values: FileDocument | TextDocument | WebDocument) => {
+    onSubmit: (values) => {
       dispatch(processSlice.actions.set({
         isLoading: true
       }))
@@ -249,6 +233,7 @@ export default function DetailModalComponent (): React.JSX.Element {
                     <fieldset className="mb-2">
                         <label className="form-label" htmlFor="id">ID:</label>
                         <input
+                            disabled={true}
                             className="form-control"
                             type="text"
                             name="id"
@@ -307,76 +292,111 @@ export default function DetailModalComponent (): React.JSX.Element {
                         </select>
                     </fieldset>
                     { document!.documentTypeId === DocumentTypeConstant.FILE &&
-                          <>
-                                    <fieldset className="mb-2">
-                                        <label className="form-label" htmlFor="file-name">File Name:</label>
-                                        <input
-                                            disabled={true}
-                                            className="form-control"
-                                            type="file-name"
-                                            name="fileName"
-                                            id="file-name"
-                                            onBlur={formik.handleBlur}
-                                            onChange={formik.handleChange}
-                                            value={(formik.values as FileDocument).fileName}
-                                        />
-                                    </fieldset>
-                                    <fieldset className="mb-2">
-                                        <label className="form-label" htmlFor="file-data">File Data:</label>
-                                        <input
-                                            className="form-control"
-                                            type="file"
-                                            name="fileData"
-                                            id="file-data"
-                                            onBlur={formik.handleBlur}
-                                            onChange={(event) => {
-                                              formik.handleChange(event)
-                                              const fileData: File = event.target.files![0]
-                                              formik.setFieldValue('fileData', fileData)
-                                              formik.setFieldValue('fileName', fileData.name)
-                                            }}
-                                        />
-                                    </fieldset>
-                                    <div className="d-flex justify-content-center align-items-center mt-3">
-                                        <a
-                                            download={`${(formik.values as FileDocument).fileName}`}
-                                            href={(formik.values as FileDocument).fileMetadata!.fileUrl}
-                                        >
-                                            <button className="btn btn-success" type="button">Download</button>
-                                        </a>
-                                    </div>
-                                </>
-                            }
-                  { document!.documentTypeId === DocumentTypeConstant.TEXT &&
-                                <>
-                                    <fieldset className="mb-2">
-                                        <label className="form-label" htmlFor="text-content">Text Content:</label>
-                                        <textarea
-                                            className="form-control"
-                                            name="textContent"
-                                            id="text-content"
-                                            onBlur={formik.handleBlur}
-                                            onChange={formik.handleChange}
-                                            value={(formik.values as TextDocument).textContent}
-                                        />
-                                    </fieldset>
-                                </>
-                  }
-                  { document!.documentTypeId === DocumentTypeConstant.WEB &&
-                                <>
-                                    <fieldset className="mb-2">
-                                        <label className="form-label" htmlFor="web-url">Web Url:</label>
-                                        <textarea
-                                            className="form-control"
-                                            name="webUrl"
-                                            id="web-url"
-                                            onBlur={formik.handleBlur}
-                                            onChange={formik.handleChange}
-                                            value={(formik.values as WebDocument).webUrl}
-                                        />
-                                    </fieldset>
-                                </>
-                  }
+                        <>
+                            <fieldset className="mb-2">
+                                <label className="form-label" htmlFor="file-name">File Name:</label>
+                                <input
+                                    className="form-control"
+                                    type="text"
+                                    name="fileName"
+                                    id="file-name"
+                                    onBlur={formik.handleBlur}
+                                    onChange={formik.handleChange}
+                                    value={(formik.values as FileDocument).fileName}
+                                />
+                            </fieldset>
+                            <fieldset className="mb-2">
+                                <label className="form-label" htmlFor="file-data-hash">File Data SHA256 Hash:</label>
+                                <textarea
+                                    disabled={true}
+                                    className="form-control"
+                                    name="fileDataHash"
+                                    id="file-data-hash"
+                                    onBlur={formik.handleBlur}
+                                    onChange={formik.handleChange}
+                                    value={(formik.values as FileDocument).fileDataHash}
+                                />
+                            </fieldset>
+                            <fieldset className="mb-2">
+                                <label className="form-label" htmlFor="file-data">File Data:</label>
+                                <input
+                                    className="form-control"
+                                    type="file"
+                                    name="fileData"
+                                    id="file-data"
+                                    onBlur={formik.handleBlur}
+                                    onChange={(event) => {
+                                      formik.handleChange(event)
+                                      const fileData: File = event.target.files[0]
+                                      formik.setFieldValue('fileData', fileData)
+                                      formik.setFieldValue('fileName', fileData.name)
+                                    }}
+                                />
+                            </fieldset>
+                            <div className="d-flex justify-content-center align-items-center mt-3">
+                                <a
+                                    download={(formik.values as FileDocument).fileName}
+                                    href={(formik.values as FileDocument).fileMetadata!.fileUrl}
+                                >
+                                    <button className="btn btn-success" type="button">Download</button>
+                                </a>
+                            </div>
+                        </>
+                    }
+                    {document!.documentTypeId === DocumentTypeConstant.TEXT &&
+                        <>
+                            <fieldset className="mb-2">
+                                <label className="form-label" htmlFor="text-content-hash">Text Content SHA256 Hash:</label>
+                                <textarea
+                                    disabled={true}
+                                    className="form-control"
+                                    name="textContentHash"
+                                    id="text-content-hash"
+                                    onBlur={formik.handleBlur}
+                                    onChange={formik.handleChange}
+                                    value={(formik.values as TextDocument).textContentHash}
+                                />
+                            </fieldset>
+                            <fieldset className="mb-2">
+                                <label className="form-label" htmlFor="text-content">Text Content:</label>
+                                <textarea
+                                    className="form-control"
+                                    name="textContent"
+                                    id="text-content"
+                                    onBlur={formik.handleBlur}
+                                    onChange={formik.handleChange}
+                                    value={(formik.values as TextDocument).textContent}
+                                />
+                            </fieldset>
+                        </>
+                    }
+                    {document!.documentTypeId === DocumentTypeConstant.WEB &&
+                        <>
+                            <fieldset className="mb-2">
+                                <label className="form-label" htmlFor="web-url-hash">Web Url SHA256 Hash:</label>
+                                <textarea
+                                    disabled={true}
+                                    className="form-control"
+                                    name="webUrlHash"
+                                    id="web-url-hash"
+                                    onBlur={formik.handleBlur}
+                                    onChange={formik.handleChange}
+                                    value={(formik.values as WebDocument).webUrlHash}
+                                />
+                            </fieldset>
+                            <fieldset className="mb-2">
+                                <label className="form-label" htmlFor="web-url">Web Url:</label>
+                                <textarea
+                                    className="form-control"
+                                    name="webUrl"
+                                    id="web-url"
+                                    onBlur={formik.handleBlur}
+                                    onChange={formik.handleChange}
+                                    value={(formik.values as WebDocument).webUrl}
+                                />
+                            </fieldset>
+                        </>
+                    }
                 </form>
             </ModalBody>
             <ModalFooter>

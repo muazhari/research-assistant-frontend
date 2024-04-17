@@ -1,7 +1,7 @@
 import React, { useEffect } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import domainSlice, { type DomainState } from '../../slices/DomainSlice.ts'
-import { type RootState } from '../../slices/Store.ts'
+import { type RootState } from '../../slices/StoreConfiguration.ts'
 import { type AuthenticationState } from '../../slices/AuthenticationSlice.ts'
 import { useFormik } from 'formik'
 import SelectModalComponent from '../../components/features/SelectModalComponent.tsx'

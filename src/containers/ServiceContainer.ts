@@ -11,26 +11,26 @@ import PassageSearchService from '../services/PassageSearchService.ts'
 import BackendOneClient from '../clients/BackendOneClient.ts'
 
 const backendOneClient: BackendOneClient = new BackendOneClient()
-const account: AccountService = new AccountService(backendOneClient)
-const authentication: AuthenticationService = new AuthenticationService(backendOneClient)
-const authorization: AuthorizationService = new AuthorizationService(backendOneClient)
-const document: DocumentService = new DocumentService(backendOneClient)
-const documentType: DocumentTypeService = new DocumentTypeService(backendOneClient)
-const fileDocument: FileDocumentService = new FileDocumentService(backendOneClient)
-const textDocument: TextDocumentService = new TextDocumentService(backendOneClient)
-const webDocument: WebDocumentService = new WebDocumentService(backendOneClient)
-const longFormQa: LongFormQaService = new LongFormQaService(backendOneClient)
-const passageSearch: PassageSearchService = new PassageSearchService(backendOneClient)
+const accountService: AccountService = new AccountService(backendOneClient)
+const authenticationService: AuthenticationService = new AuthenticationService(backendOneClient)
+const authorizationService: AuthorizationService = new AuthorizationService(backendOneClient)
+const documentService: DocumentService = new DocumentService(backendOneClient)
+const documentTypeService: DocumentTypeService = new DocumentTypeService(backendOneClient)
+const fileDocumentService: FileDocumentService = new FileDocumentService(backendOneClient)
+const textDocumentService: TextDocumentService = new TextDocumentService(backendOneClient)
+const webDocumentService: WebDocumentService = new WebDocumentService(backendOneClient)
+const longFormQaService: LongFormQaService = new LongFormQaService(backendOneClient)
+const passageSearchService: PassageSearchService = new PassageSearchService(backendOneClient)
 
 export {
-  account,
-  authentication,
-  authorization,
-  document,
-  documentType,
-  fileDocument,
-  textDocument,
-  webDocument,
-  longFormQa,
-  passageSearch
+  accountService,
+  authenticationService,
+  authorizationService,
+  documentService,
+  documentTypeService,
+  fileDocumentService,
+  textDocumentService,
+  webDocumentService,
+  longFormQaService,
+  passageSearchService
 }

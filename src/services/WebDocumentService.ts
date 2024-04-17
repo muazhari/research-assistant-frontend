@@ -18,7 +18,7 @@ export default class WebDocumentService extends Service {
   constructor (client: Client) {
     super()
     this.client = client
-    this.path = '/documents/webs'
+    this.path = '/document-webs'
   }
 
   async createOne (request: CreateOne): Promise<AxiosResponse<Content<WebDocument>>> {
