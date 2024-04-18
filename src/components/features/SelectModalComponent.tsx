@@ -1,31 +1,19 @@
 import { Modal, ModalBody, ModalHeader } from 'react-bootstrap'
 import { useDispatch, useSelector } from 'react-redux'
-
 import type Document from '../../models/daos/Document.ts'
-import type DocumentType from '../../models/daos/DocumentType.ts'
-import FileDocumentService from '../../services/FileDocumentService.ts'
-import { type AuthenticationState } from '../../slices/AuthenticationSlice.ts'
-import domainSlice, { type DocumentTableRow, type DomainState, getDocumentTableRows } from '../../slices/DomainSlice.ts'
+import domainSlice, { type DomainState } from '../../slices/DomainSlice.ts'
 import { type RootState } from '../../slices/StoreConfiguration.ts'
 import React, { useEffect } from 'react'
 import type Content from '../../models/dtos/contracts/Content.ts'
-import DocumentTypeService from '../../services/DocumentTypeService.ts'
-import DocumentService from '../../services/DocumentService.ts'
-import type FileDocumentPropertyResponse
-  from '../../models/dtos/contracts/response/managements/FileDocumentPropertyResponse.ts'
 import DataTable, { type TableColumn } from 'react-data-table-component'
 import { useFormik } from 'formik'
-import processSlice, { type ProcessState } from '../../slices/ProcessSlice.ts'
+import { type ProcessState } from '../../slices/ProcessSlice.ts'
+import { documentService } from '../../containers/ServiceContainer.ts'
 
 export default function SelectModalComponent (): React.JSX.Element {
   const dispatch = useDispatch()
 
-  const documentService = new DocumentService()
-  const documentTypeService = new DocumentTypeService()
-  const fileDocumentService = new FileDocumentService()
-
   const domainState: DomainState = useSelector((state: RootState) => state.domain)
-  const authenticationState: AuthenticationState = useSelector((state: RootState) => state.authentication)
   const processState: ProcessState = useSelector((state: RootState) => state.process)
 
   const {
@@ -33,16 +21,11 @@ export default function SelectModalComponent (): React.JSX.Element {
   } = processState
 
   const {
-    account
-  } = authenticationState
-
-  const {
-    accountDocuments,
-    documentTypes
+    documents
   } = domainState.documentDomain!
 
   const {
-    documentTableRows
+    selectedDocuments
   } = domainState.currentDomain!
 
   const {
@@ -51,7 +34,7 @@ export default function SelectModalComponent (): React.JSX.Element {
 
   const handleOnHide = (): void => {
     dispatch(domainSlice.actions.setModalDomain({
-      isShow: !(isShow!)
+      isShow: false
     }))
   }
 
@@ -60,116 +43,75 @@ export default function SelectModalComponent (): React.JSX.Element {
   }, [isShow])
 
   const fetchData = (): void => {
-    Promise.all([
-      documentService
-        .findManyByAccountId({
-          accountId: account!.id
-        }),
-      documentTypeService
-        .findMany()
-    ])
+    documentService
+      .findManyWithPagination({
+        pagePosition: 1,
+        pageSize: 5
+      })
       .then((response) => {
-        const accountDocumentsContent: Content<Document[]> = response[0].data
-        const documentTypesContent: Content<DocumentType[]> = response[1].data
+        const content: Content<Document[]> = response.data
         dispatch(domainSlice.actions.setDocumentDomain({
-          accountDocuments: accountDocumentsContent.data,
-          documentTypes: documentTypesContent.data
-        }))
-        dispatch(domainSlice.actions.setCurrentDomain({
-          documentTableRows: getDocumentTableRows(accountDocumentsContent.data!, documentTypesContent.data!)
+          documents: content.data!
         }))
       })
       .catch((error) => {
         console.error(error)
+        const content: Content<null> = error.response.data
+        alert(content.message)
       })
   }
 
-  const handleClickSelect = (row: DocumentTableRow): void => {
-    const documentType = documentTypes!.find((documentType) => {
-      return documentType.id === row.documentTypeId
-    })
-
-    if (documentType!.name === 'file') {
-      dispatch(processSlice.actions.set({
-        isLoading: true
-      }))
-      fileDocumentService.findOnePropertyById({
-        id: row.id
-      }).then((response) => {
-        const content: Content<FileDocumentPropertyResponse> = response.data
-        dispatch(domainSlice.actions.setCurrentDomain({
-          document: row,
-          documentType,
-          fileDocumentProperty: content.data!
-        }))
-        handleOnHide()
-        alert('Document selected.')
-      }).catch((error) => {
-        console.error(error)
-      }).finally(() => {
-        dispatch(processSlice.actions.set({
-          isLoading: false
-        }))
-      })
-    } else if (documentType!.name === 'text') {
+  const handleClickSelect = (row: Document): void => {
+    if (selectedDocuments!.find((document: Document) => document.id === row.id) !== undefined) {
       dispatch(domainSlice.actions.setCurrentDomain({
-        document: row,
-        documentType
+        selectedDocuments: selectedDocuments!.filter((document: Document) => document.id !== row.id)
       }))
-      alert('Document selected.')
-    } else if (documentType!.name === 'web') {
-      dispatch(domainSlice.actions.setCurrentDomain({
-        document: row,
-        documentType
-      }))
-      alert('Document selected.')
     } else {
-      throw new Error('Document type is not supported.')
+      dispatch(domainSlice.actions.setCurrentDomain({
+        selectedDocuments: [...selectedDocuments!, row]
+      }))
     }
   }
 
-  const handleClickDetail = (document: Document): void => {
+  const handleClickDetail = (row: Document): void => {
+    dispatch(domainSlice.actions.setCurrentDomain({
+      selectedDocument: row
+    }))
     dispatch(domainSlice.actions.setModalDomain({
       name: 'detail',
       isShow: true
     }))
-    dispatch(domainSlice.actions.setCurrentDomain({
-      document,
-      documentType: documentTypes!.find((documentType) => {
-        return documentType.id === document.documentTypeId
-      })
-    }))
   }
 
-  const columns: Array<TableColumn<DocumentTableRow>> = [
+  const columns: Array<TableColumn<Document>> = [
     {
       name: 'ID',
       width: '10%',
-      selector: (row: DocumentTableRow) => row.id!,
+      selector: (row: Document) => row.id!,
       sortable: true
     },
     {
       name: 'Name',
       width: '23%',
-      selector: (row: DocumentTableRow) => row.name!,
+      selector: (row: Document) => row.name!,
       sortable: true
     },
     {
       name: 'Description',
       width: '27%',
-      selector: (row: DocumentTableRow) => row.description!,
+      selector: (row: Document) => row.description!,
       sortable: true
     },
     {
-      name: 'Document Type Name',
+      name: 'Document Type ID',
       width: '15%',
-      selector: (row: DocumentTableRow) => row.documentTypeName!,
+      selector: (row: Document) => row.documentTypeId!,
       sortable: true
     },
     {
       name: 'Actions',
       width: '25%',
-      cell: (row: DocumentTableRow) =>
+      cell: (row: Document) =>
                 <>
                     <button
                         id={row.id}
@@ -192,7 +134,9 @@ export default function SelectModalComponent (): React.JSX.Element {
                           ? <div className="spinner-border text-light" role="status">
                                 <span className="visually-hidden">Loading...</span>
                             </div>
-                          : 'Select'
+                          : selectedDocuments!.find((document: Document) => document.id === row.id) !== undefined
+                            ? 'Unselect'
+                            : 'Select'
                     }
                     </button>
                 </>
@@ -204,10 +148,11 @@ export default function SelectModalComponent (): React.JSX.Element {
       search: ''
     },
     onSubmit: (values) => {
-      dispatch(domainSlice.actions.setCurrentDomain({
-        documentTableRows: getDocumentTableRows(accountDocuments!, documentTypes!).filter((documentTableRow) => {
-          return JSON.stringify(documentTableRow).toLowerCase().includes(values.search.toLowerCase())
-        })
+      const filteredDocuments: Document[] = selectedDocuments!.filter((document: Document) => {
+        return JSON.stringify(document).toLowerCase().includes(values.search.toLowerCase())
+      })
+      dispatch(domainSlice.actions.setDocumentDomain({
+        documents: filteredDocuments
       }))
     }
   })
@@ -236,7 +181,7 @@ export default function SelectModalComponent (): React.JSX.Element {
                 <DataTable
                     pagination={true}
                     columns={columns}
-                    data={documentTableRows!}
+                    data={documents!}
                 />
             </ModalBody>
         </Modal>

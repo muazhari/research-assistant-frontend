@@ -5,6 +5,7 @@ export class DocumentMetadata extends Response {
   reRankedScore?: number
   relevancyScore?: number
   documentId?: string
+  originMetadata?: any[]
 }
 
 export class ReRankedDocument extends Response {
@@ -25,6 +26,21 @@ export default class ProcessResponse extends Response {
   reRankedDocuments?: ReRankedDocument[]
   documentProcesses?: DocumentProcess[]
   finalDocumentUrls?: string[]
-  startedAt?: Date
-  finishedAt?: Date
+  startedAt?: string
+  finishedAt?: string
+
+  constructor (
+    reRankedDocuments?: ReRankedDocument[],
+    documentProcesses?: DocumentProcess[],
+    finalDocumentUrls?: string[],
+    startedAt?: string,
+    finishedAt?: string
+  ) {
+    super()
+    this.reRankedDocuments = reRankedDocuments
+    this.documentProcesses = documentProcesses
+    this.finalDocumentUrls = finalDocumentUrls
+    this.startedAt = startedAt
+    this.finishedAt = finishedAt
+  }
 }

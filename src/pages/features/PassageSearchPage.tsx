@@ -1,10 +1,10 @@
-import React, { useEffect } from 'react'
-import { useDispatch, useSelector } from 'react-redux'
+import React, {useEffect} from 'react'
+import {useDispatch, useSelector} from 'react-redux'
 import DocumentTypeService from '../../services/DocumentTypeService.ts'
-import domainSlice, { type DomainState } from '../../slices/DomainSlice.ts'
-import { type RootState } from '../../slices/StoreConfiguration.ts'
-import { type AuthenticationState } from '../../slices/AuthenticationSlice.ts'
-import { useFormik } from 'formik'
+import domainSlice, {type DomainState} from '../../slices/DomainSlice.ts'
+import {type RootState} from '../../slices/StoreConfiguration.ts'
+import {type AuthenticationState} from '../../slices/AuthenticationSlice.ts'
+import {useFormik} from 'formik'
 import SelectModalComponent from '../../components/features/SelectModalComponent.tsx'
 import DetailModalComponent from '../../components/managements/documents/DetailModalComponent.tsx'
 import type Content from '../../models/dtos/contracts/Content.ts'
@@ -24,7 +24,7 @@ import type OutputSetting from '../../models/dtos/contracts/requests/basic_setti
 import PassageSearchService from '../../services/PassageSearchService.ts'
 import type ProcessResponse from '../../models/dtos/contracts/response/passage_searchs/ProcessResponse.ts'
 import type DocumentType from '../../models/daos/DocumentType.ts'
-import processSlice, { type ProcessState } from '../../slices/ProcessSlice.ts'
+import processSlice, {type ProcessState} from '../../slices/ProcessSlice.ts'
 import b64toBlob from 'b64-to-blob'
 import type FileDocument from '../../models/daos/FileDocument.ts'
 import type SentenceTransformersRankerModel
@@ -49,7 +49,7 @@ export default function PassageSearchPage (): React.JSX.Element {
   } = domainState.documentDomain!
 
   const {
-    document,
+    selectedDocument,
     documentType,
     searchProcess,
     fileDocumentProperty
@@ -89,7 +89,7 @@ export default function PassageSearchPage (): React.JSX.Element {
           }
         },
         documentSetting: {
-          documentId: document!.id,
+          documentId: selectedDocument!.id,
           detailSetting: {
             startPage: 1,
             endPage: fileDocumentProperty!.pageLength
@@ -158,7 +158,7 @@ export default function PassageSearchPage (): React.JSX.Element {
           }
         },
         documentSetting: {
-          documentId: document!.id,
+          documentId: selectedDocument!.id,
           detailSetting: {
             startPage: 1,
             endPage: fileDocumentProperty!.pageLength
@@ -253,7 +253,7 @@ export default function PassageSearchPage (): React.JSX.Element {
 
     const setter = async (): Promise<void> => {
       await formik.setFieldValue('inputSetting.documentSetting.detailSetting.endPage', fileDocumentProperty!.pageLength)
-      await formik.setFieldValue('inputSetting.documentSetting.documentId', document!.id)
+      await formik.setFieldValue('inputSetting.documentSetting.documentId', selectedDocument!.id)
       await formik.setFieldValue('inputSetting.accountId', account!.id)
       await formik.setFieldValue('outputSetting.documentTypeId', documentTypes!.find((documentType) => documentType.name === 'file')!.id)
     }
@@ -262,7 +262,7 @@ export default function PassageSearchPage (): React.JSX.Element {
       .catch((error) => {
         console.error(error)
       })
-  }, [account, document, fileDocumentProperty, documentTypes])
+  }, [account, selectedDocument, fileDocumentProperty, documentTypes])
 
   const getSearchRequest = (values: any): ProcessRequest => {
     const hydeGenerator: Generator = {

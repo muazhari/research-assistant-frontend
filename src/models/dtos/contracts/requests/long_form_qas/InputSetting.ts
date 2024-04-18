@@ -11,21 +11,21 @@ export class GeneratorSetting extends Request {
   isForceRefreshGeneratedAnswer?: boolean
   isForceRefreshGeneratedQuestion?: boolean
   isForceRefreshGeneratedHallucinationGrade?: boolean
-  isForceRefreshGeneratedRelevancyGrade?: boolean
+  isForceRefreshGeneratedAnswerRelevancyGrade?: boolean
   prompt?: string
 
   constructor (
     isForceRefreshGeneratedAnswer?: boolean,
     isForceRefreshGeneratedQuestion?: boolean,
     isForceRefreshGeneratedHallucinationGrade?: boolean,
-    isForceRefreshGeneratedRelevancyGrade?: boolean,
+    isForceRefreshGeneratedAnswerRelevancyGrade?: boolean,
     prompt?: string
   ) {
     super()
     this.isForceRefreshGeneratedAnswer = isForceRefreshGeneratedAnswer
     this.isForceRefreshGeneratedQuestion = isForceRefreshGeneratedQuestion
     this.isForceRefreshGeneratedHallucinationGrade = isForceRefreshGeneratedHallucinationGrade
-    this.isForceRefreshGeneratedRelevancyGrade = isForceRefreshGeneratedRelevancyGrade
+    this.isForceRefreshGeneratedAnswerRelevancyGrade = isForceRefreshGeneratedAnswerRelevancyGrade
     this.prompt = prompt
   }
 }

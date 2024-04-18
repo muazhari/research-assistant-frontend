@@ -13,6 +13,7 @@ import processSlice, { type ProcessState } from '../../../slices/ProcessSlice.ts
 import DocumentTypeConstant from '../../../models/dtos/constants/DocumentTypeConstant.ts'
 import type Document from '../../../models/daos/Document.ts'
 import { fileDocumentService, textDocumentService, webDocumentService } from '../../../containers/ServiceContainer.ts'
+import { type AxiosResponse } from 'axios'
 
 export default function InsertModalComponent (): React.JSX.Element {
   const dispatch = useDispatch()
@@ -28,10 +29,6 @@ export default function InsertModalComponent (): React.JSX.Element {
   const {
     account
   } = authenticationState
-
-  const {
-    documents
-  } = domainState.documentDomain!
 
   const {
     isShow
@@ -56,8 +53,9 @@ export default function InsertModalComponent (): React.JSX.Element {
       dispatch(processSlice.actions.set({
         isLoading: true
       }))
+      let documentDetail: Promise<AxiosResponse<Content<FileDocument | TextDocument | WebDocument>>>
       if (values.documentTypeId === DocumentTypeConstant.FILE) {
-        fileDocumentService
+        documentDetail = fileDocumentService
           .createOne({
             body: {
               name: values.name,
@@ -67,29 +65,9 @@ export default function InsertModalComponent (): React.JSX.Element {
               fileName: values.fileName,
               fileData: values.fileData
             }
-          }).then((response) => {
-            const content: Content<FileDocument> = response.data
-            const newDocuments: Document[] = [content.data!, ...(documents!)]
-            dispatch(domainSlice.actions.setCurrentDomain({
-              document: content.data! as Document,
-              fileDocument: content.data!
-            }))
-            dispatch(domainSlice.actions.setDocumentDomain({
-              documents: newDocuments
-            }))
-            alert(content.message)
-          }).catch((error) => {
-            console.error(error)
-            const content: Content<null> = error.response.data
-            alert(content.message)
-          }).finally(async () => {
-            dispatch(processSlice.actions.set({
-              isLoading: false
-            }))
-            formik.resetForm()
           })
       } else if (values.documentTypeId === DocumentTypeConstant.TEXT) {
-        textDocumentService
+        documentDetail = textDocumentService
           .createOne({
             body: {
               name: values.name,
@@ -98,29 +76,9 @@ export default function InsertModalComponent (): React.JSX.Element {
               accountId: values.accountId,
               textContent: values.textContent
             }
-          }).then((response) => {
-            const content: Content<TextDocument> = response.data
-            const newDocuments: Document[] = [content.data!, ...(documents!)]
-            dispatch(domainSlice.actions.setCurrentDomain({
-              document: content.data!,
-              textDocument: content.data!
-            }))
-            dispatch(domainSlice.actions.setDocumentDomain({
-              documents: newDocuments
-            }))
-            alert(content.message)
-          }).catch((error) => {
-            console.error(error)
-            const content: Content<null> = error.response.data
-            alert(content.message)
-          }).finally(async () => {
-            dispatch(processSlice.actions.set({
-              isLoading: false
-            }))
-            formik.resetForm()
           })
       } else if (values.documentTypeId === DocumentTypeConstant.WEB) {
-        webDocumentService
+        documentDetail = webDocumentService
           .createOne({
             body: {
               name: values.name,
@@ -129,36 +87,35 @@ export default function InsertModalComponent (): React.JSX.Element {
               accountId: values.accountId,
               webUrl: values.webUrl
             }
-          }).then((response) => {
-            const content: Content<WebDocument> = response.data
-            const newDocuments: Document[] = [content.data!, ...(documents!)]
-            dispatch(domainSlice.actions.setCurrentDomain({
-              document: content.data! as Document,
-              webDocument: content.data!
-            }))
-            dispatch(domainSlice.actions.setDocumentDomain({
-              documents: newDocuments
-            }))
-            alert(content.message)
-          }).catch((error) => {
-            console.error(error)
-            const content: Content<null> = error.response.data
-            alert(content.message)
-          }).finally(async () => {
-            dispatch(processSlice.actions.set({
-              isLoading: false
-            }))
-            formik.resetForm()
           })
       } else {
         console.error('Document Type is not supported.')
+        return
       }
+      documentDetail
+        .then((response) => {
+          const content: Content<WebDocument> = response.data
+          dispatch(domainSlice.actions.setCurrentDomain({
+            selectedDocument: content.data! as Document,
+            selectedDocumentDetail: content.data!
+          }))
+          alert(content.message)
+        }).catch((error) => {
+          console.error(error)
+          const content: Content<null> = error.response.data
+          alert(content.message)
+        }).finally(async () => {
+          dispatch(processSlice.actions.set({
+            isLoading: false
+          }))
+          formik.resetForm()
+        })
     }
   })
 
   const handleOnHide = (): void => {
     dispatch(domainSlice.actions.setModalDomain({
-      isShow: !(isShow!)
+      isShow: false
     }))
     formik.resetForm()
   }
@@ -174,7 +131,7 @@ export default function InsertModalComponent (): React.JSX.Element {
             <ModalBody>
                 <form onSubmit={formik.handleSubmit}>
                     <fieldset className="mb-2">
-                        <label className="form-label" htmlFor="name">Name:</label>
+                        <label className="form-label" htmlFor="name">Name</label>
                         <input
                             className="form-control"
                             type="text"
@@ -186,7 +143,7 @@ export default function InsertModalComponent (): React.JSX.Element {
                         />
                     </fieldset>
                     <fieldset className="mb-2">
-                        <label className="form-label" htmlFor="description">Description:</label>
+                        <label className="form-label" htmlFor="description">Description</label>
                         <textarea
                             className="form-control"
                             name="description"
@@ -197,7 +154,7 @@ export default function InsertModalComponent (): React.JSX.Element {
                         />
                     </fieldset>
                     <fieldset className="mb-2">
-                        <label className="form-label" htmlFor="documentTypeId">Type:</label>
+                        <label className="form-label" htmlFor="documentTypeId">Type ID</label>
                         <select
                             className="form-control"
                             name="documentTypeId"
@@ -213,7 +170,7 @@ export default function InsertModalComponent (): React.JSX.Element {
                                       key={documentTypeId}
                                       value={documentTypeId}
                                   >
-                                    {documentTypeId.charAt(0).toUpperCase() + documentTypeId.slice(1)}
+                                    {documentTypeId}
                                   </option>
                               )
                             })
@@ -223,7 +180,7 @@ export default function InsertModalComponent (): React.JSX.Element {
                     { formik.values.documentTypeId === DocumentTypeConstant.FILE &&
                                 <>
                                     <fieldset className="mb-2">
-                                        <label className="form-label" htmlFor="fileName">File Name:</label>
+                                        <label className="form-label" htmlFor="fileName">File Name</label>
                                         <input
                                             disabled={true}
                                             className="form-control"
@@ -236,12 +193,12 @@ export default function InsertModalComponent (): React.JSX.Element {
                                         />
                                     </fieldset>
                                   <fieldset className="mb-2">
-                                    <label className="form-label" htmlFor="file-data">File Data:</label>
+                                    <label className="form-label" htmlFor="fileData">File Data</label>
                                     <input
                                         className="form-control"
                                         type="file"
                                         name="fileData"
-                                        id="file-data"
+                                        id="fileData"
                                         onBlur={formik.handleBlur}
                                         onChange={(event) => {
                                           formik.handleChange(event)
@@ -256,7 +213,7 @@ export default function InsertModalComponent (): React.JSX.Element {
                   {formik.values.documentTypeId === DocumentTypeConstant.TEXT &&
                       <>
                         <fieldset className="mb-2">
-                          <label className="form-label" htmlFor="textContent">Text Content:</label>
+                          <label className="form-label" htmlFor="textContent">Text Content</label>
                           <textarea
                               className="form-control"
                               name="textContent"
@@ -271,7 +228,7 @@ export default function InsertModalComponent (): React.JSX.Element {
                   {formik.values.documentTypeId === DocumentTypeConstant.WEB &&
                                 <>
                                     <fieldset className="mb-2">
-                                        <label className="form-label" htmlFor="webUrl">Web Url:</label>
+                                        <label className="form-label" htmlFor="webUrl">Web Url</label>
                                         <textarea
                                             className="form-control"
                                             name="webUrl"

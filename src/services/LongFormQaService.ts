@@ -17,6 +17,6 @@ export default class LongFormQaService extends Service {
   }
 
   async process (request: ProcessRequest): Promise<AxiosResponse<Content<ProcessResponse>>> {
-    return await this.client.instance.post(`${this.path}`, request)
+    return await this.client.instance.post(`${this.path}`, request.body)
   }
 }

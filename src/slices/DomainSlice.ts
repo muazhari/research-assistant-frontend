@@ -5,6 +5,7 @@ import type FileDocument from '../models/daos/FileDocument.ts'
 import type TextDocument from '../models/daos/TextDocument.ts'
 import type WebDocument from '../models/daos/WebDocument.ts'
 import type LongFormQaProcessResponse from '../models/dtos/contracts/response/long_form_qas/ProcessResponse.ts'
+import { type ReRankedDocument } from '../models/dtos/contracts/response/passage_searchs/ProcessResponse.ts'
 import type PassageSearchProcessResponse from '../models/dtos/contracts/response/passage_searchs/ProcessResponse.ts'
 
 export interface AccountDomain {
@@ -18,14 +19,16 @@ export interface DocumentDomain {
 export interface ModalDomain {
   isShow?: boolean
   name?: string
+  source?: string
 }
 
 export interface CurrentDomain {
-  account?: Account
-  document?: Document
-  documentDetail?: FileDocument | TextDocument | WebDocument
-  qaProcess?: LongFormQaProcessResponse
-  searchProcess?: PassageSearchProcessResponse
+  selectedDocument?: Document
+  selectedDocuments?: Document[]
+  selectedDocumentDetail?: FileDocument | TextDocument | WebDocument
+  selectedReRankedDocument?: ReRankedDocument
+  longFormQaProcessResponse?: LongFormQaProcessResponse
+  passageSearchProcessResponse?: PassageSearchProcessResponse
 }
 
 export interface DomainState {
@@ -44,14 +47,16 @@ const initialState: DomainState = {
   },
   modalDomain: {
     isShow: false,
-    name: undefined
+    name: undefined,
+    source: undefined
   },
   currentDomain: {
-    account: undefined,
-    document: undefined,
-    documentDetail: undefined,
-    qaProcess: undefined,
-    searchProcess: undefined
+    selectedDocument: undefined,
+    selectedDocuments: [],
+    selectedDocumentDetail: undefined,
+    selectedReRankedDocument: undefined,
+    longFormQaProcessResponse: undefined,
+    passageSearchProcessResponse: undefined
   }
 }
 

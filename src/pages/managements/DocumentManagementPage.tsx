@@ -29,12 +29,16 @@ export default function DocumentManagementPage (): React.JSX.Element {
   } = domainState.documentDomain!
 
   const {
+    selectedDocument
+  } = domainState.currentDomain!
+
+  const {
     name
   } = domainState.modalDomain!
 
   useEffect(() => {
     fetchData()
-  }, [])
+  }, [selectedDocument])
 
   const fetchData = (): void => {
     documentService
@@ -57,11 +61,12 @@ export default function DocumentManagementPage (): React.JSX.Element {
 
   const handleClickDetail = async (row: Document): Promise<void> => {
     dispatch(domainSlice.actions.setCurrentDomain({
-      document: row
+      selectedDocument: row
     }))
     dispatch(domainSlice.actions.setModalDomain({
       name: 'detail',
-      isShow: true
+      isShow: true,
+      source: 'documentDetail'
     }))
   }
 
@@ -75,12 +80,7 @@ export default function DocumentManagementPage (): React.JSX.Element {
       })
       .then((response) => {
         const content: Content<Document> = response.data
-        const newDocuments = documents!.filter((document: Document) => {
-          return document.id !== content.data!.id
-        })
-        dispatch(domainSlice.actions.setDocumentDomain({
-          documents: newDocuments
-        }))
+        fetchData()
         alert(content.message)
       })
       .catch((error) => {
@@ -122,7 +122,7 @@ export default function DocumentManagementPage (): React.JSX.Element {
       sortable: true
     },
     {
-      name: 'Document Type Name',
+      name: 'Document Type ID',
       width: '15%',
       selector: (row: Document) => row.documentTypeId!,
       sortable: true
@@ -172,7 +172,7 @@ export default function DocumentManagementPage (): React.JSX.Element {
       const filteredDocuments: Document[] = documents!.filter((document: Document) => {
         return JSON.stringify(document).toLowerCase().includes(values.search.toLowerCase())
       })
-      dispatch(domainSlice.actions.setCurrentDomain({
+      dispatch(domainSlice.actions.setDocumentDomain({
         documents: filteredDocuments
       }))
     }

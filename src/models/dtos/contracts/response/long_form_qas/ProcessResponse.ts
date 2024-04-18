@@ -4,14 +4,14 @@ import { type ReRankedDocument } from '../passage_searchs/ProcessResponse.ts'
 export default class ProcessResponse extends Response {
   reRankedDocuments?: ReRankedDocument[]
   generatedAnswer?: string
-  startedAt?: Date
-  finishedAt?: Date
+  startedAt?: string
+  finishedAt?: string
 
   constructor (
     reRankedDocuments?: ReRankedDocument[],
     generatedAnswer?: string,
-    startedAt?: Date,
-    finishedAt?: Date
+    startedAt?: string,
+    finishedAt?: string
   ) {
     super()
     this.reRankedDocuments = reRankedDocuments
