@@ -49,7 +49,6 @@ export default function InsertModalComponent (): React.JSX.Element {
     initialValues,
     enableReinitialize: true,
     onSubmit: (values) => {
-      setInitialValues(values)
       dispatch(processSlice.actions.set({
         isLoading: true
       }))
@@ -99,11 +98,11 @@ export default function InsertModalComponent (): React.JSX.Element {
             selectedDocument: content.data! as Document,
             selectedDocumentDetail: content.data!
           }))
+          setInitialValues({ ...values, fileData: undefined })
           alert(content.message)
         }).catch((error) => {
           console.error(error)
-          const content: Content<null> = error.response.data
-          alert(content.message)
+          alert(JSON.stringify(error.response.data, null, 2))
         }).finally(async () => {
           dispatch(processSlice.actions.set({
             isLoading: false
@@ -182,7 +181,6 @@ export default function InsertModalComponent (): React.JSX.Element {
                                     <fieldset className="mb-2">
                                         <label className="form-label" htmlFor="fileName">File Name</label>
                                         <input
-                                            disabled={true}
                                             className="form-control"
                                             type="text"
                                             name="fileName"

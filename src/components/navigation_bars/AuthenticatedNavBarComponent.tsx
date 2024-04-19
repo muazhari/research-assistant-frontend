@@ -5,7 +5,6 @@ import { useNavigate } from 'react-router-dom'
 import React from 'react'
 import { authenticationService } from '../../containers/ServiceContainer.ts'
 import processSlice from '../../slices/ProcessSlice.ts'
-import type Content from '../../models/dtos/contracts/Content.ts'
 import { type RootState } from '../../slices/StoreConfiguration.ts'
 
 export default function AuthenticatedNavBarComponent (): React.JSX.Element {
@@ -29,8 +28,7 @@ export default function AuthenticatedNavBarComponent (): React.JSX.Element {
       })
       .catch((error) => {
         console.error(error)
-        const content: Content<null> = error.response.data
-        alert(content.message)
+        alert(JSON.stringify(error.response.data, null, 2))
       })
       .finally(() => {
         dispatch(processSlice.actions.set({

@@ -41,8 +41,7 @@ export default function LoginPage (): React.JSX.Element {
         )
         .catch((error) => {
           console.error(error)
-          const content: Content<null> = error.response.data
-          alert(content.message)
+          alert(JSON.stringify(error.response.data, null, 2))
         })
     }
   })

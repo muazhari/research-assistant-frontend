@@ -62,8 +62,7 @@ export default function DocumentManagementPage (): React.JSX.Element {
       })
       .catch((error) => {
         console.error(error)
-        const content: Content<null> = error.response.data
-        alert(content.message)
+        alert(JSON.stringify(error.response.data, null, 2))
       }).finally(() => {
         dispatch(processSlice.actions.set({
           isLoading: false
@@ -97,8 +96,7 @@ export default function DocumentManagementPage (): React.JSX.Element {
       })
       .catch((error) => {
         console.error(error)
-        const content: Content<null> = error.response.data
-        alert(content.message)
+        alert(JSON.stringify(error.response.data, null, 2))
       })
       .finally(() => {
         dispatch(processSlice.actions.set({
@@ -202,8 +200,7 @@ export default function DocumentManagementPage (): React.JSX.Element {
       })
       .catch((error) => {
         console.error(error)
-        const content: Content<null> = error.response.data
-        alert(content.message)
+        alert(JSON.stringify(error.response.data, null, 2))
       }).finally(() => {
         dispatch(processSlice.actions.set({
           isLoading: false
@@ -233,8 +230,7 @@ export default function DocumentManagementPage (): React.JSX.Element {
       })
       .catch((error) => {
         console.error(error)
-        const content: Content<null> = error.response.data
-        alert(content.message)
+        alert(JSON.stringify(error.response.data, null, 2))
       }).finally(() => {
         dispatch(processSlice.actions.set({
           isLoading: false
@@ -269,8 +265,7 @@ export default function DocumentManagementPage (): React.JSX.Element {
         })
         .catch((error) => {
           console.error(error)
-          const content: Content<null> = error.response.data
-          alert(content.message)
+          alert(JSON.stringify(error.response.data, null, 2))
         })
         .finally(() => {
           dispatch(processSlice.actions.set({

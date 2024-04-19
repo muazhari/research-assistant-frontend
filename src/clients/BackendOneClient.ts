@@ -7,6 +7,7 @@ import type Content from '../models/dtos/contracts/Content.ts'
 import type Session from '../models/daos/Session.ts'
 import authenticationSlice from '../slices/AuthenticationSlice.ts'
 import * as serviceContainer from '../containers/ServiceContainer.ts'
+import { redirect } from 'react-router-dom'
 
 export default class BackendOneClient extends Client {
   instance: AxiosInstance
@@ -66,6 +67,9 @@ export default class BackendOneClient extends Client {
               // eslint-disable-next-line @typescript-eslint/no-unsafe-argument
               return await this.instance(originalRequest)
             }
+          } else if (error.response.status === 404 && errorContent.message!.includes('SessionRepository')) {
+            store.dispatch(authenticationSlice.actions.logout())
+            window.location.href = '/authentications/login'
           }
         }
 
