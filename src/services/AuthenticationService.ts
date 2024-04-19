@@ -5,7 +5,8 @@ import type Login from '../models/dtos/contracts/requests/authentications/Login.
 import type Register from '../models/dtos/contracts/requests/authentications/Register.ts'
 import type LoginResponse from '../models/dtos/contracts/response/authentications/LoginResponse.ts'
 import type RegisterResponse from '../models/dtos/contracts/response/authentications/RegisterResponse.ts'
-import {type AxiosResponse} from 'axios'
+import { type AxiosResponse } from 'axios'
+import type LogoutResponse from '../models/dtos/contracts/response/authentications/LogoutResponse.ts'
 
 export default class AuthenticationService extends Service {
   client: Client
@@ -24,5 +25,9 @@ export default class AuthenticationService extends Service {
 
   async register (request: Register): Promise<AxiosResponse<Content<RegisterResponse>>> {
     return await this.client.instance.post(`${this.path}/registers?method=email-and-password`, request.body)
+  }
+
+  async logout (): Promise<AxiosResponse<Content<LogoutResponse>>> {
+    return await this.client.instance.post(`${this.path}/logouts`)
   }
 }

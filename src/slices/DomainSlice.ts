@@ -5,8 +5,8 @@ import type FileDocument from '../models/daos/FileDocument.ts'
 import type TextDocument from '../models/daos/TextDocument.ts'
 import type WebDocument from '../models/daos/WebDocument.ts'
 import type LongFormQaProcessResponse from '../models/dtos/contracts/response/long_form_qas/ProcessResponse.ts'
-import { type ReRankedDocument } from '../models/dtos/contracts/response/passage_searchs/ProcessResponse.ts'
-import type PassageSearchProcessResponse from '../models/dtos/contracts/response/passage_searchs/ProcessResponse.ts'
+import type PassageSearchProcessResponse from '../models/dtos/contracts/response/passage_searches/ProcessResponse.ts'
+import { type ReRankedDocument } from '../models/dtos/contracts/response/passage_searches/ProcessResponse.ts'
 
 export interface AccountDomain {
   currentAccount?: Account

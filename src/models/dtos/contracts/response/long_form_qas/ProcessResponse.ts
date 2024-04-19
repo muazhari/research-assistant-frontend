@@ -1,5 +1,5 @@
 import Response from '../Response.ts'
-import { type ReRankedDocument } from '../passage_searchs/ProcessResponse.ts'
+import { type ReRankedDocument } from '../passage_searches/ProcessResponse.ts'
 
 export default class ProcessResponse extends Response {
   reRankedDocuments?: ReRankedDocument[]

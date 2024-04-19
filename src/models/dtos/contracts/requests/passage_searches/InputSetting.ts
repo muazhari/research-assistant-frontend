@@ -14,15 +14,17 @@ export class LlmSetting extends Request {
 export class PreprocessorSetting extends Request {
   isForceRefreshCategorizedElement?: boolean
   isForceRefreshCategorizedDocument?: boolean
+  filePartitionStrategy?: string
   chunkSize?: number
   overlapSize?: number
   isIncludeImage?: boolean
   isIncludeTable?: boolean
 
-  constructor (isForceRefreshCategorizedElement?: boolean, isForceRefreshCategorizedDocument?: boolean, chunkSize?: number, overlapSize?: number, isIncludeImage?: boolean, isIncludeTable?: boolean) {
+  constructor (isForceRefreshCategorizedElement?: boolean, isForceRefreshCategorizedDocument?: boolean, filePartitionStrategy?: string, chunkSize?: number, overlapSize?: number, isIncludeImage?: boolean, isIncludeTable?: boolean) {
     super()
     this.isForceRefreshCategorizedElement = isForceRefreshCategorizedElement
     this.isForceRefreshCategorizedDocument = isForceRefreshCategorizedDocument
+    this.filePartitionStrategy = filePartitionStrategy
     this.chunkSize = chunkSize
     this.overlapSize = overlapSize
     this.isIncludeImage = isIncludeImage

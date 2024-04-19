@@ -3,7 +3,18 @@ import { configureStore } from '@reduxjs/toolkit'
 import authenticationSlice from './AuthenticationSlice.ts'
 import messageModalSlice from './MessageModalSlice.ts'
 import domainSlice from './DomainSlice.ts'
-import { persistReducer, persistStore, FLUSH, PAUSE, PERSIST, PURGE, REGISTER, REHYDRATE, getStoredState, type RehydrateAction } from 'redux-persist'
+import {
+  FLUSH,
+  getStoredState,
+  PAUSE,
+  PERSIST,
+  persistReducer,
+  persistStore,
+  PURGE,
+  REGISTER,
+  REHYDRATE,
+  type RehydrateAction
+} from 'redux-persist'
 import storage from 'redux-persist/lib/storage'
 import processSlice from './ProcessSlice.ts'
 

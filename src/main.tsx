@@ -1,7 +1,7 @@
 import React from 'react'
 import App from './App.tsx'
 import { Provider } from 'react-redux'
-import { store, persistor } from './slices/StoreConfiguration.ts'
+import { persistor, store } from './slices/StoreConfiguration.ts'
 import { PersistGate } from 'redux-persist/integration/react'
 
 export function Main (): React.JSX.Element {

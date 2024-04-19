@@ -1,4 +1,3 @@
-
 import Request from '../../Request.ts'
 
 import { Body as DocumentBody } from '../documents/PatchOneById.ts'

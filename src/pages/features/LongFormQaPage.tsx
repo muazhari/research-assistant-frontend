@@ -11,7 +11,8 @@ import { type Body } from '../../models/dtos/contracts/requests/long_form_qas/Pr
 import processSlice, { type ProcessState } from '../../slices/ProcessSlice.ts'
 import { longFormQaService } from '../../containers/ServiceContainer.ts'
 import ReRankedDocumentModalComponent from '../../components/features/ReRankedDocumentModalComponent.tsx'
-import { type ReRankedDocument } from '../../models/dtos/contracts/response/passage_searchs/ProcessResponse.ts'
+import { type ReRankedDocument } from '../../models/dtos/contracts/response/passage_searches/ProcessResponse.ts'
+import FilePartitionStrategyConstant from '../../models/dtos/constants/FilePartitionStrategyConstant.ts'
 
 export default function LongFormQaPage (): React.JSX.Element {
   const dispatch = useDispatch()
@@ -40,6 +41,7 @@ export default function LongFormQaPage (): React.JSX.Element {
         maxToken: 500
       },
       preprocessorSetting: {
+        filePartitionStrategy: FilePartitionStrategyConstant.AUTO,
         isIncludeImage: false,
         isIncludeTable: false,
         isForceRefreshCategorizedElement: false,
@@ -97,6 +99,7 @@ Answer:`,
       source: 'reRankedDocument'
     }))
   }
+
   const formik = useFormik({
     initialValues,
     enableReinitialize: true,
@@ -183,6 +186,33 @@ Answer:`,
                 </fieldset>
                 <hr/>
                 <h4 className="mb-2">Preprocessor Setting</h4>
+                <fieldset className="mb-2">
+                    <label className="form-label" htmlFor="inputSetting.preprocessorSetting.filePartitionStrategy">
+                        File Partition Strategy
+                    </label>
+                    <select
+                        disabled={true}
+                        className="form-control"
+                        name="inputSetting.preprocessorSetting.filePartitionStrategy"
+                        id="inputSetting.preprocessorSetting.filePartitionStrategy"
+                        onBlur={formik.handleBlur}
+                        onChange={formik.handleChange}
+                        value={formik.values.inputSetting!.preprocessorSetting!.filePartitionStrategy}
+                    >
+                        {
+                            FilePartitionStrategyConstant.getValues().map((filePartitionStrategy: string) => {
+                              return (
+                                    <option
+                                        key={filePartitionStrategy}
+                                        value={filePartitionStrategy}
+                                    >
+                                        {filePartitionStrategy}
+                                    </option>
+                              )
+                            })
+                        }
+                    </select>
+                </fieldset>
                 <fieldset className="mb-2 d-flex">
                     <input
                         type="checkbox"
@@ -207,7 +237,7 @@ Answer:`,
                         checked={formik.values.inputSetting!.preprocessorSetting!.isForceRefreshCategorizedElement}
                     />
                     <label htmlFor="inputSetting.preprocessorSetting.isForceRefreshCategorizedElement" className="ms-2">
-                        Is Force Refresh Partitioned Document?
+                        Is Force Refresh Extracted Document?
                     </label>
                 </fieldset>
                 <fieldset className="mb-2">
@@ -347,7 +377,7 @@ Answer:`,
                         disabled={formik.values.inputSetting!.preprocessorSetting!.isForceRefreshCategorizedDocument}
                     />
                     <label htmlFor="inputSetting.embedderSetting.isForceRefreshDocument" className="ms-2">
-                        Is Force Refresh Document?
+                        Is Force Refresh Preprocessed Document?
                     </label>
                 </fieldset>
                 <hr/>
