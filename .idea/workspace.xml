@@ -5,7 +5,8 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="67558acb-1948-4a06-8aee-1a140c430703" name="Changes" comment="">
-      <change beforePath="$PROJECT_DIR$/src/clients/BackendOneClient.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/clients/BackendOneClient.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/pages/features/LongFormQaPage.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/pages/features/LongFormQaPage.tsx" afterDir="false" />
     </list>
     <list id="a7cadf68-e7dd-4100-82ff-87108b6e6aff" name="Changes by avwan" comment="" />
     <option name="SHOW_DIALOG" value="false" />
@@ -194,7 +195,10 @@
       <workItem from="1713509881471" duration="199000" />
       <workItem from="1713510820397" duration="7908000" />
       <workItem from="1713526106601" duration="3156000" />
-      <workItem from="1713529327747" duration="1658000" />
+      <workItem from="1713529327747" duration="1980000" />
+      <workItem from="1713532702266" duration="105000" />
+      <workItem from="1713535448328" duration="456000" />
+      <workItem from="1713536392190" duration="130000" />
     </task>
     <servers />
   </component>
