@@ -171,7 +171,7 @@ export default function DetailModalComponent (): React.JSX.Element {
                 <Modal.Title>Detail</Modal.Title>
             </ModalHeader>
             <ModalBody>
-                <form onSubmit={formik.handleSubmit}>
+                <form>
                     <fieldset className="mb-2">
                         <label className="form-label" htmlFor="id">ID</label>
                         <input

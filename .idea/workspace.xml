@@ -6,7 +6,10 @@
   <component name="ChangeListManager">
     <list default="true" id="67558acb-1948-4a06-8aee-1a140c430703" name="Changes" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/components/managements/documents/DetailModalComponent.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/managements/documents/DetailModalComponent.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/components/managements/documents/InsertModalComponent.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/managements/documents/InsertModalComponent.tsx" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/pages/features/LongFormQaPage.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/pages/features/LongFormQaPage.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/pages/features/PassageSearchPage.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/pages/features/PassageSearchPage.tsx" afterDir="false" />
     </list>
     <list id="a7cadf68-e7dd-4100-82ff-87108b6e6aff" name="Changes by avwan" comment="" />
     <option name="SHOW_DIALOG" value="false" />
@@ -199,6 +202,7 @@
       <workItem from="1713532702266" duration="105000" />
       <workItem from="1713535448328" duration="456000" />
       <workItem from="1713536392190" duration="130000" />
+      <workItem from="1713537479413" duration="1721000" />
     </task>
     <servers />
   </component>

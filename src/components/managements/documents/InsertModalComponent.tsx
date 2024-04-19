@@ -128,7 +128,7 @@ export default function InsertModalComponent (): React.JSX.Element {
                 <Modal.Title>Detail</Modal.Title>
             </ModalHeader>
             <ModalBody>
-                <form onSubmit={formik.handleSubmit}>
+                <form>
                     <fieldset className="mb-2">
                         <label className="form-label" htmlFor="name">Name</label>
                         <input

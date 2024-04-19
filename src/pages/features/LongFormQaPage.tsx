@@ -136,7 +136,7 @@ Answer:`,
             {name === 'select' && <SelectModalComponent/>}
             <h1 className="my-5">Long Form Question Answering</h1>
             <h2 className="mb-4">Configuration</h2>
-            <form onSubmit={formik.handleSubmit} className="d-flex flex-column w-50 mb-3">
+            <form className="d-flex flex-column w-50 mb-3">
                 <h3 className="mb-2">Input Setting</h3>
                 <fieldset className="mb-2">
                     <label htmlFor="inputSetting.documentSetting.documentId">Document ID</label>
@@ -576,7 +576,7 @@ Answer:`,
                     </label>
                 </fieldset>
                 <hr/>
-                <button type="submit" className="btn btn-primary" disabled={isLoading}>
+                <button onClick={formik.submitForm} type="submit" className="btn btn-primary" disabled={isLoading}>
                     {
                         isLoading!
                           ? <div className="spinner-border text-light" role="status">
