@@ -1,13 +1,20 @@
-# Farm + React
+# research-assistant-frontend
 
-This template should help you start developing using React and TypeScript in Farm.
+## Features
+
+- Long Form QA
+![long_form_qa.png](public/long_form_qa.png)
+- Passage Search
+![passage_search.png](public/passage_search.png)
+- Document Management
+![document_management.png](public/document_management.png)
 
 ## Setup
 
 Install the dependencies:
 
 ```bash
-pnpm install
+bun install
 ```
 
 ## Get Started
@@ -15,23 +22,23 @@ pnpm install
 Start the dev server:
 
 ```bash
-pnpm start
+bun run start
 ```
 
 Build the app for production:
 
 ```bash
-pnpm build
+bun run build
 ```
 
 Preview the Production build product:
 
 ```bash
-pnpm preview
+bun run preview
 ```
 
 Clear persistent cache local files
 
 ```bash
-pnpm clean
+bun run clean
 ```

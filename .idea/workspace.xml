@@ -5,11 +5,13 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="67558acb-1948-4a06-8aee-1a140c430703" name="Changes" comment="">
-      <change afterPath="$PROJECT_DIR$/src/models/dtos/contracts/requests/managements/documents/Search.ts" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/public/document_management.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/public/long_form_qa.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/public/passage_search.png" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/components/features/SelectModalComponent.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/features/SelectModalComponent.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/pages/managements/DocumentManagementPage.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/pages/managements/DocumentManagementPage.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/services/DocumentService.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/services/DocumentService.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/README.md" beforeDir="false" afterPath="$PROJECT_DIR$/README.md" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/index.html" beforeDir="false" afterPath="$PROJECT_DIR$/index.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/pages/features/PassageSearchPage.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/pages/features/PassageSearchPage.tsx" afterDir="false" />
     </list>
     <list id="a7cadf68-e7dd-4100-82ff-87108b6e6aff" name="Changes by avwan" comment="" />
     <option name="SHOW_DIALOG" value="false" />
@@ -83,11 +85,11 @@
       <recent name="C:\Data\Apps\research-assistant-frontend\src\services" />
     </key>
     <key name="MoveFile.RECENT_KEYS">
+      <recent name="C:\Data\Apps\research-assistant-frontend\public" />
       <recent name="C:\Data\Apps\research-assistant-frontend\src\models\dtos" />
       <recent name="C:\Data\Apps\research-assistant-frontend\src\pages\features" />
       <recent name="C:\Data\Apps\research-assistant-frontend\src\models\value_objects\contracts\requests\basic_settings" />
       <recent name="C:\Data\Apps\research-assistant-frontend\src\models\value_objects\contracts\response\passage_searchs" />
-      <recent name="C:\Data\Apps\research-assistant-frontend\src\components\navigation_bars" />
     </key>
   </component>
   <component name="RunManager" selected="JavaScript Debug.run-2">
@@ -190,7 +192,7 @@
       <workItem from="1707380561274" duration="20000" />
       <workItem from="1707380587069" duration="1851000" />
       <workItem from="1713339459365" duration="25740000" />
-      <workItem from="1713430140806" duration="40424000" />
+      <workItem from="1713430140806" duration="41399000" />
     </task>
     <servers />
   </component>

@@ -153,7 +153,7 @@ export default function PassageSearchPage (): React.JSX.Element {
         {name === 'reRankedDocument' && <ReRankedDocumentModalComponent/>}
         {name === 'detail' && <DetailModalComponent/>}
         {name === 'select' && <SelectModalComponent/>}
-        <h1 className="my-5">Long Form Question Answering</h1>
+        <h1 className="my-5">Passage Search</h1>
         <h2 className="mb-4">Configuration</h2>
         <form onSubmit={formik.handleSubmit} className="d-flex flex-column w-50 mb-3">
           <h3 className="mb-2">Input Setting</h3>
