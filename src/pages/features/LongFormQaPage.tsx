@@ -191,7 +191,6 @@ Answer:`,
                         File Partition Strategy
                     </label>
                     <select
-                        disabled={true}
                         className="form-control"
                         name="inputSetting.preprocessorSetting.filePartitionStrategy"
                         id="inputSetting.preprocessorSetting.filePartitionStrategy"

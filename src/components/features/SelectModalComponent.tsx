@@ -165,7 +165,7 @@ export default function SelectModalComponent (): React.JSX.Element {
   const columns: Array<TableColumn<Document>> = [
     {
       name: 'ID',
-      width: '10%',
+      width: '8%',
       selector: (row: Document) => row.id!,
       sortable: true
     },
@@ -183,7 +183,7 @@ export default function SelectModalComponent (): React.JSX.Element {
     },
     {
       name: 'Document Type ID',
-      width: '15%',
+      width: '12%',
       selector: (row: Document) => row.documentTypeId!,
       sortable: true
     },
