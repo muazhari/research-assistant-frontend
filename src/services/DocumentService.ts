@@ -1,51 +1,48 @@
-import Service from "./Service.ts";
-import Client from "../clients/Client.ts";
-import BackendOneClient from "../clients/BackendOneClient.ts";
-import CreateOneRequest from "../models/value_objects/contracts/requests/managements/documents/CreateOneRequest.ts";
-import DeleteOneByIdRequest
-    from "../models/value_objects/contracts/requests/managements/documents/DeleteOneByIdRequest.ts";
-import {AxiosResponse} from "axios";
-import ReadOneByIdRequest from "../models/value_objects/contracts/requests/managements/documents/ReadOneByIdRequest.ts";
-import PatchOneByIdRequest from "../models/value_objects/contracts/requests/managements/documents/PatchOneById.ts";
-import Document from "../models/entities/Document.ts";
-import Content from "../models/value_objects/contracts/Content.ts";
-import ReadAllByAccountIdRequest
-    from "../models/value_objects/contracts/requests/managements/accounts/ReadAllByAccountIdRequest.ts";
+import Service from './Service.ts'
+import type Client from '../clients/Client.ts'
+import type CreateOne from '../models/dtos/contracts/requests/managements/documents/CreateOne.ts'
+import type DeleteOneById from '../models/dtos/contracts/requests/managements/documents/DeleteOneById.ts'
+import { type AxiosResponse } from 'axios'
+import type FindOneById from '../models/dtos/contracts/requests/managements/documents/FindOneById.ts'
+import type PatchOneById from '../models/dtos/contracts/requests/managements/documents/PatchOneById.ts'
+import type Document from '../models/daos/Document.ts'
+import type Content from '../models/dtos/contracts/Content.ts'
+import type FindManyWithPagination
+  from '../models/dtos/contracts/requests/managements/documents/FindManyWithPagination.ts'
+import type Search from '../models/dtos/contracts/requests/managements/documents/Search.ts'
 
 export default class DocumentService extends Service {
-    client: Client;
+  client: Client
 
-    path: string;
+  path: string
 
-    constructor() {
-        super();
-        this.client = new BackendOneClient();
-        this.path = "/documents";
-    }
+  constructor (client: Client) {
+    super()
+    this.client = client
+    this.path = '/documents'
+  }
 
+  async createOne (request: CreateOne): Promise<AxiosResponse<Content<Document>>> {
+    return await this.client.instance.post(`${this.path}`, request.body)
+  }
 
-    createOne(request: CreateOneRequest): Promise<AxiosResponse<Content<Document>>> {
-        return this.client.instance.post(`${this.path}`, request.body);
-    }
+  async deleteOneById (request: DeleteOneById): Promise<AxiosResponse<Content<Document>>> {
+    return await this.client.instance.delete(`${this.path}/${request.id}`)
+  }
 
-    deleteOneById(request: DeleteOneByIdRequest): Promise<AxiosResponse<Content<Document>>> {
-        return this.client.instance.delete(`${this.path}/${request.id}`);
-    }
+  async search (request: Search): Promise<AxiosResponse<Content<Document[]>>> {
+    return await this.client.instance.post(`${this.path}/searches?size=${request.size}`, request.body)
+  }
 
-    readAll(): Promise<AxiosResponse<Content<Document[]>>> {
-        return this.client.instance.get(`${this.path}`);
-    }
+  async findManyWithPagination (request: FindManyWithPagination): Promise<AxiosResponse<Content<Document[]>>> {
+    return await this.client.instance.get(`${this.path}?page_position=${request.pagePosition}&page_size=${request.pageSize}`)
+  }
 
-    readAllByAccountId(request: ReadAllByAccountIdRequest): Promise<AxiosResponse<Content<Document[]>>> {
-        return this.client.instance.get(`${this.path}?account_id=${request.accountId}`);
-    }
+  async findOneById (request: FindOneById): Promise<AxiosResponse<Content<Document>>> {
+    return await this.client.instance.get(`${this.path}/${request.id}`)
+  }
 
-    readOneById(request: ReadOneByIdRequest): Promise<AxiosResponse<Content<Document>>> {
-        return this.client.instance.get(`${this.path}/${request.id}`);
-    }
-
-    patchOneById(request: PatchOneByIdRequest): Promise<AxiosResponse<Content<Document>>> {
-        return this.client.instance.patch(`${this.path}/${request.id}`, request.body);
-    }
-
+  async patchOneById (request: PatchOneById): Promise<AxiosResponse<Content<Document>>> {
+    return await this.client.instance.patch(`${this.path}/${request.id}`, request.body)
+  }
 }

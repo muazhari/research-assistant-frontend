@@ -1,33 +1,33 @@
-import Service from "./Service.ts";
-import Client from "../clients/Client.ts";
-import Content from "../models/value_objects/contracts/Content.ts";
-import LoginRequest from "../models/value_objects/contracts/requests/authentications/LoginRequest.ts";
-import RegisterRequest from "../models/value_objects/contracts/requests/authentications/RegisterRequest.ts";
-import LoginResponse from "../models/value_objects/contracts/response/authentications/LoginResponse.ts";
-import RegisterResponse from "../models/value_objects/contracts/response/authentications/RegisterResponse.ts";
-import BackendOneClient from "../clients/BackendOneClient.ts";
-import {AxiosResponse} from "axios";
+import Service from './Service.ts'
+import type Client from '../clients/Client.ts'
+import type Content from '../models/dtos/contracts/Content.ts'
+import type Login from '../models/dtos/contracts/requests/authentications/Login.ts'
+import type Register from '../models/dtos/contracts/requests/authentications/Register.ts'
+import type LoginResponse from '../models/dtos/contracts/response/authentications/LoginResponse.ts'
+import type RegisterResponse from '../models/dtos/contracts/response/authentications/RegisterResponse.ts'
+import { type AxiosResponse } from 'axios'
+import type LogoutResponse from '../models/dtos/contracts/response/authentications/LogoutResponse.ts'
 
 export default class AuthenticationService extends Service {
-    client: Client;
+  client: Client
 
-    path: string;
+  path: string
 
-    constructor() {
-        super();
-        this.client = new BackendOneClient();
-        this.path = "/authentications";
-    }
+  constructor (client: Client) {
+    super()
+    this.client = client
+    this.path = '/authentications'
+  }
 
+  async login (request: Login): Promise<AxiosResponse<Content<LoginResponse>>> {
+    return await this.client.instance.post(`${this.path}/logins?method=email-and-password`, request.body)
+  }
 
-    login(request: LoginRequest): Promise<AxiosResponse<Content<LoginResponse>>> {
-        return this.client.instance.post(`${this.path}/logins/email-and-password`, request.body);
-    }
+  async register (request: Register): Promise<AxiosResponse<Content<RegisterResponse>>> {
+    return await this.client.instance.post(`${this.path}/registers?method=email-and-password`, request.body)
+  }
 
-
-    register(request: RegisterRequest): Promise<AxiosResponse<Content<RegisterResponse>>> {
-        return this.client.instance.post(`${this.path}/registers/email-and-password`, request.body);
-    }
-
-
+  async logout (): Promise<AxiosResponse<Content<LogoutResponse>>> {
+    return await this.client.instance.post(`${this.path}/logouts`)
+  }
 }

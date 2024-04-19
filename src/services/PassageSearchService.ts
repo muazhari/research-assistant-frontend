@@ -1,26 +1,22 @@
-import Service from "./Service.ts";
-import Client from "../clients/Client.ts";
-import BackendOneClient from "../clients/BackendOneClient.ts";
-import {AxiosResponse} from "axios";
-import Content from "../models/value_objects/contracts/Content.ts";
-import SearchRequest from "../models/value_objects/contracts/requests/passage_searchs/SearchRequest.ts";
-import SearchResponse from "../models/value_objects/contracts/response/passage_searchs/SearchResponse.ts";
+import Service from './Service.ts'
+import type Client from '../clients/Client.ts'
+import { type AxiosResponse } from 'axios'
+import type Content from '../models/dtos/contracts/Content.ts'
+import type ProcessRequest from '../models/dtos/contracts/requests/passage_searches/ProcessRequest.ts'
+import type ProcessResponse from '../models/dtos/contracts/response/passage_searches/ProcessResponse.ts'
 
 export default class PassageSearchService extends Service {
-    client: Client;
+  client: Client
 
-    path: string;
+  path: string
 
-    constructor() {
-        super();
-        this.client = new BackendOneClient();
-        this.path = "/passage-search";
-    }
+  constructor (client: Client) {
+    super()
+    this.client = client
+    this.path = '/passage-searches'
+  }
 
-
-    search(request: SearchRequest): Promise<AxiosResponse<Content<SearchResponse>>> {
-        return this.client.instance.post(`${this.path}`, request);
-    }
-
-
+  async process (request: ProcessRequest): Promise<AxiosResponse<Content<ProcessResponse>>> {
+    return await this.client.instance.post(`${this.path}`, request.body)
+  }
 }

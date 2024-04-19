@@ -1,118 +1,80 @@
-import {createSlice} from '@reduxjs/toolkit';
-import Account from "../models/entities/Account.ts";
-import Document from "../models/entities/Document.ts";
-import DocumentType from "../models/entities/DocumentType.ts";
-import FileDocument from "../models/entities/FileDocument.ts";
-import TextDocument from "../models/entities/TextDocument.ts";
-import WebDocument from "../models/entities/WebDocument.ts";
-import FileDocumentPropertyResponse
-    from "../models/value_objects/contracts/response/managements/FileDocumentPropertyResponse.ts";
-import QaResponse from "../models/value_objects/contracts/response/long_form_qas/QaResponse.ts";
-import SearchResponse from "../models/value_objects/contracts/response/passage_searchs/SearchResponse.ts";
-
-
-export function getDocumentTableRows(documents: Document[], documentTypes: DocumentType[]) {
-    return documents.map((document) => {
-        return {
-            id: document.id,
-            name: document.name,
-            description: document.description,
-            documentTypeId: document.documentTypeId,
-            accountId: document.accountId,
-            documentTypeName: documentTypes?.find((documentType) => {
-                return documentType.id === document.documentTypeId
-            })?.name
-        }
-    })
-}
-
-export interface DocumentTableRow {
-    id: string | undefined,
-    name: string | undefined,
-    description: string | undefined,
-    documentTypeName: string | undefined,
-    documentTypeId: string | undefined,
-    accountId: string | undefined,
-}
-
+import { createSlice } from '@reduxjs/toolkit'
+import type Account from '../models/daos/Account.ts'
+import type Document from '../models/daos/Document.ts'
+import type FileDocument from '../models/daos/FileDocument.ts'
+import type TextDocument from '../models/daos/TextDocument.ts'
+import type WebDocument from '../models/daos/WebDocument.ts'
+import type LongFormQaProcessResponse from '../models/dtos/contracts/response/long_form_qas/ProcessResponse.ts'
+import type PassageSearchProcessResponse from '../models/dtos/contracts/response/passage_searches/ProcessResponse.ts'
+import { type ReRankedDocument } from '../models/dtos/contracts/response/passage_searches/ProcessResponse.ts'
 
 export interface AccountDomain {
-    currentAccount: Account | undefined
+  currentAccount?: Account
 }
 
 export interface DocumentDomain {
-    accountDocuments: Document[] | undefined
-    documentTypes: DocumentType[] | undefined
+  documents?: Document[]
 }
 
 export interface ModalDomain {
-    isShow: boolean | undefined;
-    name: string | undefined;
+  isShow?: boolean
+  name?: string
+  source?: string
 }
 
 export interface CurrentDomain {
-    account: Account | undefined
-    document: Document | undefined
-    documentType: DocumentType | undefined
-    fileDocument: FileDocument | undefined,
-    textDocument: TextDocument | undefined,
-    webDocument: WebDocument | undefined,
-    qaResponse: QaResponse | undefined,
-    searchResponse: SearchResponse | undefined,
-    fileDocumentProperty: FileDocumentPropertyResponse | undefined,
-    documentTableRows: DocumentTableRow[] | undefined,
+  selectedDocument?: Document
+  selectedDocuments?: Document[]
+  selectedDocumentDetail?: FileDocument | TextDocument | WebDocument
+  selectedReRankedDocument?: ReRankedDocument
+  longFormQaProcessResponse?: LongFormQaProcessResponse
+  passageSearchProcessResponse?: PassageSearchProcessResponse
 }
 
-
 export interface DomainState {
-    accountDomain: AccountDomain
-    documentDomain: DocumentDomain
-    currentDomain: CurrentDomain
-    modalDomain: ModalDomain
+  accountDomain?: AccountDomain
+  documentDomain?: DocumentDomain
+  currentDomain?: CurrentDomain
+  modalDomain?: ModalDomain
+}
+
+const initialState: DomainState = {
+  accountDomain: {
+    currentAccount: undefined
+  },
+  documentDomain: {
+    documents: []
+  },
+  modalDomain: {
+    isShow: false,
+    name: undefined,
+    source: undefined
+  },
+  currentDomain: {
+    selectedDocument: undefined,
+    selectedDocuments: [],
+    selectedDocumentDetail: undefined,
+    selectedReRankedDocument: undefined,
+    longFormQaProcessResponse: undefined,
+    passageSearchProcessResponse: undefined
+  }
 }
 
 export default createSlice({
-    name: 'domain',
-    initialState: <DomainState>{
-        accountDomain: <AccountDomain>{
-            currentAccount: undefined
-        },
-        documentDomain: <DocumentDomain>{
-            accountDocuments: [],
-            documentTypes: []
-        },
-        modalDomain: <ModalDomain>{
-            isShow: false,
-            name: undefined
-        },
-        currentDomain: <CurrentDomain>{
-            account: undefined,
-            document: undefined,
-            documentType: undefined,
-            fileDocument: undefined,
-            textDocument: undefined,
-            webDocument: undefined,
-            qaResponse: undefined,
-            searchResponse: undefined,
-            fileDocumentProperty: undefined,
-            documentTableRows: [],
-        }
+  name: 'domain',
+  initialState,
+  reducers: {
+    setAccountDomain: (state, action) => {
+      state.accountDomain = { ...state.accountDomain, ...action.payload }
     },
-    reducers: {
-        setAccountDomain: (state, action) => {
-            state.accountDomain = {...state.accountDomain, ...action.payload};
-        },
-        setDocumentDomain: (state, action) => {
-            state.documentDomain = {...state.documentDomain, ...action.payload};
-        },
-        setModalDomain: (state, action) => {
-            state.modalDomain = {...state.modalDomain, ...action.payload};
-        },
-        setCurrentDomain: (state, action) => {
-            state.currentDomain = {...state.currentDomain, ...action.payload};
-        },
+    setDocumentDomain: (state, action) => {
+      state.documentDomain = { ...state.documentDomain, ...action.payload }
     },
-});
-
-
-
+    setModalDomain: (state, action) => {
+      state.modalDomain = { ...state.modalDomain, ...action.payload }
+    },
+    setCurrentDomain: (state, action) => {
+      state.currentDomain = { ...state.currentDomain, ...action.payload }
+    }
+  }
+})

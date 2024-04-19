@@ -1,238 +1,244 @@
-import {Modal, ModalBody, ModalHeader} from "react-bootstrap";
-import {useDispatch, useSelector} from "react-redux";
-import {useNavigate} from "react-router-dom";
+import { Modal, ModalBody, ModalHeader } from 'react-bootstrap'
+import { useDispatch, useSelector } from 'react-redux'
+import type Document from '../../models/daos/Document.ts'
+import domainSlice, { type DomainState } from '../../slices/DomainSlice.ts'
+import { type RootState } from '../../slices/StoreConfiguration.ts'
+import React, { useEffect } from 'react'
+import type Content from '../../models/dtos/contracts/Content.ts'
+import DataTable, { type TableColumn } from 'react-data-table-component'
+import { useFormik } from 'formik'
+import processSlice, { type ProcessState } from '../../slices/ProcessSlice.ts'
+import { documentService } from '../../containers/ServiceContainer.ts'
 
-import Document from "../../models/entities/Document.ts";
-import DocumentType from "../../models/entities/DocumentType.ts";
-import FileDocumentService from "../../services/FileDocumentService.ts";
-import TextDocumentService from "../../services/TextDocumentService.ts";
-import WebDocumentService from "../../services/WebDocumentService.ts";
-import {AuthenticationState} from "../../slices/AuthenticationSlice.ts";
-import domainSlice, {DocumentTableRow, DomainState, getDocumentTableRows} from "../../slices/DomainSlice.ts";
-import {RootState} from "../../slices/Store.ts";
-import React, {useEffect} from "react";
-import Content from "../../models/value_objects/contracts/Content.ts";
-import DocumentTypeService from "../../services/DocumentTypeService.ts";
-import DocumentService from "../../services/DocumentService.ts";
-import FileDocumentPropertyResponse
-    from "../../models/value_objects/contracts/response/managements/FileDocumentPropertyResponse.ts";
-import DataTable, {TableColumn} from "react-data-table-component";
-import {useFormik} from "formik";
-import processSlice, {ProcessState} from "../../slices/ProcessSlice.ts";
+export default function SelectModalComponent (): React.JSX.Element {
+  const dispatch = useDispatch()
 
+  const domainState: DomainState = useSelector((state: RootState) => state.domain)
+  const processState: ProcessState = useSelector((state: RootState) => state.process)
 
-export default function SelectModalComponent() {
-    const dispatch = useDispatch();
-    const navigate = useNavigate();
+  const {
+    isLoading
+  } = processState
 
-    const documentService = new DocumentService();
-    const documentTypeService = new DocumentTypeService();
-    const fileDocumentService = new FileDocumentService();
-    const textDocumentService = new TextDocumentService();
-    const webDocumentService = new WebDocumentService();
+  const {
+    documents
+  } = domainState.documentDomain!
 
-    const domainState: DomainState = useSelector((state: RootState) => state.domain);
-    const authenticationState: AuthenticationState = useSelector((state: RootState) => state.authentication);
-    const processState: ProcessState = useSelector((state: RootState) => state.process);
+  const {
+    selectedDocuments
+  } = domainState.currentDomain!
 
-    const {
-        isLoading
-    } = processState;
+  const {
+    isShow
+  } = domainState.modalDomain!
 
-    const {
-        account
-    } = authenticationState;
+  const handleOnHide = (): void => {
+    dispatch(domainSlice.actions.setModalDomain({
+      isShow: false
+    }))
+  }
 
-    const {
-        accountDocuments,
-        documentTypes
-    } = domainState.documentDomain;
+  useEffect(() => {
+    fetchData()
+  }, [isShow])
 
-    const {
-        document,
-        documentType,
-        fileDocument,
-        textDocument,
-        webDocument,
-        documentTableRows,
-    } = domainState.currentDomain;
+  const [pagePosition, setPagePosition] = React.useState<number>(1)
+  const [pageSize, setPageSize] = React.useState<number>(5)
 
-    const {
-        name,
-        isShow
-    } = domainState.modalDomain;
-
-    const handleOnHide = () => {
-        dispatch(domainSlice.actions.setModalDomain({
-            isShow: !isShow,
-        }))
-    }
-
-    useEffect(() => {
-        fetchData();
-    }, [isShow])
-
-    const fetchData = () => {
-        Promise.all([
-            documentService
-                .readAllByAccountId({
-                    accountId: account?.id
-                }),
-            documentTypeService
-                .readAll()
-        ])
-            .then((response) => {
-                const accountDocumentsContent: Content<Document[]> = response[0].data;
-                const documentTypesContent: Content<DocumentType[]> = response[1].data;
-                dispatch(domainSlice.actions.setDocumentDomain({
-                    accountDocuments: accountDocumentsContent.data,
-                    documentTypes: documentTypesContent.data,
-                }))
-                dispatch(domainSlice.actions.setCurrentDomain({
-                    documentTableRows: getDocumentTableRows(accountDocumentsContent.data || [], documentTypesContent.data || [])
-                }))
-            })
-            .catch((error) => {
-                console.log(error)
-            })
-    }
-
-    const handleClickSelect = (row: DocumentTableRow) => {
-        const documentType = documentTypes?.find((documentType) => {
-            return documentType.id === row.documentTypeId
-        })
-
-        if (documentType?.name === "file") {
-            dispatch(processSlice.actions.set({
-                isLoading: true
-            }));
-            fileDocumentService.readOnePropertyById({
-                id: row.id
-            }).then((response) => {
-                const content: Content<FileDocumentPropertyResponse> = response.data;
-                dispatch(domainSlice.actions.setCurrentDomain({
-                    document: row,
-                    documentType: documentType,
-                    fileDocumentProperty: content.data
-                }))
-                handleOnHide()
-                alert("Document selected.")
-            }).catch((error) => {
-                console.log(error)
-            }).finally(() => {
-                dispatch(processSlice.actions.set({
-                    isLoading: false
-                }));
-            })
-        } else if (documentType?.name === "text") {
-            dispatch(domainSlice.actions.setCurrentDomain({
-                document: row,
-                documentType: documentType,
-            }))
-            alert("Document selected.")
-        } else if (documentType?.name === "web") {
-            dispatch(domainSlice.actions.setCurrentDomain({
-                document: row,
-                documentType: documentType,
-            }))
-            alert("Document selected.")
-        } else {
-            throw new Error("Document type is not supported.")
+  const fetchData = (): void => {
+    dispatch(processSlice.actions.set({
+      isLoading: true
+    }))
+    documentService
+      .findManyWithPagination({
+        pagePosition,
+        pageSize
+      })
+      .then((response) => {
+        const content: Content<Document[]> = response.data
+        if (content.data!.length > 0) {
+          dispatch(domainSlice.actions.setDocumentDomain({
+            documents: content.data!
+          }))
         }
-    }
-
-
-    const handleClickDetail = (document: Document) => {
-        dispatch(domainSlice.actions.setModalDomain({
-            name: "detail",
-            isShow: true,
+        setPageSize(pageSize)
+      })
+      .catch((error) => {
+        console.error(error)
+        const content: Content<null> = error.response.data
+        alert(content.message)
+      }).finally(() => {
+        dispatch(processSlice.actions.set({
+          isLoading: false
         }))
-        dispatch(domainSlice.actions.setCurrentDomain({
-            document: document,
-            documentType: documentTypes?.find((documentType) => {
-                return documentType.id === document.documentTypeId
-            })
-        }))
+      })
+  }
+
+  const handleClickSelect = (row: Document): void => {
+    if (selectedDocuments!.find((document: Document) => document.id === row.id) !== undefined) {
+      dispatch(domainSlice.actions.setCurrentDomain({
+        selectedDocuments: selectedDocuments!.filter((document: Document) => document.id !== row.id)
+      }))
+    } else {
+      dispatch(domainSlice.actions.setCurrentDomain({
+        selectedDocuments: [...selectedDocuments!, row]
+      }))
     }
+  }
 
+  const handleClickDetail = (row: Document): void => {
+    dispatch(domainSlice.actions.setCurrentDomain({
+      selectedDocument: row
+    }))
+    dispatch(domainSlice.actions.setModalDomain({
+      name: 'detail',
+      isShow: true
+    }))
+  }
 
-    const columns: TableColumn<DocumentTableRow>[] = [
-        {
-            name: "ID",
-            width: "10%",
-            selector: (row: DocumentTableRow) => row.id || "",
-            sortable: true,
-        },
-        {
-            name: "Name",
-            width: "23%",
-            selector: (row: DocumentTableRow) => row.name || "",
-            sortable: true,
-        },
-        {
-            name: "Description",
-            width: "27%",
-            selector: (row: DocumentTableRow) => row.description || "",
-            sortable: true,
-        },
-        {
-            name: "Document Type Name",
-            width: "15%",
-            selector: (row: DocumentTableRow) => row.documentTypeName || "",
-            sortable: true,
-        },
-        {
-            name: "Actions",
-            width: "25%",
-            cell: (row: DocumentTableRow) =>
+  const handleChangePage = (pagePosition: number): void => {
+    if (pagePosition === Number.POSITIVE_INFINITY) {
+      alert('Please select a valid page position.')
+      return
+    }
+    dispatch(processSlice.actions.set({
+      isLoading: true
+    }))
+    documentService
+      .findManyWithPagination({
+        pagePosition,
+        pageSize
+      })
+      .then((response) => {
+        const content: Content<Document[]> = response.data
+        if (content.data!.length === 0) {
+          alert('Current page position is exceeding available pages.')
+        } else {
+          dispatch(domainSlice.actions.setDocumentDomain({
+            documents: content.data!
+          }))
+          setPagePosition(pagePosition)
+        }
+      })
+      .catch((error) => {
+        console.error(error)
+        const content: Content<null> = error.response.data
+        alert(content.message)
+      }).finally(() => {
+        dispatch(processSlice.actions.set({
+          isLoading: false
+        }))
+      })
+  }
+
+  const handleChangeRowsPerPage = (pageSize: number): void => {
+    dispatch(processSlice.actions.set({
+      isLoading: true
+    }))
+    documentService
+      .findManyWithPagination({
+        pagePosition,
+        pageSize
+      })
+      .then((response) => {
+        const content: Content<Document[]> = response.data
+        if (content.data!.length === 0) {
+          alert('Current page position is exceeding available pages.')
+        } else {
+          dispatch(domainSlice.actions.setDocumentDomain({
+            documents: content.data!
+          }))
+          setPageSize(pageSize)
+        }
+      })
+      .catch((error) => {
+        console.error(error)
+        const content: Content<null> = error.response.data
+        alert(content.message)
+      }).finally(() => {
+        dispatch(processSlice.actions.set({
+          isLoading: false
+        }))
+      })
+  }
+
+  const columns: Array<TableColumn<Document>> = [
+    {
+      name: 'ID',
+      width: '10%',
+      selector: (row: Document) => row.id!,
+      sortable: true
+    },
+    {
+      name: 'Name',
+      width: '23%',
+      selector: (row: Document) => row.name!,
+      sortable: true
+    },
+    {
+      name: 'Description',
+      width: '27%',
+      selector: (row: Document) => row.description!,
+      sortable: true
+    },
+    {
+      name: 'Document Type ID',
+      width: '15%',
+      selector: (row: Document) => row.documentTypeId!,
+      sortable: true
+    },
+    {
+      name: 'Actions',
+      width: '25%',
+      cell: (row: Document) =>
                 <>
                     <button
                         id={row.id}
                         className="btn btn-info me-3"
-                        onClick={() => handleClickDetail(row)}
+                        onClick={() => { handleClickDetail(row) }}
                     >{
-                        isLoading ?
-                            <div className="spinner-border text-light" role="status">
+                        isLoading!
+                          ? <div className="spinner-border text-light" role="status">
                                 <span className="visually-hidden">Loading...</span>
                             </div>
-                            :
-                            "Detail"
+                          : 'Detail'
                     }
                     </button>
                     <button
                         id={row.id}
                         className="btn btn-primary"
-                        onClick={() => handleClickSelect(row)}
+                        onClick={() => { handleClickSelect(row) }}
                     >{
-                        isLoading ?
-                            <div className="spinner-border text-light" role="status">
+                        isLoading!
+                          ? <div className="spinner-border text-light" role="status">
                                 <span className="visually-hidden">Loading...</span>
                             </div>
-                            :
-                            "Select"
+                          : selectedDocuments!.find((document: Document) => document.id === row.id) !== undefined
+                            ? 'Unselect'
+                            : 'Select'
                     }
                     </button>
-                </>,
-        }
-    ];
+                </>
+    }
+  ]
 
-    const formik = useFormik({
-        initialValues: {
-            search: "",
-        },
-        onSubmit: (values) => {
-            dispatch(domainSlice.actions.setCurrentDomain({
-                documentTableRows: getDocumentTableRows(accountDocuments || [], documentTypes || []).filter((documentTableRow) => {
-                    return JSON.stringify(documentTableRow).toLowerCase().includes(values.search.toLowerCase())
-                })
-            }))
-        }
-    })
+  const formik = useFormik({
+    initialValues: {
+      search: ''
+    },
+    onSubmit: (values) => {
+      const filteredDocuments: Document[] = selectedDocuments!.filter((document: Document) => {
+        return JSON.stringify(document).toLowerCase().includes(values.search.toLowerCase())
+      })
+      dispatch(domainSlice.actions.setDocumentDomain({
+        documents: filteredDocuments
+      }))
+    }
+  })
 
-
-    return (
+  return (
         <Modal
-            size={"xl"}
+            size={'xl'}
             show={isShow}
             onHide={handleOnHide}
         >
@@ -246,17 +252,25 @@ export default function SelectModalComponent() {
                     placeholder="Search here.."
                     name="search"
                     onChange={(event) => {
-                        formik.handleChange(event)
-                        formik.handleSubmit()
+                      formik.handleChange(event)
+                      formik.handleSubmit()
                     }}
                 />
 
                 <DataTable
+                    noDataComponent={'No data found.'}
                     pagination={true}
                     columns={columns}
-                    data={documentTableRows || []}
+                    data={documents!}
+                    paginationServer={true}
+                    paginationTotalRows={Number.POSITIVE_INFINITY}
+                    onChangePage={handleChangePage}
+                    onChangeRowsPerPage={handleChangeRowsPerPage}
+                    progressPending={isLoading}
+                    paginationRowsPerPageOptions={[5, 10, 15, 20, 25, 30]}
+                    paginationPerPage={5}
                 />
             </ModalBody>
         </Modal>
-    )
+  )
 }

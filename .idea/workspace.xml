@@ -5,10 +5,12 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="67558acb-1948-4a06-8aee-1a140c430703" name="Changes" comment="">
+      <change afterPath="$PROJECT_DIR$/public/document_management.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/public/long_form_qa.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/public/passage_search.png" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/dist/assets/index-29c2b2bc.js" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/dist/index.html" beforeDir="false" afterPath="$PROJECT_DIR$/dist/index.html" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/pages/features/LongFormQaPage.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/pages/features/LongFormQaPage.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/README.md" beforeDir="false" afterPath="$PROJECT_DIR$/README.md" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/index.html" beforeDir="false" afterPath="$PROJECT_DIR$/index.html" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/pages/features/PassageSearchPage.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/pages/features/PassageSearchPage.tsx" afterDir="false" />
     </list>
     <list id="a7cadf68-e7dd-4100-82ff-87108b6e6aff" name="Changes by avwan" comment="" />
@@ -47,18 +49,27 @@
   </component>
   <component name="PropertiesComponent"><![CDATA[{
   "keyToString": {
+    "Attach to Node.js/Chrome.Unnamed.executor": "Debug",
+    "Attach to Node.js/Chrome.run-2.executor": "Debug",
     "Docker.compose-1.executor": "Run",
+    "JavaScript Debug.localhost:9001.executor": "Debug",
+    "JavaScript Debug.run-2.executor": "Debug",
     "RunOnceActivity.OpenProjectViewOnStart": "true",
     "RunOnceActivity.ShowReadmeOnStart": "true",
     "SHARE_PROJECT_CONFIGURATION_FILES": "true",
     "WebServerToolWindowFactoryState": "false",
     "codeWithMe.voiceChat.enabledByDefault": "false",
-    "last_opened_file_path": "C:/Data/Apps/research-assistant-frontend/src/models/value_objects/contracts/requests/basic_settings",
+    "javascript.nodejs.core.library.configured.version": "21.7.1",
+    "javascript.nodejs.core.library.typings.version": "20.12.7",
+    "last_opened_file_path": "C:/Data/Apps/research-assistant-frontend/src/models/dtos/contracts/requests/managements/documents",
     "node.js.detected.package.eslint": "true",
+    "node.js.detected.package.standard": "true",
     "node.js.detected.package.tslint": "true",
     "node.js.selected.package.eslint": "(autodetect)",
+    "node.js.selected.package.standard": "",
     "node.js.selected.package.tslint": "(autodetect)",
     "nodejs_package_manager_path": "yarn",
+    "npm.run-1.executor": "Debug",
     "run.code.analysis.last.selected.profile": "pProject Default",
     "settings.editor.selected.configurable": "preferences.pluginManager",
     "ts.external.directory.path": "C:\\Data\\Apps\\research-assistant-frontend\\node_modules\\typescript\\lib",
@@ -67,20 +78,24 @@
 }]]></component>
   <component name="RecentsManager">
     <key name="CopyFile.RECENT_KEYS">
-      <recent name="C:\Data\Apps\research-assistant-frontend\src\models\value_objects\contracts\requests\basic_settings" />
-      <recent name="C:\Data\Apps\research-assistant-frontend\src\models\value_objects\contracts\requests\passage_searchs" />
-      <recent name="C:\Data\Apps\research-assistant-frontend\src\slices" />
-      <recent name="C:\Data\Apps\research-assistant-frontend\src\models\value_objects\contracts\response\managements" />
-      <recent name="C:\Data\Apps\research-assistant-frontend\src\components\long_form_qas" />
+      <recent name="C:\Data\Apps\research-assistant-frontend\src\models\dtos\contracts\requests\managements\documents" />
+      <recent name="C:\Data\Apps\research-assistant-frontend\src\models\dtos\contracts\response\authentications" />
+      <recent name="C:\Data\Apps\research-assistant-frontend\src\models\dtos\constants" />
+      <recent name="C:\Data\Apps\research-assistant-frontend\src\components\features" />
+      <recent name="C:\Data\Apps\research-assistant-frontend\src\services" />
     </key>
     <key name="MoveFile.RECENT_KEYS">
+      <recent name="C:\Data\Apps\research-assistant-frontend\public" />
+      <recent name="C:\Data\Apps\research-assistant-frontend\src\models\dtos" />
       <recent name="C:\Data\Apps\research-assistant-frontend\src\pages\features" />
       <recent name="C:\Data\Apps\research-assistant-frontend\src\models\value_objects\contracts\requests\basic_settings" />
       <recent name="C:\Data\Apps\research-assistant-frontend\src\models\value_objects\contracts\response\passage_searchs" />
-      <recent name="C:\Data\Apps\research-assistant-frontend\src\components\navigation_bars" />
     </key>
   </component>
-  <component name="RunManager" selected="Docker.compose-1">
+  <component name="RunManager" selected="JavaScript Debug.run-2">
+    <configuration name="run-2" type="JavascriptDebugType" uri="http://pc-3:9001">
+      <method v="2" />
+    </configuration>
     <configuration name="compose-1" type="docker-deploy" factoryName="docker-compose.yml" server-name="Docker">
       <deployment type="docker-compose.yml">
         <settings>
@@ -97,15 +112,23 @@
       <scripts>
         <script value="dev" />
       </scripts>
-      <arguments value="--host" />
-      <node-interpreter value="project" />
+      <node-interpreter value="$USER_HOME$/AppData/Local/Yarn/bin/bun" />
+      <package-manager value="C:\Users\M Kharisma Azhari\AppData\Local\Yarn\bin\bun.cmd" />
       <envs />
       <method v="2" />
     </configuration>
     <list>
       <item itemvalue="Docker.compose-1" />
+      <item itemvalue="JavaScript Debug.run-2" />
       <item itemvalue="npm.run-1" />
     </list>
+  </component>
+  <component name="SharedIndexes">
+    <attachedChunks>
+      <set>
+        <option value="bundled-js-predefined-1d06a55b98c1-74d2a5396914-JavaScript-WS-241.14494.235" />
+      </set>
+    </attachedChunks>
   </component>
   <component name="SpellCheckerSettings" RuntimeDictionaries="0" Folders="0" CustomDictionaries="0" DefaultDictionary="application-level" UseSingleDictionary="true" transferred="true" />
   <component name="TaskManager">
@@ -168,6 +191,8 @@
       <workItem from="1706363566902" duration="40000" />
       <workItem from="1707380561274" duration="20000" />
       <workItem from="1707380587069" duration="1851000" />
+      <workItem from="1713339459365" duration="25740000" />
+      <workItem from="1713430140806" duration="41399000" />
     </task>
     <servers />
   </component>

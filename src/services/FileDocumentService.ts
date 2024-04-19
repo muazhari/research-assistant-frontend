@@ -1,59 +1,73 @@
-import Service from "./Service.ts";
-import Client from "../clients/Client.ts";
-import BackendOneClient from "../clients/BackendOneClient.ts";
-import CreateOneRequest
-    from "../models/value_objects/contracts/requests/managements/file_documents/CreateOneRequest.ts";
-import DeleteOneByIdRequest
-    from "../models/value_objects/contracts/requests/managements/file_documents/DeleteOneByIdRequest.ts";
-import {AxiosResponse} from "axios";
-import ReadOneByIdRequest
-    from "../models/value_objects/contracts/requests/managements/file_documents/ReadOneByIdRequest.ts";
-import PatchOneByIdRequest from "../models/value_objects/contracts/requests/managements/file_documents/PatchOneById.ts";
-import FileDocument from "../models/entities/FileDocument.ts";
-import Content from "../models/value_objects/contracts/Content.ts";
-import ReadAllByAccountIdRequest
-    from "../models/value_objects/contracts/requests/managements/accounts/ReadAllByAccountIdRequest.ts";
-import FileDocumentPropertyResponse
-    from "../models/value_objects/contracts/response/managements/FileDocumentPropertyResponse.ts";
+import Service from './Service.ts'
+import type Client from '../clients/Client.ts'
+import type CreateOne from '../models/dtos/contracts/requests/managements/file_documents/CreateOne.ts'
+import type DeleteOneById from '../models/dtos/contracts/requests/managements/file_documents/DeleteOneById.ts'
+import { type AxiosResponse } from 'axios'
+import type FindOneById from '../models/dtos/contracts/requests/managements/file_documents/FindOneById.ts'
+import type PatchOneByIdRequest from '../models/dtos/contracts/requests/managements/file_documents/PatchOneById.ts'
+import type FileDocument from '../models/daos/FileDocument.ts'
+import type Content from '../models/dtos/contracts/Content.ts'
+import type FindManyWithPagination
+  from '../models/dtos/contracts/requests/managements/file_documents/FindManyWithPagination.ts'
 
 export default class FileDocumentService extends Service {
-    client: Client;
+  client: Client
 
-    path: string;
+  path: string
 
-    constructor() {
-        super();
-        this.client = new BackendOneClient();
-        this.path = "/documents/files";
+  constructor (client: Client) {
+    super()
+    this.client = client
+    this.path = '/document-files'
+  }
+
+  async createOne (request: CreateOne): Promise<AxiosResponse<Content<FileDocument>>> {
+    const data: FormData = new FormData()
+    for (const entry of Object.entries(request.body!)) {
+      if (entry[1] === undefined) {
+        continue
+      }
+      data.append(entry[0], entry[1] as string | Blob)
     }
+    return await this.client.instance.post(
+      this.path,
+      data,
+      {
+        headers: {
+          'Content-Type': 'multipart/form-data'
+        }
+      }
+    )
+  }
 
+  async deleteOneById (request: DeleteOneById): Promise<AxiosResponse<Content<FileDocument>>> {
+    return await this.client.instance.delete(`${this.path}/${request.id}`)
+  }
 
-    createOne(request: CreateOneRequest): Promise<AxiosResponse<Content<FileDocument>>> {
-        return this.client.instance.post(`${this.path}`, request.body);
+  async findManyWithPagination (request: FindManyWithPagination): Promise<AxiosResponse<Content<FileDocument[]>>> {
+    return await this.client.instance.get(`${this.path}?&page_position=${request.pagePosition}&page_size=${request.pageSize}`)
+  }
+
+  async findOneById (request: FindOneById): Promise<AxiosResponse<Content<FileDocument>>> {
+    return await this.client.instance.get(`${this.path}/${request.id}`)
+  }
+
+  async patchOneById (request: PatchOneByIdRequest): Promise<AxiosResponse<Content<FileDocument>>> {
+    const data: FormData = new FormData()
+    for (const entry of Object.entries(request.body!)) {
+      if (entry[1] === undefined) {
+        continue
+      }
+      data.append(entry[0], entry[1] as string | Blob)
     }
-
-    deleteOneById(request: DeleteOneByIdRequest): Promise<AxiosResponse<Content<FileDocument>>> {
-        return this.client.instance.delete(`${this.path}/${request.id}`);
-    }
-
-    readAll(): Promise<AxiosResponse<Content<FileDocument[]>>> {
-        return this.client.instance.get(`${this.path}`);
-    }
-
-    readAllByAccountId(request: ReadAllByAccountIdRequest): Promise<AxiosResponse<Content<FileDocument[]>>> {
-        return this.client.instance.get(`${this.path}?account_id=${request.accountId}`);
-    }
-
-    readOneById(request: ReadOneByIdRequest): Promise<AxiosResponse<Content<FileDocument>>> {
-        return this.client.instance.get(`${this.path}/${request.id}`);
-    }
-
-    readOnePropertyById(request: ReadOneByIdRequest): Promise<AxiosResponse<Content<FileDocumentPropertyResponse>>> {
-        return this.client.instance.get(`${this.path}/${request.id}/property`);
-    }
-
-    patchOneById(request: PatchOneByIdRequest): Promise<AxiosResponse<Content<FileDocument>>> {
-        return this.client.instance.patch(`${this.path}/${request.id}`, request.body);
-    }
-
+    return await this.client.instance.patch(
+        `${this.path}/${request.id}`,
+        data,
+        {
+          headers: {
+            'Content-Type': 'multipart/form-data'
+          }
+        }
+    )
+  }
 }

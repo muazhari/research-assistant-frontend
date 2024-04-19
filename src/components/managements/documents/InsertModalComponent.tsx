@@ -1,210 +1,126 @@
-import {Modal, ModalBody, ModalFooter, ModalHeader} from "react-bootstrap";
-import {useDispatch, useSelector} from "react-redux";
-import {useNavigate} from "react-router-dom";
-import DocumentService from "../../../services/DocumentService.ts";
-import DocumentTypeService from "../../../services/DocumentTypeService.ts";
-import domainSlice, {DomainState, getDocumentTableRows} from "../../../slices/DomainSlice.ts";
-import {RootState} from "../../../slices/Store.ts";
-import {AuthenticationState} from "../../../slices/AuthenticationSlice.ts";
-import {useFormik} from "formik";
-import Content from "../../../models/value_objects/contracts/Content.ts";
-import FileDocumentService from "../../../services/FileDocumentService.ts";
-import FileDocument from "../../../models/entities/FileDocument.ts";
-import WebDocument from "../../../models/entities/WebDocument.ts";
-import TextDocument from "../../../models/entities/TextDocument.ts";
-import TextDocumentService from "../../../services/TextDocumentService.ts";
-import WebDocumentService from "../../../services/WebDocumentService.ts";
-import React from "react";
-import processSlice, {ProcessState} from "../../../slices/ProcessSlice.ts";
+import { Modal, ModalBody, ModalFooter, ModalHeader } from 'react-bootstrap'
+import { useDispatch, useSelector } from 'react-redux'
+import domainSlice, { type DomainState } from '../../../slices/DomainSlice.ts'
+import { type RootState } from '../../../slices/StoreConfiguration.ts'
+import { type AuthenticationState } from '../../../slices/AuthenticationSlice.ts'
+import { useFormik } from 'formik'
+import type Content from '../../../models/dtos/contracts/Content.ts'
+import type FileDocument from '../../../models/daos/FileDocument.ts'
+import type WebDocument from '../../../models/daos/WebDocument.ts'
+import type TextDocument from '../../../models/daos/TextDocument.ts'
+import React from 'react'
+import processSlice, { type ProcessState } from '../../../slices/ProcessSlice.ts'
+import DocumentTypeConstant from '../../../models/dtos/constants/DocumentTypeConstant.ts'
+import type Document from '../../../models/daos/Document.ts'
+import { fileDocumentService, textDocumentService, webDocumentService } from '../../../containers/ServiceContainer.ts'
+import { type AxiosResponse } from 'axios'
 
-export default function InsertModalComponent() {
-    const dispatch = useDispatch();
-    const navigate = useNavigate();
+export default function InsertModalComponent (): React.JSX.Element {
+  const dispatch = useDispatch()
 
-    const documentService = new DocumentService();
-    const documentTypeService = new DocumentTypeService();
-    const fileDocumentService = new FileDocumentService();
-    const textDocumentService = new TextDocumentService();
-    const webDocumentService = new WebDocumentService();
+  const processState: ProcessState = useSelector((state: RootState) => state.process)
+  const domainState: DomainState = useSelector((state: RootState) => state.domain)
+  const authenticationState: AuthenticationState = useSelector((state: RootState) => state.authentication)
 
-    const processState: ProcessState = useSelector((state: RootState) => state.process);
-    const domainState: DomainState = useSelector((state: RootState) => state.domain);
-    const authenticationState: AuthenticationState = useSelector((state: RootState) => state.authentication);
+  const {
+    isLoading
+  } = processState
 
-    const {
-        isLoading
-    } = processState;
+  const {
+    account
+  } = authenticationState
 
-    const {
-        account
-    } = authenticationState;
-    const {
-        accountDocuments,
-        documentTypes
-    } = domainState.documentDomain;
+  const {
+    isShow
+  } = domainState.modalDomain!
 
-    const {
-        document,
-        documentType,
-        fileDocument,
-        textDocument,
-        webDocument
-    } = domainState.currentDomain;
+  const [initialValues, setInitialValues] = React.useState({
+    name: '',
+    description: '',
+    documentTypeId: DocumentTypeConstant.FILE,
+    accountId: account!.id,
+    fileName: '',
+    fileData: undefined,
+    textContent: '',
+    webUrl: ''
+  })
 
-    const {
-        name,
-        isShow
-    } = domainState.modalDomain;
-
-
-    const formik = useFormik({
-        initialValues: {
-            name: "",
-            description: "",
-            documentTypeId: documentTypes?.[0]?.id,
-            fileName: "",
-            fileExtension: "",
-            fileBytes: "",
-            textContent: "",
-            webUrl: ""
-        },
-        enableReinitialize: true,
-        onSubmit: (values) => {
-            dispatch(processSlice.actions.set({
-                isLoading: true
-            }));
-            if (formikDocumentType?.name == "file") {
-                fileDocumentService.createOne({
-                    body: {
-                        name: values.name,
-                        description: values.description,
-                        documentTypeId: values.documentTypeId,
-                        accountId: account?.id,
-                        fileName: values.fileName,
-                        fileExtension: values.fileExtension,
-                        fileBytes: values.fileBytes
-                    }
-                }).then((response) => {
-                    const content: Content<FileDocument> = response.data;
-                    if (content.data) {
-                        const newAccountDocuments = [...(accountDocuments || []), content.data!];
-                        dispatch(domainSlice.actions.setCurrentDomain({
-                            document: content.data,
-                            fileDocument: content.data,
-                            documentTableRows: getDocumentTableRows(newAccountDocuments || [], documentTypes || [])
-                        }))
-                        dispatch(domainSlice.actions.setDocumentDomain({
-                            accountDocuments: newAccountDocuments
-                        }))
-                    }
-                    alert(content.message)
-                }).catch((error) => {
-                    console.log(error)
-                }).finally(() => {
-                    dispatch(processSlice.actions.set({
-                        isLoading: false
-                    }));
-                    formik.resetForm();
-                    formik.setFieldValue("documentTypeId", formikDocumentType?.id)
-                })
-            } else if (formikDocumentType?.name == "text") {
-                textDocumentService.createOne({
-                    body: {
-                        name: values.name,
-                        description: values.description,
-                        documentTypeId: values.documentTypeId,
-                        accountId: account?.id,
-                        textContent: values.textContent
-                    }
-                }).then((response) => {
-                    const content: Content<TextDocument> = response.data;
-                    if (content.data) {
-                        const newAccountDocuments = [...(accountDocuments || []), content.data!];
-                        dispatch(domainSlice.actions.setCurrentDomain({
-                            document: content.data,
-                            textDocument: content.data,
-                            documentTableRows: getDocumentTableRows(newAccountDocuments || [], documentTypes || [])
-                        }))
-                        dispatch(domainSlice.actions.setDocumentDomain({
-                            accountDocuments: newAccountDocuments
-                        }))
-                    }
-                    alert(content.message)
-                }).catch((error) => {
-                    console.log(error)
-                }).finally(() => {
-                    dispatch(processSlice.actions.set({
-                        isLoading: false
-                    }));
-                    formik.resetForm();
-                    formik.setFieldValue("documentTypeId", formikDocumentType?.id)
-                })
-            } else if (formikDocumentType?.name == "web") {
-                webDocumentService.createOne({
-                    body: {
-                        name: values.name,
-                        description: values.description,
-                        documentTypeId: values.documentTypeId,
-                        accountId: account?.id,
-                        webUrl: values.webUrl
-                    }
-                }).then((response) => {
-                    const content: Content<WebDocument> = response.data;
-                    if (content.data) {
-                        const newAccountDocuments = [...(accountDocuments || []), content.data!];
-                        dispatch(domainSlice.actions.setCurrentDomain({
-                            document: content.data,
-                            webDocument: content.data,
-                            documentTableRows: getDocumentTableRows(newAccountDocuments || [], documentTypes || [])
-                        }))
-                        dispatch(domainSlice.actions.setDocumentDomain({
-                            accountDocuments: newAccountDocuments
-                        }))
-                    }
-                    alert(content.message)
-                }).catch((error) => {
-                    console.log(error)
-                }).finally(() => {
-                    dispatch(processSlice.actions.set({
-                        isLoading: false
-                    }));
-                    formik.resetForm();
-                    formik.setFieldValue("documentTypeId", formikDocumentType?.id)
-                })
-            } else {
-                alert("Document type is not supported.")
+  const formik = useFormik({
+    initialValues,
+    enableReinitialize: true,
+    onSubmit: (values) => {
+      setInitialValues(values)
+      dispatch(processSlice.actions.set({
+        isLoading: true
+      }))
+      let documentDetail: Promise<AxiosResponse<Content<FileDocument | TextDocument | WebDocument>>>
+      if (values.documentTypeId === DocumentTypeConstant.FILE) {
+        documentDetail = fileDocumentService
+          .createOne({
+            body: {
+              name: values.name,
+              description: values.description,
+              documentTypeId: values.documentTypeId,
+              accountId: values.accountId,
+              fileName: values.fileName,
+              fileData: values.fileData
             }
-        }
-    })
-
-
-    const formikDocumentType = documentTypes?.find((documentType) => documentType.id === formik.values.documentTypeId);
-
-    const handleOnHide = () => {
-        dispatch(domainSlice.actions.setModalDomain({
-            isShow: !isShow,
-        }))
-        formik.resetForm();
-    }
-
-    const convertToBase64 = (file: File): Promise<string> => {
-        return new Promise((resolve, reject) => {
-            const fileReader = new FileReader();
-            fileReader.readAsDataURL(file)
-            fileReader.onload = () => {
-                if (typeof fileReader.result === "string") {
-                    resolve(fileReader.result.split(',')[1]);
-                } else {
-                    reject("Cannot convert file to base64.")
-                }
+          })
+      } else if (values.documentTypeId === DocumentTypeConstant.TEXT) {
+        documentDetail = textDocumentService
+          .createOne({
+            body: {
+              name: values.name,
+              description: values.description,
+              documentTypeId: values.documentTypeId,
+              accountId: values.accountId,
+              textContent: values.textContent
             }
-            fileReader.onerror = (error) => {
-                reject(error);
+          })
+      } else if (values.documentTypeId === DocumentTypeConstant.WEB) {
+        documentDetail = webDocumentService
+          .createOne({
+            body: {
+              name: values.name,
+              description: values.description,
+              documentTypeId: values.documentTypeId,
+              accountId: values.accountId,
+              webUrl: values.webUrl
             }
+          })
+      } else {
+        console.error('Document Type is not supported.')
+        return
+      }
+      documentDetail
+        .then((response) => {
+          const content: Content<WebDocument> = response.data
+          dispatch(domainSlice.actions.setCurrentDomain({
+            selectedDocument: content.data! as Document,
+            selectedDocumentDetail: content.data!
+          }))
+          alert(content.message)
+        }).catch((error) => {
+          console.error(error)
+          const content: Content<null> = error.response.data
+          alert(content.message)
+        }).finally(async () => {
+          dispatch(processSlice.actions.set({
+            isLoading: false
+          }))
+          formik.resetForm()
         })
     }
+  })
 
-    return (
+  const handleOnHide = (): void => {
+    dispatch(domainSlice.actions.setModalDomain({
+      isShow: false
+    }))
+    formik.resetForm()
+  }
+
+  return (
         <Modal
             show={isShow}
             onHide={handleOnHide}
@@ -215,7 +131,7 @@ export default function InsertModalComponent() {
             <ModalBody>
                 <form onSubmit={formik.handleSubmit}>
                     <fieldset className="mb-2">
-                        <label className="form-label" htmlFor="name">Name:</label>
+                        <label className="form-label" htmlFor="name">Name</label>
                         <input
                             className="form-control"
                             type="text"
@@ -227,7 +143,7 @@ export default function InsertModalComponent() {
                         />
                     </fieldset>
                     <fieldset className="mb-2">
-                        <label className="form-label" htmlFor="description">Description:</label>
+                        <label className="form-label" htmlFor="description">Description</label>
                         <textarea
                             className="form-control"
                             name="description"
@@ -238,43 +154,33 @@ export default function InsertModalComponent() {
                         />
                     </fieldset>
                     <fieldset className="mb-2">
-                        <label className="form-label" htmlFor="documentTypeId">Type:</label>
+                        <label className="form-label" htmlFor="documentTypeId">Type ID</label>
                         <select
                             className="form-control"
                             name="documentTypeId"
                             id="documentTypeId"
                             onBlur={formik.handleBlur}
-                            onChange={(event) => {
-                                formik.handleChange(event)
-                                formik.setFieldValue("fileName", "")
-                                formik.setFieldValue("fileExtension", "")
-                                formik.setFieldValue("fileBytes", "")
-                                formik.setFieldValue("textContent", "")
-                                formik.setFieldValue("webUrl", "")
-                            }}
+                            onChange={formik.handleChange}
                             value={formik.values.documentTypeId}
                         >
-                            {
-                                documentTypes?.map((documentType) => {
-                                        return (
-                                            <option
-                                                key={documentType.id}
-                                                value={documentType.id}
-                                            >
-                                                {documentType.name}
-                                            </option>
-                                        )
-                                    }
-                                )
-                            }
+                          {
+                            DocumentTypeConstant.getValues().map((documentTypeId: string) => {
+                              return (
+                                  <option
+                                      key={documentTypeId}
+                                      value={documentTypeId}
+                                  >
+                                    {documentTypeId}
+                                  </option>
+                              )
+                            })
+                          }
                         </select>
                     </fieldset>
-                    {
-                        {
-                            "file":
+                    { formik.values.documentTypeId === DocumentTypeConstant.FILE &&
                                 <>
                                     <fieldset className="mb-2">
-                                        <label className="form-label" htmlFor="fileName">File Name:</label>
+                                        <label className="form-label" htmlFor="fileName">File Name</label>
                                         <input
                                             disabled={true}
                                             className="form-control"
@@ -286,61 +192,43 @@ export default function InsertModalComponent() {
                                             value={formik.values.fileName}
                                         />
                                     </fieldset>
-                                    <fieldset className="mb-2">
-                                        <label className="form-label" htmlFor="fileExtension">File Extension:</label>
-                                        <input
-                                            disabled={true}
-                                            className="form-control"
-                                            type="text"
-                                            name="fileExtension"
-                                            id="fileExtension"
-                                            onBlur={formik.handleBlur}
-                                            onChange={formik.handleChange}
-                                            value={formik.values.fileExtension}
-                                        />
-                                    </fieldset>
-                                    <fieldset className="mb-2">
-                                        <label className="form-label" htmlFor="fileBytes">File Bytes:</label>
-                                        <input
-                                            className="form-control"
-                                            type="file"
-                                            name="fileBytes"
-                                            id="fileBytes"
-                                            onBlur={formik.handleBlur}
-                                            onChange={
-                                                async (event) => {
-                                                    formik.handleChange(event)
-                                                    const fileBytes: string = await convertToBase64(event.target.files![0])
-                                                    await formik.setFieldValue("fileBytes", fileBytes)
-                                                    const fileBase: string = event.target.files![0].name
-                                                    const fileName: string = fileBase.substring(0, fileBase.lastIndexOf('.'));
-                                                    const fileExtension: string = fileBase.substring(fileBase.lastIndexOf('.'));
-                                                    await formik.setFieldValue("fileName", fileName)
-                                                    await formik.setFieldValue("fileExtension", fileExtension)
-                                                }
-                                            }
-                                        />
-                                    </fieldset>
+                                  <fieldset className="mb-2">
+                                    <label className="form-label" htmlFor="fileData">File Data</label>
+                                    <input
+                                        className="form-control"
+                                        type="file"
+                                        name="fileData"
+                                        id="fileData"
+                                        onBlur={formik.handleBlur}
+                                        onChange={(event) => {
+                                          formik.handleChange(event)
+                                          const fileData: File = event.target.files![0]
+                                          formik.setFieldValue('fileData', fileData)
+                                          formik.setFieldValue('fileName', fileData.name)
+                                        }}
+                                    />
+                                  </fieldset>
                                 </>
-                            ,
-                            "text":
+                    }
+                  {formik.values.documentTypeId === DocumentTypeConstant.TEXT &&
+                      <>
+                        <fieldset className="mb-2">
+                          <label className="form-label" htmlFor="textContent">Text Content</label>
+                          <textarea
+                              className="form-control"
+                              name="textContent"
+                              id="textContent"
+                              onBlur={formik.handleBlur}
+                              onChange={formik.handleChange}
+                              value={formik.values.textContent}
+                          />
+                        </fieldset>
+                      </>
+                  }
+                  {formik.values.documentTypeId === DocumentTypeConstant.WEB &&
                                 <>
                                     <fieldset className="mb-2">
-                                        <label className="form-label" htmlFor="textContent">Text Content:</label>
-                                        <textarea
-                                            className="form-control"
-                                            name="textContent"
-                                            id="textContent"
-                                            onBlur={formik.handleBlur}
-                                            onChange={formik.handleChange}
-                                            value={formik.values.textContent}
-                                        />
-                                    </fieldset>
-                                </>,
-                            "web":
-                                <>
-                                    <fieldset className="mb-2">
-                                        <label className="form-label" htmlFor="webUrl">Web Url:</label>
+                                        <label className="form-label" htmlFor="webUrl">Web Url</label>
                                         <textarea
                                             className="form-control"
                                             name="webUrl"
@@ -350,24 +238,21 @@ export default function InsertModalComponent() {
                                             value={formik.values.webUrl}
                                         />
                                     </fieldset>
-                                </>,
-                            "default": undefined
-                        }[formikDocumentType?.name || "default"]
+                                </>
                     }
                 </form>
             </ModalBody>
             <ModalFooter>
                 <button onClick={formik.submitForm} type="submit" className="btn btn-primary" disabled={isLoading}>
                     {
-                        isLoading ?
-                            <div className="spinner-border text-light" role="status">
+                        isLoading!
+                          ? <div className="spinner-border text-light" role="status">
                                 <span className="visually-hidden">Loading...</span>
                             </div>
-                            :
-                            "Insert"
+                          : 'Insert'
                     }
                 </button>
             </ModalFooter>
         </Modal>
-    )
+  )
 }

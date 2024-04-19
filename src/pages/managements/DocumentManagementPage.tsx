@@ -1,226 +1,289 @@
-import DocumentService from "../../services/DocumentService.ts";
-import DocumentTypeService from "../../services/DocumentTypeService.ts";
-import domainSlice, {DocumentTableRow, DomainState, getDocumentTableRows} from "../../slices/DomainSlice.ts";
-import {useDispatch, useSelector} from "react-redux";
-import {RootState} from "../../slices/Store.ts";
-import {AuthenticationState} from "../../slices/AuthenticationSlice.ts";
-import Content from "../../models/value_objects/contracts/Content.ts";
+import domainSlice, { type DomainState } from '../../slices/DomainSlice.ts'
+import { useDispatch, useSelector } from 'react-redux'
+import { type RootState } from '../../slices/StoreConfiguration.ts'
+import type Content from '../../models/dtos/contracts/Content.ts'
 
-import Document from "../../models/entities/Document.ts";
-import DocumentType from "../../models/entities/DocumentType.ts";
-import {useNavigate} from "react-router-dom";
-import DetailModalComponent from "../../components/managements/documents/DetailModalComponent.tsx";
-import InsertModalComponent from "../../components/managements/documents/InsertModalComponent.tsx";
-import {useEffect} from "react";
-import DataTable, {TableColumn} from "react-data-table-component";
-import {useFormik} from "formik";
-import processSlice, {ProcessState} from "../../slices/ProcessSlice.ts";
+import type Document from '../../models/daos/Document.ts'
+import DetailModalComponent from '../../components/managements/documents/DetailModalComponent.tsx'
+import InsertModalComponent from '../../components/managements/documents/InsertModalComponent.tsx'
+import React, { useEffect } from 'react'
 
+import DataTable, { type TableColumn } from 'react-data-table-component'
+import { useFormik } from 'formik'
+import processSlice, { type ProcessState } from '../../slices/ProcessSlice.ts'
 
-export default function DocumentManagementPage() {
+import { documentService } from '../../containers/ServiceContainer.ts'
 
-    const dispatch = useDispatch();
-    const navigate = useNavigate();
+export default function DocumentManagementPage (): React.JSX.Element {
+  const dispatch = useDispatch()
 
-    const documentService = new DocumentService();
-    const documentTypeService = new DocumentTypeService();
+  const processState: ProcessState = useSelector((state: RootState) => state.process)
+  const domainState: DomainState = useSelector((state: RootState) => state.domain)
 
-    const processState: ProcessState = useSelector((state: RootState) => state.process);
-    const domainState: DomainState = useSelector((state: RootState) => state.domain);
-    const authenticationState: AuthenticationState = useSelector((state: RootState) => state.authentication);
+  const {
+    isLoading
+  } = processState
 
-    const {
-        isLoading
-    } = processState;
+  const {
+    documents
+  } = domainState.documentDomain!
 
-    const {
-        account
-    } = authenticationState;
+  const {
+    selectedDocument
+  } = domainState.currentDomain!
 
-    const {
-        accountDocuments,
-        documentTypes,
-    } = domainState.documentDomain;
+  const {
+    name
+  } = domainState.modalDomain!
 
-    const {
+  useEffect(() => {
+    fetchData()
+  }, [selectedDocument])
 
-        documentTableRows
-    } = domainState.currentDomain
+  const [pagePosition, setPagePosition] = React.useState<number>(1)
+  const [pageSize, setPageSize] = React.useState<number>(5)
 
-    const {
-        name,
-        isShow
-    } = domainState.modalDomain;
-
-
-    useEffect(() => {
-        fetchData();
-    }, [])
-
-    const fetchData = () => {
-        Promise.all([
-            documentService
-                .readAllByAccountId({
-                    accountId: account?.id
-                }),
-            documentTypeService
-                .readAll()
-        ])
-            .then((response) => {
-                const accountDocumentsContent: Content<Document[]> = response[0].data;
-                const documentTypesContent: Content<DocumentType[]> = response[1].data;
-                dispatch(domainSlice.actions.setDocumentDomain({
-                    accountDocuments: accountDocumentsContent.data,
-                    documentTypes: documentTypesContent.data,
-                }))
-                dispatch(domainSlice.actions.setCurrentDomain({
-                    documentTableRows: getDocumentTableRows(accountDocumentsContent.data || [], documentTypesContent.data || [])
-                }))
-            })
-            .catch((error) => {
-                console.log(error)
-            })
-    }
-
-    const handleClickDetail = (row: DocumentTableRow) => {
-        dispatch(domainSlice.actions.setModalDomain({
-            name: "detail",
-            isShow: true,
-        }))
-        dispatch(domainSlice.actions.setCurrentDomain({
-            document: {
-                id: row.id,
-                name: row.name,
-                description: row.description,
-                documentTypeId: row.documentTypeId,
-                accountId: row.accountId,
-            },
-            documentType: documentTypes?.find((documentType) => {
-                return documentType.id === row.documentTypeId
-            })
-        }))
-    }
-
-    const handleClickDelete = (row: DocumentTableRow) => {
+  const fetchData = (): void => {
+    dispatch(processSlice.actions.set({
+      isLoading: true
+    }))
+    documentService
+      .findManyWithPagination({
+        pagePosition,
+        pageSize
+      })
+      .then((response) => {
+        const content: Content<Document[]> = response.data
+        if (content.data!.length > 0) {
+          dispatch(domainSlice.actions.setDocumentDomain({
+            documents: content.data!
+          }))
+        }
+      })
+      .catch((error) => {
+        console.error(error)
+        const content: Content<null> = error.response.data
+        alert(content.message)
+      }).finally(() => {
         dispatch(processSlice.actions.set({
-            isLoading: true
-        }));
-        documentService
-            .deleteOneById({
-                id: row.id
-            })
-            .then((response) => {
-                const content: Content<Document> = response.data;
-                const newAccountDocuments = accountDocuments!.filter((document) => {
-                    return document.id !== content.data?.id
-                })
-                dispatch(domainSlice.actions.setDocumentDomain({
-                    accountDocuments: newAccountDocuments
-                }))
-                dispatch(domainSlice.actions.setCurrentDomain({
-                    documentTableRows: getDocumentTableRows(newAccountDocuments || [], documentTypes || [])
-                }))
-                alert(content.message)
-            })
-            .catch((error) => {
-                console.log(error)
-            })
-            .finally(() => {
-                dispatch(processSlice.actions.set({
-                    isLoading: false
-                }));
-            })
-    }
-
-    const handleClickInsert = () => {
-        dispatch(domainSlice.actions.setModalDomain({
-            name: "insert",
-            isShow: true,
+          isLoading: false
         }))
-    }
+      })
+  }
 
+  const handleClickDetail = async (row: Document): Promise<void> => {
+    dispatch(domainSlice.actions.setCurrentDomain({
+      selectedDocument: row
+    }))
+    dispatch(domainSlice.actions.setModalDomain({
+      name: 'detail',
+      isShow: true,
+      source: 'documentDetail'
+    }))
+  }
 
-    const columns: TableColumn<DocumentTableRow>[] = [
-        {
-            name: "ID",
-            width: "10%",
-            selector: (row: DocumentTableRow) => row.id || "",
-            sortable: true,
-        },
-        {
-            name: "Name",
-            width: "23%",
-            selector: (row: DocumentTableRow) => row.name || "",
-            sortable: true,
-        },
-        {
-            name: "Description",
-            width: "27%",
-            selector: (row: DocumentTableRow) => row.description || "",
-            sortable: true,
-        },
-        {
-            name: "Document Type Name",
-            width: "15%",
-            selector: (row: DocumentTableRow) => row.documentTypeName || "",
-            sortable: true,
-        },
-        {
-            name: "Actions",
-            width: "25%",
-            cell: (row: DocumentTableRow) =>
+  const handleClickDelete = (row: Document): void => {
+    dispatch(processSlice.actions.set({
+      isLoading: true
+    }))
+    documentService
+      .deleteOneById({
+        id: row.id
+      })
+      .then((response) => {
+        const content: Content<Document> = response.data
+        fetchData()
+        alert(content.message)
+      })
+      .catch((error) => {
+        console.error(error)
+        const content: Content<null> = error.response.data
+        alert(content.message)
+      })
+      .finally(() => {
+        dispatch(processSlice.actions.set({
+          isLoading: false
+        }))
+      })
+  }
+
+  const handleClickInsert = (): void => {
+    dispatch(domainSlice.actions.setModalDomain({
+      name: 'insert',
+      isShow: true
+    }))
+  }
+
+  const columns: Array<TableColumn<Document>> = [
+    {
+      name: 'ID',
+      width: '10%',
+      selector: (row: Document) => row.id!,
+      sortable: true
+    },
+    {
+      name: 'Name',
+      width: '23%',
+      selector: (row: Document) => row.name!,
+      sortable: true
+    },
+    {
+      name: 'Description',
+      width: '27%',
+      selector: (row: Document) => row.description!,
+      sortable: true
+    },
+    {
+      name: 'Document Type ID',
+      width: '15%',
+      selector: (row: Document) => row.documentTypeId!,
+      sortable: true
+    },
+    {
+      name: 'Actions',
+      width: '25%',
+      cell: (row: Document) =>
                 <>
                     <button
                         id={row.id}
                         className="btn btn-info mx-3"
-                        onClick={() => handleClickDetail(row)}
+                        onClick={() => { handleClickDetail(row) }}
                         disabled={isLoading}
                     >
                         {
-                            isLoading ?
-                                <div className="spinner-border text-light" role="status">
+                            isLoading!
+                              ? <div className="spinner-border text-light" role="status">
                                     <span className="visually-hidden">Loading...</span>
                                 </div>
-                                :
-                                "Detail"
+                              : 'Detail'
                         }
                     </button>
                     <button
                         id={row.id}
                         className="btn btn-danger"
-                        onClick={() => handleClickDelete(row)}
+                        onClick={() => { handleClickDelete(row) }}
                         disabled={isLoading}
                     >
                         {
-                            isLoading ?
-                                <div className="spinner-border text-light" role="status">
+                            isLoading!
+                              ? <div className="spinner-border text-light" role="status">
                                     <span className="visually-hidden">Loading...</span>
                                 </div>
-                                :
-                                "Delete"
+                              : 'Delete'
                         }
                     </button>
                 </>
-        }
-    ];
+    }
+  ]
 
-    const formik = useFormik({
-        initialValues: {
-            search: "",
-        },
-        onSubmit: (values) => {
-            dispatch(domainSlice.actions.setCurrentDomain({
-                documentTableRows: getDocumentTableRows(accountDocuments || [], documentTypes || []).filter((documentTableRow) => {
-                    return JSON.stringify(documentTableRow).toLowerCase().includes(values.search.toLowerCase())
-                })
-            }))
+  const handleChangePage = (pagePosition: number): void => {
+    if (pagePosition === Number.POSITIVE_INFINITY) {
+      alert('Please select a valid page position.')
+      return
+    }
+    dispatch(processSlice.actions.set({
+      isLoading: true
+    }))
+    documentService
+      .findManyWithPagination({
+        pagePosition,
+        pageSize
+      })
+      .then((response) => {
+        const content: Content<Document[]> = response.data
+        if (content.data!.length === 0) {
+          alert('Current page position is exceeding available pages.')
+        } else {
+          dispatch(domainSlice.actions.setDocumentDomain({
+            documents: content.data!
+          }))
+          setPagePosition(pagePosition)
         }
-    })
+      })
+      .catch((error) => {
+        console.error(error)
+        const content: Content<null> = error.response.data
+        alert(content.message)
+      }).finally(() => {
+        dispatch(processSlice.actions.set({
+          isLoading: false
+        }))
+      })
+  }
 
-    return (
+  const handleChangeRowsPerPage = (pageSize: number): void => {
+    dispatch(processSlice.actions.set({
+      isLoading: true
+    }))
+    documentService
+      .findManyWithPagination({
+        pagePosition,
+        pageSize
+      })
+      .then((response) => {
+        const content: Content<Document[]> = response.data
+        if (content.data!.length === 0) {
+          alert('Current page position is exceeding available pages.')
+        } else {
+          dispatch(domainSlice.actions.setDocumentDomain({
+            documents: content.data!
+          }))
+          setPageSize(pageSize)
+        }
+      })
+      .catch((error) => {
+        console.error(error)
+        const content: Content<null> = error.response.data
+        alert(content.message)
+      }).finally(() => {
+        dispatch(processSlice.actions.set({
+          isLoading: false
+        }))
+      })
+  }
+
+  const formik = useFormik({
+    initialValues: {
+      search: ''
+    },
+    onSubmit: (values) => {
+      dispatch(processSlice.actions.set({
+        isLoading: true
+      }))
+      documentService
+        .search({
+          body: {
+            id: values.search,
+            name: values.search,
+            description: values.search,
+            documentTypeId: values.search,
+            accountId: null
+          },
+          size: pageSize
+        })
+        .then((response) => {
+          const content: Content<Document[]> = response.data
+          dispatch(domainSlice.actions.setDocumentDomain({
+            documents: content.data!
+          }))
+        })
+        .catch((error) => {
+          console.error(error)
+          const content: Content<null> = error.response.data
+          alert(content.message)
+        })
+        .finally(() => {
+          dispatch(processSlice.actions.set({
+            isLoading: false
+          }))
+        })
+    }
+  })
+
+  return (
         <div className="d-flex flex-column justify-content-center align-items-center p-5">
-            {name === "detail" && <DetailModalComponent/>}
-            {name === "insert" && <InsertModalComponent/>}
+            {name === 'detail' && <DetailModalComponent/>}
+            {name === 'insert' && <InsertModalComponent/>}
             <h1 className="align-item-start mb-5">Document Management Page</h1>
             <div className="d-flex justify-content-end w-100">
                 <button className="btn btn-primary align-items-end h-50 me-5" onClick={handleClickInsert}>
@@ -236,16 +299,24 @@ export default function DocumentManagementPage() {
                 value={formik.values.search}
                 onBlur={formik.handleBlur}
                 onChange={(event) => {
-                    formik.handleChange(event)
-                    formik.handleSubmit()
+                  formik.handleChange(event)
+                  formik.handleSubmit()
                 }}
             />
 
             <DataTable
+                noDataComponent={'No data found.'}
                 pagination={true}
                 columns={columns}
-                data={documentTableRows || []}
+                data={documents!}
+                paginationServer={true}
+                paginationTotalRows={Number.POSITIVE_INFINITY}
+                onChangePage={handleChangePage}
+                onChangeRowsPerPage={handleChangeRowsPerPage}
+                progressPending={isLoading}
+                paginationRowsPerPageOptions={[5, 10, 15, 20, 25, 30]}
+                paginationPerPage={5}
             />
         </div>
-    )
+  )
 }
