@@ -146,7 +146,7 @@ export default function DocumentManagementPage (): React.JSX.Element {
                 <>
                     <button
                         id={row.id}
-                        className="btn btn-info mx-3"
+                        className="btn btn-success mx-3"
                         onClick={() => { handleClickDetail(row) }}
                         disabled={isLoading}
                     >

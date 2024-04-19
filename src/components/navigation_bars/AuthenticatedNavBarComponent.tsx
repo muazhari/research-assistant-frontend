@@ -54,7 +54,7 @@ export default function AuthenticatedNavBarComponent (): React.JSX.Element {
                             <NavDropdown.Item href="/managements/documents">Documents</NavDropdown.Item>
                         </NavDropdown>
                     </Nav>
-                    <button className="btn btn-danger" onClick={handleClickLogout}>
+                    <button className="btn btn-danger" onClick={handleClickLogout} disabled={isLoading}>
                     {
                         isLoading!
                           ? <div className="spinner-border text-light" role="status">

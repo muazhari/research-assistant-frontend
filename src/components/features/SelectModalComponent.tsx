@@ -227,12 +227,36 @@ export default function SelectModalComponent (): React.JSX.Element {
       search: ''
     },
     onSubmit: (values) => {
-      const filteredDocuments: Document[] = selectedDocuments!.filter((document: Document) => {
-        return JSON.stringify(document).toLowerCase().includes(values.search.toLowerCase())
-      })
-      dispatch(domainSlice.actions.setDocumentDomain({
-        documents: filteredDocuments
+      dispatch(processSlice.actions.set({
+        isLoading: true
       }))
+      documentService
+        .search({
+          body: {
+            id: values.search,
+            name: values.search,
+            description: values.search,
+            documentTypeId: values.search,
+            accountId: null
+          },
+          size: pageSize
+        })
+        .then((response) => {
+          const content: Content<Document[]> = response.data
+          dispatch(domainSlice.actions.setDocumentDomain({
+            documents: content.data!
+          }))
+        })
+        .catch((error) => {
+          console.error(error)
+          const content: Content<null> = error.response.data
+          alert(content.message)
+        })
+        .finally(() => {
+          dispatch(processSlice.actions.set({
+            isLoading: false
+          }))
+        })
     }
   })
 

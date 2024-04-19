@@ -483,7 +483,7 @@ export default function PassageSearchPage (): React.JSX.Element {
         </div>
         <hr className="w-75 mb-3"/>
         <div className="d-flex flex-column justify-content-center align-items-center w-75">
-          <h3>Highlighted Documents</h3>
+          <h3 className="mb-3">Marked Documents</h3>
           {
             passageSearchProcessResponse !== undefined
               ? passageSearchProcessResponse.finalDocumentUrls!.map((finalDocumentUrl, index) => {
@@ -493,10 +493,10 @@ export default function PassageSearchPage (): React.JSX.Element {
                         key={index}
                     >
                         <button
-                            className="btn btn-primary w-100 rounded-0"
+                            className="btn btn-success w-100 rounded-0"
                           onClick={() => { handleClickDocumentId(formik.values.inputSetting!.documentIds![index]) }}
                         >
-                          {formik.values.inputSetting!.documentIds![index]}
+                          Detail
                         </button>
                       <embed
                           style={{
