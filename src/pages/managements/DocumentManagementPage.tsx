@@ -37,6 +37,7 @@ export default function DocumentManagementPage (): React.JSX.Element {
   } = domainState.modalDomain!
 
   useEffect(() => {
+    console.log('DocumentManagementPage is loaded.')
     fetchData()
   }, [selectedDocument])
 

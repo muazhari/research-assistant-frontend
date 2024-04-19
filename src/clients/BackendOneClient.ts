@@ -46,29 +46,32 @@ export default class BackendOneClient extends Client {
       }
     )
     this.instance.interceptors.response.use(
-      response => response,
+      response => {
+        return response
+      },
       async error => {
-        if (error !== undefined && error.response !== undefined) {
+        const originalRequest = error.config
+        if (error.response !== undefined) {
           const errorContent: Content<null> = error.response.data
-          if (error.response.status === 401 && errorContent.message!.includes('Access token is expired')) {
-            const { authentication: authenticationState } = store.getState()
-            const refreshAccessTokenResponse: AxiosResponse<Content<Session>> = await serviceContainer.authorizationService.refreshAccessToken(
-              {
-                body: {
-                  refreshToken: authenticationState.session!.refreshToken
+          if (errorContent.message!.includes('AuthorizationMiddleware')) {
+            if (error.response.status === 401) {
+              const { authentication: authenticationState } = store.getState()
+              const refreshAccessTokenResponse: AxiosResponse<Content<Session>> = await serviceContainer.authorizationService.refreshAccessToken(
+                {
+                  body: {
+                    refreshToken: authenticationState.session!.refreshToken
+                  }
                 }
+              )
+              const refreshAccessTokenContent: Content<Session> = refreshAccessTokenResponse.data
+              if (refreshAccessTokenResponse.status === 200) {
+                store.dispatch(authenticationSlice.actions.setSession(refreshAccessTokenContent.data!))// eslint-disable-next-line @typescript-eslint/no-unsafe-argument
+                return await this.instance(originalRequest)
               }
-            )
-            const refreshAccessTokenContent: Content<Session> = refreshAccessTokenResponse.data
-            if (refreshAccessTokenResponse.status === 200) {
-              store.dispatch(authenticationSlice.actions.setSession(refreshAccessTokenContent.data))
-              const originalRequest = error.config
-              // eslint-disable-next-line @typescript-eslint/no-unsafe-argument
-              return await this.instance(originalRequest)
+            } else if (error.response.status === 404) {
+              store.dispatch(authenticationSlice.actions.logout())
+              window.location.href = '/authentications/login'
             }
-          } else if (error.response.status === 404 && errorContent.message!.includes('SessionRepository')) {
-            store.dispatch(authenticationSlice.actions.logout())
-            window.location.href = '/authentications/login'
           }
         }
 

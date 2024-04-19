@@ -235,7 +235,7 @@ Answer:`,
                         checked={formik.values.inputSetting!.preprocessorSetting!.isForceRefreshCategorizedElement}
                     />
                     <label htmlFor="inputSetting.preprocessorSetting.isForceRefreshCategorizedElement" className="ms-2">
-                        Is Force Refresh Extracted Document?
+                        Is Force Refresh Partitioned Document?
                     </label>
                 </fieldset>
                 <fieldset className="mb-2">
@@ -486,7 +486,7 @@ Answer:`,
                 <fieldset className="mb-2">
                     <label htmlFor="inputSetting.generatorSetting.prompt">Prompt</label>
                     <textarea
-                        rows={13}
+                        rows={16}
                         id="inputSetting.generatorSetting.prompt"
                         name="inputSetting.generatorSetting.prompt"
                         className="form-control"
@@ -614,7 +614,7 @@ Answer:`,
                         <th style={{ width: '5vw' }}>Rank</th>
                         <th style={{ width: '5vw' }}>Score</th>
                         <th style={{ width: '50vw' }}>Content</th>
-                        <th style={{ width: '5vw' }}>Action</th>
+                        <th style={{ width: '10vw' }}>Action</th>
                     </tr>
                     </thead>
                     <tbody>
