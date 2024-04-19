@@ -7,7 +7,6 @@ import type Content from '../models/dtos/contracts/Content.ts'
 import type Session from '../models/daos/Session.ts'
 import authenticationSlice from '../slices/AuthenticationSlice.ts'
 import * as serviceContainer from '../containers/ServiceContainer.ts'
-import { redirect } from 'react-router-dom'
 
 export default class BackendOneClient extends Client {
   instance: AxiosInstance

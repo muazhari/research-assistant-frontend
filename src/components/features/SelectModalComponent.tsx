@@ -286,7 +286,6 @@ export default function SelectModalComponent (): React.JSX.Element {
                     paginationTotalRows={Number.POSITIVE_INFINITY}
                     onChangePage={handleChangePage}
                     onChangeRowsPerPage={handleChangeRowsPerPage}
-                    progressPending={isLoading}
                     paginationRowsPerPageOptions={[5, 10, 15, 20, 25, 30]}
                     paginationPerPage={5}
                 />
