@@ -40,22 +40,34 @@ export default function DocumentManagementPage (): React.JSX.Element {
     fetchData()
   }, [selectedDocument])
 
+  const [pagePosition, setPagePosition] = React.useState<number>(1)
+  const [pageSize, setPageSize] = React.useState<number>(5)
+
   const fetchData = (): void => {
+    dispatch(processSlice.actions.set({
+      isLoading: true
+    }))
     documentService
       .findManyWithPagination({
-        pagePosition: 1,
-        pageSize: 10
+        pagePosition,
+        pageSize
       })
       .then((response) => {
         const content: Content<Document[]> = response.data
-        dispatch(domainSlice.actions.setDocumentDomain({
-          documents: content.data!
-        }))
+        if (content.data!.length > 0) {
+          dispatch(domainSlice.actions.setDocumentDomain({
+            documents: content.data!
+          }))
+        }
       })
       .catch((error) => {
         console.error(error)
         const content: Content<null> = error.response.data
         alert(content.message)
+      }).finally(() => {
+        dispatch(processSlice.actions.set({
+          isLoading: false
+        }))
       })
   }
 
@@ -164,17 +176,107 @@ export default function DocumentManagementPage (): React.JSX.Element {
     }
   ]
 
+  const handleChangePage = (pagePosition: number): void => {
+    if (pagePosition === Number.POSITIVE_INFINITY) {
+      alert('Please select a valid page position.')
+      return
+    }
+    dispatch(processSlice.actions.set({
+      isLoading: true
+    }))
+    documentService
+      .findManyWithPagination({
+        pagePosition,
+        pageSize
+      })
+      .then((response) => {
+        const content: Content<Document[]> = response.data
+        if (content.data!.length === 0) {
+          alert('Current page position is exceeding available pages.')
+        } else {
+          dispatch(domainSlice.actions.setDocumentDomain({
+            documents: content.data!
+          }))
+          setPagePosition(pagePosition)
+        }
+      })
+      .catch((error) => {
+        console.error(error)
+        const content: Content<null> = error.response.data
+        alert(content.message)
+      }).finally(() => {
+        dispatch(processSlice.actions.set({
+          isLoading: false
+        }))
+      })
+  }
+
+  const handleChangeRowsPerPage = (pageSize: number): void => {
+    dispatch(processSlice.actions.set({
+      isLoading: true
+    }))
+    documentService
+      .findManyWithPagination({
+        pagePosition,
+        pageSize
+      })
+      .then((response) => {
+        const content: Content<Document[]> = response.data
+        if (content.data!.length === 0) {
+          alert('Current page position is exceeding available pages.')
+        } else {
+          dispatch(domainSlice.actions.setDocumentDomain({
+            documents: content.data!
+          }))
+          setPageSize(pageSize)
+        }
+      })
+      .catch((error) => {
+        console.error(error)
+        const content: Content<null> = error.response.data
+        alert(content.message)
+      }).finally(() => {
+        dispatch(processSlice.actions.set({
+          isLoading: false
+        }))
+      })
+  }
+
   const formik = useFormik({
     initialValues: {
       search: ''
     },
     onSubmit: (values) => {
-      const filteredDocuments: Document[] = documents!.filter((document: Document) => {
-        return JSON.stringify(document).toLowerCase().includes(values.search.toLowerCase())
-      })
-      dispatch(domainSlice.actions.setDocumentDomain({
-        documents: filteredDocuments
+      dispatch(processSlice.actions.set({
+        isLoading: true
       }))
+      documentService
+        .search({
+          body: {
+            id: values.search,
+            name: values.search,
+            description: values.search,
+            documentTypeId: values.search,
+            accountId: null
+          },
+          size: pageSize
+        })
+        .then((response) => {
+          const content: Content<Document[]> = response.data
+          dispatch(domainSlice.actions.setDocumentDomain({
+            documents: content.data!
+          }))
+        })
+        .catch((error) => {
+          console.error(error)
+          const content: Content<null> = error.response.data
+          alert(content.message)
+        })
+        .finally(() => {
+          dispatch(processSlice.actions.set({
+            isLoading: false
+          }))
+        })
     }
   })
 
@@ -203,9 +305,17 @@ export default function DocumentManagementPage (): React.JSX.Element {
             />
 
             <DataTable
+                noDataComponent={'No data found.'}
                 pagination={true}
                 columns={columns}
                 data={documents!}
+                paginationServer={true}
+                paginationTotalRows={Number.POSITIVE_INFINITY}
+                onChangePage={handleChangePage}
+                onChangeRowsPerPage={handleChangeRowsPerPage}
+                progressPending={isLoading}
+                paginationRowsPerPageOptions={[5, 10, 15, 20, 25, 30]}
+                paginationPerPage={5}
             />
         </div>
   )

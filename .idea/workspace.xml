@@ -5,18 +5,11 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="67558acb-1948-4a06-8aee-1a140c430703" name="Changes" comment="">
-      <change afterPath="$PROJECT_DIR$/src/models/dtos/constants/FilePartitionStrategyConstant.ts" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/models/dtos/contracts/response/authentications/LogoutResponse.ts" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/models/dtos/contracts/requests/managements/documents/Search.ts" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/components/navigation_bars/AuthenticatedNavBarComponent.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/navigation_bars/AuthenticatedNavBarComponent.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/models/dtos/contracts/requests/passage_searches/InputSetting.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/models/dtos/contracts/requests/passage_searches/InputSetting.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/models/dtos/contracts/response/long_form_qas/ProcessResponse.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/models/dtos/contracts/response/long_form_qas/ProcessResponse.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/models/dtos/contracts/response/passage_searchs/ProcessResponse.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/models/dtos/contracts/response/passage_searches/ProcessResponse.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/pages/features/LongFormQaPage.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/pages/features/LongFormQaPage.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/pages/features/PassageSearchPage.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/pages/features/PassageSearchPage.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/services/AuthenticationService.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/services/AuthenticationService.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/services/PassageSearchService.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/services/PassageSearchService.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/slices/DomainSlice.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/slices/DomainSlice.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/components/features/SelectModalComponent.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/features/SelectModalComponent.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/pages/managements/DocumentManagementPage.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/pages/managements/DocumentManagementPage.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/services/DocumentService.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/services/DocumentService.ts" afterDir="false" />
     </list>
     <list id="a7cadf68-e7dd-4100-82ff-87108b6e6aff" name="Changes by avwan" comment="" />
     <option name="SHOW_DIALOG" value="false" />
@@ -66,7 +59,7 @@
     "codeWithMe.voiceChat.enabledByDefault": "false",
     "javascript.nodejs.core.library.configured.version": "21.7.1",
     "javascript.nodejs.core.library.typings.version": "20.12.7",
-    "last_opened_file_path": "C:/Data/Apps/research-assistant-frontend/src/models/dtos/contracts/response/authentications",
+    "last_opened_file_path": "C:/Data/Apps/research-assistant-frontend/src/models/dtos/contracts/requests/managements/documents",
     "node.js.detected.package.eslint": "true",
     "node.js.detected.package.standard": "true",
     "node.js.detected.package.tslint": "true",
@@ -83,11 +76,11 @@
 }]]></component>
   <component name="RecentsManager">
     <key name="CopyFile.RECENT_KEYS">
+      <recent name="C:\Data\Apps\research-assistant-frontend\src\models\dtos\contracts\requests\managements\documents" />
       <recent name="C:\Data\Apps\research-assistant-frontend\src\models\dtos\contracts\response\authentications" />
       <recent name="C:\Data\Apps\research-assistant-frontend\src\models\dtos\constants" />
       <recent name="C:\Data\Apps\research-assistant-frontend\src\components\features" />
       <recent name="C:\Data\Apps\research-assistant-frontend\src\services" />
-      <recent name="C:\Data\Apps\research-assistant-frontend\src\models\dtos\contracts\requests\authorizations" />
     </key>
     <key name="MoveFile.RECENT_KEYS">
       <recent name="C:\Data\Apps\research-assistant-frontend\src\models\dtos" />
@@ -97,7 +90,7 @@
       <recent name="C:\Data\Apps\research-assistant-frontend\src\components\navigation_bars" />
     </key>
   </component>
-  <component name="RunManager" selected="npm.run-1">
+  <component name="RunManager" selected="JavaScript Debug.run-2">
     <configuration name="run-2" type="JavascriptDebugType" uri="http://pc-3:9001">
       <method v="2" />
     </configuration>
@@ -197,7 +190,7 @@
       <workItem from="1707380561274" duration="20000" />
       <workItem from="1707380587069" duration="1851000" />
       <workItem from="1713339459365" duration="25740000" />
-      <workItem from="1713430140806" duration="29705000" />
+      <workItem from="1713430140806" duration="40424000" />
     </task>
     <servers />
   </component>

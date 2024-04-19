@@ -9,6 +9,7 @@ import type Document from '../models/daos/Document.ts'
 import type Content from '../models/dtos/contracts/Content.ts'
 import type FindManyWithPagination
   from '../models/dtos/contracts/requests/managements/documents/FindManyWithPagination.ts'
+import type Search from '../models/dtos/contracts/requests/managements/documents/Search.ts'
 
 export default class DocumentService extends Service {
   client: Client
@@ -27,6 +28,10 @@ export default class DocumentService extends Service {
 
   async deleteOneById (request: DeleteOneById): Promise<AxiosResponse<Content<Document>>> {
     return await this.client.instance.delete(`${this.path}/${request.id}`)
+  }
+
+  async search (request: Search): Promise<AxiosResponse<Content<Document[]>>> {
+    return await this.client.instance.post(`${this.path}/searches?size=${request.size}`, request.body)
   }
 
   async findManyWithPagination (request: FindManyWithPagination): Promise<AxiosResponse<Content<Document[]>>> {

@@ -7,7 +7,7 @@ import React, { useEffect } from 'react'
 import type Content from '../../models/dtos/contracts/Content.ts'
 import DataTable, { type TableColumn } from 'react-data-table-component'
 import { useFormik } from 'formik'
-import { type ProcessState } from '../../slices/ProcessSlice.ts'
+import processSlice, { type ProcessState } from '../../slices/ProcessSlice.ts'
 import { documentService } from '../../containers/ServiceContainer.ts'
 
 export default function SelectModalComponent (): React.JSX.Element {
@@ -42,22 +42,35 @@ export default function SelectModalComponent (): React.JSX.Element {
     fetchData()
   }, [isShow])
 
+  const [pagePosition, setPagePosition] = React.useState<number>(1)
+  const [pageSize, setPageSize] = React.useState<number>(5)
+
   const fetchData = (): void => {
+    dispatch(processSlice.actions.set({
+      isLoading: true
+    }))
     documentService
       .findManyWithPagination({
-        pagePosition: 1,
-        pageSize: 5
+        pagePosition,
+        pageSize
       })
       .then((response) => {
         const content: Content<Document[]> = response.data
-        dispatch(domainSlice.actions.setDocumentDomain({
-          documents: content.data!
-        }))
+        if (content.data!.length > 0) {
+          dispatch(domainSlice.actions.setDocumentDomain({
+            documents: content.data!
+          }))
+        }
+        setPageSize(pageSize)
       })
       .catch((error) => {
         console.error(error)
         const content: Content<null> = error.response.data
         alert(content.message)
+      }).finally(() => {
+        dispatch(processSlice.actions.set({
+          isLoading: false
+        }))
       })
   }
 
@@ -81,6 +94,72 @@ export default function SelectModalComponent (): React.JSX.Element {
       name: 'detail',
       isShow: true
     }))
+  }
+
+  const handleChangePage = (pagePosition: number): void => {
+    if (pagePosition === Number.POSITIVE_INFINITY) {
+      alert('Please select a valid page position.')
+      return
+    }
+    dispatch(processSlice.actions.set({
+      isLoading: true
+    }))
+    documentService
+      .findManyWithPagination({
+        pagePosition,
+        pageSize
+      })
+      .then((response) => {
+        const content: Content<Document[]> = response.data
+        if (content.data!.length === 0) {
+          alert('Current page position is exceeding available pages.')
+        } else {
+          dispatch(domainSlice.actions.setDocumentDomain({
+            documents: content.data!
+          }))
+          setPagePosition(pagePosition)
+        }
+      })
+      .catch((error) => {
+        console.error(error)
+        const content: Content<null> = error.response.data
+        alert(content.message)
+      }).finally(() => {
+        dispatch(processSlice.actions.set({
+          isLoading: false
+        }))
+      })
+  }
+
+  const handleChangeRowsPerPage = (pageSize: number): void => {
+    dispatch(processSlice.actions.set({
+      isLoading: true
+    }))
+    documentService
+      .findManyWithPagination({
+        pagePosition,
+        pageSize
+      })
+      .then((response) => {
+        const content: Content<Document[]> = response.data
+        if (content.data!.length === 0) {
+          alert('Current page position is exceeding available pages.')
+        } else {
+          dispatch(domainSlice.actions.setDocumentDomain({
+            documents: content.data!
+          }))
+          setPageSize(pageSize)
+        }
+      })
+      .catch((error) => {
+        console.error(error)
+        const content: Content<null> = error.response.data
+        alert(content.message)
+      }).finally(() => {
+        dispatch(processSlice.actions.set({
+          isLoading: false
+        }))
+      })
   }
 
   const columns: Array<TableColumn<Document>> = [
@@ -179,9 +258,17 @@ export default function SelectModalComponent (): React.JSX.Element {
                 />
 
                 <DataTable
+                    noDataComponent={'No data found.'}
                     pagination={true}
                     columns={columns}
                     data={documents!}
+                    paginationServer={true}
+                    paginationTotalRows={Number.POSITIVE_INFINITY}
+                    onChangePage={handleChangePage}
+                    onChangeRowsPerPage={handleChangeRowsPerPage}
+                    progressPending={isLoading}
+                    paginationRowsPerPageOptions={[5, 10, 15, 20, 25, 30]}
+                    paginationPerPage={5}
                 />
             </ModalBody>
         </Modal>
