@@ -2,13 +2,13 @@
   "name": "research-assistant-frontend-2",
   "version": "0.0.2",
   "scripts": {
-    "dev": "farm start",
-    "start": "farm start",
-    "build": "farm build",
-    "preview": "farm preview",
-    "clean": "farm clean"
+    "dev": "vite",
+    "build": "tsc && vite build",
+    "lint": "eslint . --ext ts,tsx --report-unused-disable-directives --max-warnings 0",
+    "preview": "vite preview --host"
   },
   "dependencies": {
+    "@popperjs/core": "^2.11.8",
     "@reduxjs/toolkit": "^2.2.3",
     "@uiw/react-json-view": "^2.0.0-alpha.24",
     "async-wait-until": "^2.0.12",
@@ -24,15 +24,12 @@
     "react-redux": "^9.1.1",
     "react-router-dom": "^6.22.3",
     "redux-persist": "^6.0.0",
+    "saas": "^1.0.0",
     "sass": "^1.75.0",
     "yup": "^1.4.0"
   },
   "devDependencies": {
-    "@farmfe/cli": "^1.0.0",
-    "@farmfe/core": "^1.0.20",
-    "@farmfe/js-plugin-postcss": "^1.5.3",
-    "@farmfe/plugin-react": "^1.0.1",
-    "@farmfe/plugin-sass": "^1.0.4",
+    "@vitejs/plugin-react-swc": "^3.3.2",
     "@types/bootstrap": "^5.2.10",
     "@types/core-js": "^2.5.8",
     "@types/eslint": "^8.56.9",
@@ -42,7 +39,6 @@
     "@types/react-refresh": "^0.14.6",
     "@types/styled-components": "^5.1.34",
     "@typescript-eslint/eslint-plugin": "^7.6.0",
-    "autoprefixer": "^10.4.19",
     "core-js": "^3.36.1",
     "eslint": "^8.0.1",
     "eslint-config-standard-with-typescript": "^43.0.1",

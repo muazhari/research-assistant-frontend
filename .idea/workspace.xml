@@ -5,9 +5,29 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="67558acb-1948-4a06-8aee-1a140c430703" name="Changes" comment="">
+      <change afterPath="$PROJECT_DIR$/public/vite.svg" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.dockerignore" beforeDir="false" afterPath="$PROJECT_DIR$/.dockerignore" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.env" beforeDir="false" afterPath="$PROJECT_DIR$/.env" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.env.production" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.gitignore" beforeDir="false" afterPath="$PROJECT_DIR$/.gitignore" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/components/features/SelectModalComponent.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/features/SelectModalComponent.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/pages/features/LongFormQaPage.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/pages/features/LongFormQaPage.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Dockerfile" beforeDir="false" afterPath="$PROJECT_DIR$/Dockerfile" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/bun.lockb" beforeDir="false" afterPath="$PROJECT_DIR$/bun.lockb" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/farm.config.ts" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/index.html" beforeDir="false" afterPath="$PROJECT_DIR$/index.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/package.json" beforeDir="false" afterPath="$PROJECT_DIR$/package.json" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/public/favicon.ico" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/App.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/App.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/assets/react.svg" beforeDir="false" afterPath="$PROJECT_DIR$/src/assets/react.svg" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/clients/BackendOneClient.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/clients/BackendOneClient.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/components/navigation_bars/AuthenticatedNavBarComponent.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/navigation_bars/AuthenticatedNavBarComponent.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/index.tsx" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/main.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/models/daos/Dao.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/models/daos/Dao.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/pages/NotFound.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/pages/NotFound.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/slices/AuthenticationSlice.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/slices/AuthenticationSlice.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/slices/StoreConfiguration.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/slices/StoreConfiguration.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/typings.d.ts" beforeDir="false" />
     </list>
     <list id="a7cadf68-e7dd-4100-82ff-87108b6e6aff" name="Changes by avwan" comment="" />
     <option name="SHOW_DIALOG" value="false" />
@@ -43,42 +63,43 @@
     <option name="hideEmptyMiddlePackages" value="true" />
     <option name="showLibraryContents" value="true" />
   </component>
-  <component name="PropertiesComponent">{
-  &quot;keyToString&quot;: {
-    &quot;Attach to Node.js/Chrome.Unnamed.executor&quot;: &quot;Debug&quot;,
-    &quot;Attach to Node.js/Chrome.run-2.executor&quot;: &quot;Debug&quot;,
-    &quot;Docker.compose-1.executor&quot;: &quot;Run&quot;,
-    &quot;JavaScript Debug.localhost:9001.executor&quot;: &quot;Debug&quot;,
-    &quot;JavaScript Debug.run-2.executor&quot;: &quot;Debug&quot;,
-    &quot;RunOnceActivity.OpenProjectViewOnStart&quot;: &quot;true&quot;,
-    &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
-    &quot;SHARE_PROJECT_CONFIGURATION_FILES&quot;: &quot;true&quot;,
-    &quot;WebServerToolWindowFactoryState&quot;: &quot;false&quot;,
-    &quot;codeWithMe.voiceChat.enabledByDefault&quot;: &quot;false&quot;,
-    &quot;javascript.nodejs.core.library.configured.version&quot;: &quot;21.7.1&quot;,
-    &quot;javascript.nodejs.core.library.typings.version&quot;: &quot;20.12.7&quot;,
-    &quot;last_opened_file_path&quot;: &quot;C:/Data/Apps/research-assistant-frontend/src/models/dtos/contracts/requests/managements/documents&quot;,
-    &quot;node.js.detected.package.eslint&quot;: &quot;true&quot;,
-    &quot;node.js.detected.package.standard&quot;: &quot;true&quot;,
-    &quot;node.js.detected.package.tslint&quot;: &quot;true&quot;,
-    &quot;node.js.selected.package.eslint&quot;: &quot;(autodetect)&quot;,
-    &quot;node.js.selected.package.standard&quot;: &quot;&quot;,
-    &quot;node.js.selected.package.tslint&quot;: &quot;(autodetect)&quot;,
-    &quot;nodejs_package_manager_path&quot;: &quot;yarn&quot;,
-    &quot;npm.run-1.executor&quot;: &quot;Debug&quot;,
-    &quot;run.code.analysis.last.selected.profile&quot;: &quot;pProject Default&quot;,
-    &quot;settings.editor.selected.configurable&quot;: &quot;preferences.pluginManager&quot;,
-    &quot;ts.external.directory.path&quot;: &quot;C:\\Data\\Apps\\research-assistant-frontend\\node_modules\\typescript\\lib&quot;,
-    &quot;vue.rearranger.settings.migration&quot;: &quot;true&quot;
+  <component name="PropertiesComponent"><![CDATA[{
+  "keyToString": {
+    "Attach to Node.js/Chrome.Unnamed.executor": "Debug",
+    "Attach to Node.js/Chrome.run-2.executor": "Debug",
+    "Docker.compose-1.executor": "Run",
+    "Docker.muazhari/research-assistant-frontend:latest.executor": "Run",
+    "JavaScript Debug.localhost:9001.executor": "Debug",
+    "JavaScript Debug.run-2.executor": "Debug",
+    "RunOnceActivity.OpenProjectViewOnStart": "true",
+    "RunOnceActivity.ShowReadmeOnStart": "true",
+    "SHARE_PROJECT_CONFIGURATION_FILES": "true",
+    "WebServerToolWindowFactoryState": "false",
+    "codeWithMe.voiceChat.enabledByDefault": "false",
+    "javascript.nodejs.core.library.configured.version": "21.7.1",
+    "javascript.nodejs.core.library.typings.version": "20.12.7",
+    "last_opened_file_path": "C:/Data/Apps/research-assistant-frontend/public",
+    "node.js.detected.package.eslint": "true",
+    "node.js.detected.package.standard": "true",
+    "node.js.detected.package.tslint": "true",
+    "node.js.selected.package.eslint": "(autodetect)",
+    "node.js.selected.package.standard": "",
+    "node.js.selected.package.tslint": "(autodetect)",
+    "nodejs_package_manager_path": "yarn",
+    "npm.run-1.executor": "Debug",
+    "run.code.analysis.last.selected.profile": "pProject Default",
+    "settings.editor.selected.configurable": "preferences.pluginManager",
+    "ts.external.directory.path": "C:\\Data\\Apps\\research-assistant-frontend\\node_modules\\typescript\\lib",
+    "vue.rearranger.settings.migration": "true"
   }
-}</component>
+}]]></component>
   <component name="RecentsManager">
     <key name="CopyFile.RECENT_KEYS">
+      <recent name="C:\Data\Apps\research-assistant-frontend\public" />
       <recent name="C:\Data\Apps\research-assistant-frontend\src\models\dtos\contracts\requests\managements\documents" />
       <recent name="C:\Data\Apps\research-assistant-frontend\src\models\dtos\contracts\response\authentications" />
       <recent name="C:\Data\Apps\research-assistant-frontend\src\models\dtos\constants" />
       <recent name="C:\Data\Apps\research-assistant-frontend\src\components\features" />
-      <recent name="C:\Data\Apps\research-assistant-frontend\src\services" />
     </key>
     <key name="MoveFile.RECENT_KEYS">
       <recent name="C:\Data\Apps\research-assistant-frontend\public" />
@@ -88,16 +109,18 @@
       <recent name="C:\Data\Apps\research-assistant-frontend\src\models\value_objects\contracts\response\passage_searchs" />
     </key>
   </component>
-  <component name="RunManager" selected="JavaScript Debug.run-2">
+  <component name="RunManager" selected="Docker.muazhari/research-assistant-frontend:latest">
     <configuration name="run-2" type="JavascriptDebugType" uri="http://pc-3:9001">
       <method v="2" />
     </configuration>
-    <configuration name="compose-1" type="docker-deploy" factoryName="docker-compose.yml" server-name="Docker">
-      <deployment type="docker-compose.yml">
+    <configuration name="muazhari/research-assistant-frontend:latest" type="docker-deploy" factoryName="dockerfile" server-name="Docker">
+      <deployment type="dockerfile">
         <settings>
-          <option name="envFilePath" value="" />
-          <option name="sourceFilePath" value="docker-compose.yml" />
-          <option name="upNoDeps" value="true" />
+          <option name="imageTag" value="muazhari/research-assistant-frontend:latest" />
+          <option name="buildOnly" value="true" />
+          <option name="containerName" value="" />
+          <option name="showCommandPreview" value="true" />
+          <option name="sourceFilePath" value="Dockerfile" />
         </settings>
       </deployment>
       <method v="2" />
@@ -114,7 +137,7 @@
       <method v="2" />
     </configuration>
     <list>
-      <item itemvalue="Docker.compose-1" />
+      <item itemvalue="Docker.muazhari/research-assistant-frontend:latest" />
       <item itemvalue="JavaScript Debug.run-2" />
       <item itemvalue="npm.run-1" />
     </list>
@@ -188,7 +211,10 @@
       <workItem from="1707380561274" duration="20000" />
       <workItem from="1707380587069" duration="1851000" />
       <workItem from="1713339459365" duration="25740000" />
-      <workItem from="1713430140806" duration="45075000" />
+      <workItem from="1713430140806" duration="46322000" />
+      <workItem from="1713509864928" duration="10000" />
+      <workItem from="1713509881471" duration="199000" />
+      <workItem from="1713510820397" duration="6579000" />
     </task>
     <servers />
   </component>

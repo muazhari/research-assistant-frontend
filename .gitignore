@@ -18,11 +18,7 @@ dist-ssr
 .idea
 .DS_Store
 *.suo
+*.ntvs*
+*.njsproj
 *.sln
 *.sw?
-
-
-# dotenv environment variables file
-.env.development
-.env.test
-

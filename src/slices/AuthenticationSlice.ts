@@ -20,6 +20,12 @@ export default createSlice({
   initialState,
   reducers: {
     login: (state, action) => {
+      storage
+        .removeItem('persistence')
+        .then()
+        .catch((error) => {
+          console.error(error)
+        })
       state.account = action.payload.account
       state.session = action.payload.session
       state.isLoggedIn = true

@@ -25,7 +25,7 @@ export default function AuthenticatedNavBarComponent (): React.JSX.Element {
       .logout()
       .then(() => {
         dispatch(authenticationSlice.actions.logout())
-        navigate('/login')
+        navigate('/authentications/login')
       })
       .catch((error) => {
         console.error(error)

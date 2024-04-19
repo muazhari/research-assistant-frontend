@@ -16,7 +16,7 @@ export default class BackendOneClient extends Client {
   constructor () {
     super()
     this.clientSetting = new ClientSetting(
-      process.env.FARM_API_URL_BACKEND_ONE
+      import.meta.env.VITE_API_URL_BACKEND_ONE as string
     )
     this.instance = axios.create({
       baseURL: this.clientSetting.URL
