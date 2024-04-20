@@ -38,7 +38,7 @@ export default function PassageSearchPage (): React.JSX.Element {
     inputSetting: {
       documentIds: [],
       llmSetting: {
-        modelName: 'claude-3-haiku-20240307',
+        modelName: 'claude-3-opus-20240229',
         maxToken: 500
       },
       preprocessorSetting: {
@@ -249,6 +249,34 @@ export default function PassageSearchPage (): React.JSX.Element {
             />
             <label htmlFor="inputSetting.preprocessorSetting.isForceRefreshCategorizedElement" className="ms-2">
               Is Force Refresh Partitioned Document?
+            </label>
+          </fieldset>
+          <fieldset className="mb-2 d-flex">
+            <input
+                type="checkbox"
+                id="inputSetting.preprocessorSetting.isIncludeImage"
+                name="inputSetting.preprocessorSetting.isIncludeImage"
+                className="form-check"
+                onChange={formik.handleChange}
+                onBlur={formik.handleBlur}
+                checked={formik.values.inputSetting!.preprocessorSetting!.isIncludeImage}
+            />
+            <label htmlFor="inputSetting.preprocessorSetting.isIncludeImage" className="ms-2">
+              Is Include Image?
+            </label>
+          </fieldset>
+          <fieldset className="mb-2 d-flex">
+            <input
+                type="checkbox"
+                id="inputSetting.preprocessorSetting.isIncludeTable"
+                name="inputSetting.preprocessorSetting.isIncludeTable"
+                className="form-check"
+                onChange={formik.handleChange}
+                onBlur={formik.handleBlur}
+                checked={formik.values.inputSetting!.preprocessorSetting!.isIncludeTable}
+            />
+            <label htmlFor="inputSetting.preprocessorSetting.isIncludeTable" className="ms-2">
+              Is Include Table?
             </label>
           </fieldset>
           <fieldset className="mb-2">
@@ -486,15 +514,17 @@ export default function PassageSearchPage (): React.JSX.Element {
             passageSearchProcessResponse !== undefined
               ? passageSearchProcessResponse.finalDocumentUrls!.map((finalDocumentUrl, index) => {
                 return (
-                    <div
-                        className="d-flex flex-column justify-content-center align-items-center mb-3 w-100"
-                        key={index}
-                    >
+                      <div
+                          className="d-flex flex-column justify-content-center align-items-center mb-3 w-100"
+                          key={index}
+                      >
                         <button
                             className="btn btn-success w-100 rounded-0"
-                          onClick={() => { handleClickDocumentId(formik.values.inputSetting!.documentIds![index]) }}
+                            onClick={() => {
+                              handleClickDocumentId(formik.values.inputSetting!.documentIds![index])
+                            }}
                         >
-                          Detail
+                          {formik.values.inputSetting!.documentIds![index]}
                         </button>
                       <embed
                           style={{

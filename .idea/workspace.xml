@@ -6,8 +6,8 @@
   <component name="ChangeListManager">
     <list default="true" id="67558acb-1948-4a06-8aee-1a140c430703" name="Changes" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/clients/BackendOneClient.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/clients/BackendOneClient.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/main.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/pages/features/LongFormQaPage.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/pages/features/LongFormQaPage.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/pages/features/PassageSearchPage.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/pages/features/PassageSearchPage.tsx" afterDir="false" />
     </list>
     <list id="a7cadf68-e7dd-4100-82ff-87108b6e6aff" name="Changes by avwan" comment="" />
     <option name="SHOW_DIALOG" value="false" />
@@ -206,7 +206,11 @@
       <workItem from="1713545026952" duration="1310000" />
       <workItem from="1713546524047" duration="655000" />
       <workItem from="1713549447950" duration="2969000" />
-      <workItem from="1713553328341" duration="1055000" />
+      <workItem from="1713553328341" duration="1134000" />
+      <workItem from="1713633222108" duration="706000" />
+      <workItem from="1713634806401" duration="264000" />
+      <workItem from="1713635139411" duration="47000" />
+      <workItem from="1713635575254" duration="900000" />
     </task>
     <servers />
   </component>
