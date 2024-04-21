@@ -4,7 +4,10 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="67558acb-1948-4a06-8aee-1a140c430703" name="Changes" comment="" />
+    <list default="true" id="67558acb-1948-4a06-8aee-1a140c430703" name="Changes" comment="">
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/components/features/SelectModalComponent.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/features/SelectModalComponent.tsx" afterDir="false" />
+    </list>
     <list id="a7cadf68-e7dd-4100-82ff-87108b6e6aff" name="Changes by avwan" comment="" />
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -208,6 +211,8 @@
       <workItem from="1713635139411" duration="47000" />
       <workItem from="1713635575254" duration="900000" />
       <workItem from="1713668545550" duration="1212000" />
+      <workItem from="1713670391329" duration="717000" />
+      <workItem from="1713671130062" duration="61000" />
     </task>
     <servers />
   </component>

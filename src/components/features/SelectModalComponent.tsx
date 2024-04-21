@@ -32,18 +32,20 @@ export default function SelectModalComponent (): React.JSX.Element {
     isShow
   } = domainState.modalDomain!
 
+  const [pagePosition, setPagePosition] = React.useState<number>(1)
+  const [pageSize, setPageSize] = React.useState<number>(5)
+
   const handleOnHide = (): void => {
     dispatch(domainSlice.actions.setModalDomain({
       isShow: false
     }))
+    setPagePosition(1)
+    setPageSize(5)
   }
 
   useEffect(() => {
     fetchData()
   }, [isShow])
-
-  const [pagePosition, setPagePosition] = React.useState<number>(1)
-  const [pageSize, setPageSize] = React.useState<number>(5)
 
   const fetchData = (): void => {
     dispatch(processSlice.actions.set({
@@ -191,7 +193,7 @@ export default function SelectModalComponent (): React.JSX.Element {
                 <>
                     <button
                         id={row.id}
-                        className="btn btn-info me-3"
+                        className="btn btn-success me-3"
                         onClick={() => {
                           handleClickDetail(row)
                         }}
