@@ -192,7 +192,9 @@ export default function SelectModalComponent (): React.JSX.Element {
                     <button
                         id={row.id}
                         className="btn btn-info me-3"
-                        onClick={() => { handleClickDetail(row) }}
+                        onClick={() => {
+                          handleClickDetail(row)
+                        }}
                     >{
                         isLoading!
                           ? <div className="spinner-border text-light" role="status">
@@ -204,7 +206,9 @@ export default function SelectModalComponent (): React.JSX.Element {
                     <button
                         id={row.id}
                         className="btn btn-primary"
-                        onClick={() => { handleClickSelect(row) }}
+                        onClick={() => {
+                          handleClickSelect(row)
+                        }}
                     >{
                         isLoading!
                           ? <div className="spinner-border text-light" role="status">

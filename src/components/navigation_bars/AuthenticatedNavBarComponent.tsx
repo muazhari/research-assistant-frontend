@@ -53,16 +53,16 @@ export default function AuthenticatedNavBarComponent (): React.JSX.Element {
                         </NavDropdown>
                     </Nav>
                     <button className="btn btn-danger" onClick={handleClickLogout} disabled={isLoading}>
-                    {
-                        isLoading!
-                          ? <div className="spinner-border text-light" role="status">
-                                <span className="visually-hidden">Loading...</span>
-                            </div>
-                          : 'Logout'
-                    }
-                </button>
-            </Navbar.Collapse>
-        </Container>
-</Navbar>
+                        {
+                            isLoading!
+                              ? <div className="spinner-border text-light" role="status">
+                                    <span className="visually-hidden">Loading...</span>
+                                </div>
+                              : 'Logout'
+                        }
+                    </button>
+                </Navbar.Collapse>
+            </Container>
+        </Navbar>
   )
 }

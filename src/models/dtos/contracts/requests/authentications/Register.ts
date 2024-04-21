@@ -10,6 +10,7 @@ export class Body extends Request {
     this.password = password
   }
 }
+
 export default class Register extends Request {
   body?: Body
 }

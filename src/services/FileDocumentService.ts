@@ -61,13 +61,13 @@ export default class FileDocumentService extends Service {
       data.append(entry[0], entry[1] as string | Blob)
     }
     return await this.client.instance.patch(
-        `${this.path}/${request.id}`,
-        data,
-        {
-          headers: {
-            'Content-Type': 'multipart/form-data'
-          }
-        }
+            `${this.path}/${request.id}`,
+            data,
+            {
+              headers: {
+                'Content-Type': 'multipart/form-data'
+              }
+            }
     )
   }
 }

@@ -146,7 +146,9 @@ export default function DocumentManagementPage (): React.JSX.Element {
                     <button
                         id={row.id}
                         className="btn btn-success mx-3"
-                        onClick={() => { handleClickDetail(row) }}
+                        onClick={() => {
+                          handleClickDetail(row)
+                        }}
                         disabled={isLoading}
                     >
                         {
@@ -160,7 +162,9 @@ export default function DocumentManagementPage (): React.JSX.Element {
                     <button
                         id={row.id}
                         className="btn btn-danger"
-                        onClick={() => { handleClickDelete(row) }}
+                        onClick={() => {
+                          handleClickDelete(row)
+                        }}
                         disabled={isLoading}
                     >
                         {

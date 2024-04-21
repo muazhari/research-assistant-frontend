@@ -15,6 +15,7 @@ export class Body extends Dto {
     this.accountId = accountId
   }
 }
+
 export default class PatchOneById extends Request {
   id?: string
   body?: Body

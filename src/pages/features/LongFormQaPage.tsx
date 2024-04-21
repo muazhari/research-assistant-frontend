@@ -627,6 +627,45 @@ Answer:`,
             </div>
             <hr className="w-75 mb-3"/>
             <div className="d-flex flex-column justify-content-center align-items-center w-75">
+                <h3>Grade</h3>
+                {longFormQaProcessResponse?.hallucinationGrade !== undefined &&
+                longFormQaProcessResponse?.answerRelevancyGrade !== undefined
+                  ? (
+                        <>
+                            <fieldset className="mb-2 d-flex">
+                                <input
+                                    type="checkbox"
+                                    id="hallucinationGrade"
+                                    name="hallucinationGrade"
+                                    className="form-check"
+                                    checked={longFormQaProcessResponse.hallucinationGrade}
+                                    disabled={true}
+                                />
+                                <label htmlFor="hallucinationGrade" className="ms-2">
+                                    Retrieved Passage - Answer Hallucination Grade
+                                </label>
+                            </fieldset>
+                            <fieldset className="mb-2 d-flex">
+
+                                <input
+                                    type="checkbox"
+                                    id="relevancyGrade"
+                                    name="relevancyGrade"
+                                    className="form-check"
+                                    checked={longFormQaProcessResponse.answerRelevancyGrade}
+                                    disabled={true}
+                                />
+                                <label htmlFor="relevancyGrade" className="ms-2">
+                                    Question - Answer Relevancy Grade
+                                </label>
+                            </fieldset>
+                        </>
+                    )
+                  : '...'
+                }
+            </div>
+            <hr className="w-75 mb-3"/>
+            <div className="d-flex flex-column justify-content-center align-items-center w-75">
                 <h3>Answer</h3>
                 <p style={{ textAlign: 'justify' }}>
                     {longFormQaProcessResponse?.generatedAnswer ?? '...'}
@@ -656,11 +695,14 @@ Answer:`,
                                         >
                                             <td>{index + 1}</td>
                                             <td className="text-break">{reRankedDocument.metadata!.reRankedScore!}</td>
-                                            <td className="text-break" style={{ textAlign: 'justify' }}>{reRankedDocument.pageContent!}</td>
+                                            <td className="text-break"
+                                                style={{ textAlign: 'justify' }}>{reRankedDocument.pageContent!}</td>
                                             <td>
                                                 <button
                                                     className="btn btn-success"
-                                                    onClick={() => { handleClickDetail(reRankedDocument) }}
+                                                    onClick={() => {
+                                                      handleClickDetail(reRankedDocument)
+                                                    }}
                                                 >
                                                     Detail
                                                 </button>

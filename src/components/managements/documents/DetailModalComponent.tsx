@@ -98,7 +98,11 @@ export default function DetailModalComponent (): React.JSX.Element {
   }, [selectedDocument])
 
   useEffect(() => {
-    setInitialValues({ ...initialValues, ...(selectedDocumentDetail as typeof initialValues), fileData: undefined })
+    setInitialValues({
+      ...initialValues,
+      ...(selectedDocumentDetail as typeof initialValues),
+      fileData: undefined
+    })
   }, [selectedDocumentDetail])
 
   const handleOnHide = (): void => {
@@ -122,7 +126,10 @@ export default function DetailModalComponent (): React.JSX.Element {
       }))
       let documentDetail: Promise<AxiosResponse<Content<FileDocument | TextDocument | WebDocument>>>
       if (selectedDocument!.documentTypeId! === DocumentTypeConstant.FILE) {
-        const { fileMetadata, ...filteredValues } = values as FileDocument
+        const {
+          fileMetadata,
+          ...filteredValues
+        } = values as FileDocument
         documentDetail = fileDocumentService.patchOneById({
           id: selectedDocument!.id,
           body: filteredValues
@@ -222,18 +229,18 @@ export default function DetailModalComponent (): React.JSX.Element {
                             {
                                 DocumentTypeConstant.getValues().map((documentTypeId: string) => {
                                   return (
-                                            <option
-                                                key={documentTypeId}
-                                                value={documentTypeId}
-                                            >
-                                                {documentTypeId}
-                                            </option>
+                                        <option
+                                            key={documentTypeId}
+                                            value={documentTypeId}
+                                        >
+                                            {documentTypeId}
+                                        </option>
                                   )
                                 })
                             }
                         </select>
                     </fieldset>
-                    { selectedDocument!.documentTypeId === DocumentTypeConstant.FILE &&
+                    {selectedDocument!.documentTypeId === DocumentTypeConstant.FILE &&
                         <>
                             <fieldset className="mb-2">
                                 <label className="form-label" htmlFor="fileName">File Name</label>

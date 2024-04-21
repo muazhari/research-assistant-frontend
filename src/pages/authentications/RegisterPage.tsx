@@ -53,7 +53,7 @@ export default function RegisterPage (): React.JSX.Element {
                     />
                     {
                         (formik.errors.email !== null && formik.touched.email === true) &&
-                          <div className="text-danger">{formik.errors.email}</div>
+                        <div className="text-danger">{formik.errors.email}</div>
                     }
                 </fieldset>
                 <fieldset className="mb-3">
@@ -69,7 +69,7 @@ export default function RegisterPage (): React.JSX.Element {
                     />
                     {
                         (formik.errors.password !== null && formik.touched.password === true) &&
-                          <div className="text-danger">{formik.errors.password}</div>
+                        <div className="text-danger">{formik.errors.password}</div>
                     }
                 </fieldset>
                 <div className="mb-3">Did have any account?{' '}

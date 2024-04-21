@@ -98,7 +98,10 @@ export default function InsertModalComponent (): React.JSX.Element {
             selectedDocument: content.data! as Document,
             selectedDocumentDetail: content.data!
           }))
-          setInitialValues({ ...values, fileData: undefined })
+          setInitialValues({
+            ...values,
+            fileData: undefined
+          })
           alert(content.message)
         }).catch((error) => {
           console.error(error)
@@ -162,81 +165,81 @@ export default function InsertModalComponent (): React.JSX.Element {
                             onChange={formik.handleChange}
                             value={formik.values.documentTypeId}
                         >
-                          {
-                            DocumentTypeConstant.getValues().map((documentTypeId: string) => {
-                              return (
-                                  <option
-                                      key={documentTypeId}
-                                      value={documentTypeId}
-                                  >
-                                    {documentTypeId}
-                                  </option>
-                              )
-                            })
-                          }
+                            {
+                                DocumentTypeConstant.getValues().map((documentTypeId: string) => {
+                                  return (
+                                        <option
+                                            key={documentTypeId}
+                                            value={documentTypeId}
+                                        >
+                                            {documentTypeId}
+                                        </option>
+                                  )
+                                })
+                            }
                         </select>
                     </fieldset>
-                    { formik.values.documentTypeId === DocumentTypeConstant.FILE &&
-                                <>
-                                    <fieldset className="mb-2">
-                                        <label className="form-label" htmlFor="fileName">File Name</label>
-                                        <input
-                                            className="form-control"
-                                            type="text"
-                                            name="fileName"
-                                            id="fileName"
-                                            onBlur={formik.handleBlur}
-                                            onChange={formik.handleChange}
-                                            value={formik.values.fileName}
-                                        />
-                                    </fieldset>
-                                  <fieldset className="mb-2">
-                                    <label className="form-label" htmlFor="fileData">File Data</label>
-                                    <input
-                                        className="form-control"
-                                        type="file"
-                                        name="fileData"
-                                        id="fileData"
-                                        onBlur={formik.handleBlur}
-                                        onChange={(event) => {
-                                          formik.handleChange(event)
-                                          const fileData: File = event.target.files![0]
-                                          formik.setFieldValue('fileData', fileData)
-                                          formik.setFieldValue('fileName', fileData.name)
-                                        }}
-                                    />
-                                  </fieldset>
-                                </>
+                    {formik.values.documentTypeId === DocumentTypeConstant.FILE &&
+                        <>
+                            <fieldset className="mb-2">
+                                <label className="form-label" htmlFor="fileName">File Name</label>
+                                <input
+                                    className="form-control"
+                                    type="text"
+                                    name="fileName"
+                                    id="fileName"
+                                    onBlur={formik.handleBlur}
+                                    onChange={formik.handleChange}
+                                    value={formik.values.fileName}
+                                />
+                            </fieldset>
+                            <fieldset className="mb-2">
+                                <label className="form-label" htmlFor="fileData">File Data</label>
+                                <input
+                                    className="form-control"
+                                    type="file"
+                                    name="fileData"
+                                    id="fileData"
+                                    onBlur={formik.handleBlur}
+                                    onChange={(event) => {
+                                      formik.handleChange(event)
+                                      const fileData: File = event.target.files![0]
+                                      formik.setFieldValue('fileData', fileData)
+                                      formik.setFieldValue('fileName', fileData.name)
+                                    }}
+                                />
+                            </fieldset>
+                        </>
                     }
-                  {formik.values.documentTypeId === DocumentTypeConstant.TEXT &&
-                      <>
-                        <fieldset className="mb-2">
-                          <label className="form-label" htmlFor="textContent">Text Content</label>
-                          <textarea
-                              className="form-control"
-                              name="textContent"
-                              id="textContent"
-                              onBlur={formik.handleBlur}
-                              onChange={formik.handleChange}
-                              value={formik.values.textContent}
-                          />
-                        </fieldset>
-                      </>
-                  }
-                  {formik.values.documentTypeId === DocumentTypeConstant.WEB &&
-                                <>
-                                    <fieldset className="mb-2">
-                                        <label className="form-label" htmlFor="webUrl">Web Url</label>
-                                        <textarea
-                                            className="form-control"
-                                            name="webUrl"
-                                            id="webUrl"
-                                            onBlur={formik.handleBlur}
-                                            onChange={formik.handleChange}
-                                            value={formik.values.webUrl}
-                                        />
-                                    </fieldset>
-                                </>
+                    {formik.values.documentTypeId === DocumentTypeConstant.TEXT &&
+                        <>
+                            <fieldset className="mb-2">
+                                <label className="form-label" htmlFor="textContent">Text Content</label>
+                                <textarea
+                                    className="form-control"
+                                    name="textContent"
+                                    id="textContent"
+                                    onBlur={formik.handleBlur}
+                                    onChange={formik.handleChange}
+                                    value={formik.values.textContent}
+                                />
+                            </fieldset>
+                        </>
+                    }
+                    {formik.values.documentTypeId === DocumentTypeConstant.WEB &&
+                        <>
+                            <fieldset className="mb-2">
+                                <label className="form-label" htmlFor="webUrl">Web Url</label>
+                                <textarea
+                                    className="form-control"
+                                    name="webUrl"
+                                    id="webUrl"
+                                    onBlur={formik.handleBlur}
+                                    onChange={formik.handleChange}
+                                    value={formik.values.webUrl}
+                                />
+                            </fieldset>
+                        </>
                     }
                 </form>
             </ModalBody>

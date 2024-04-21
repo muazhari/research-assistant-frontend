@@ -9,6 +9,7 @@ export class Body extends Dto {
     this.description = description
   }
 }
+
 export default class PatchOneById extends Request {
   id?: string
   body?: Body

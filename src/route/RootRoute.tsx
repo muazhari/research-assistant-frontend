@@ -11,8 +11,8 @@ export default function RootRoute (): React.JSX.Element {
   const { isLoggedIn } = authenticationState
 
   return (
-      <BrowserRouter>
-          {isLoggedIn! ? <AuthenticatedRoute/> : <UnAuthenticatedRoute/>}
-      </BrowserRouter>
+        <BrowserRouter>
+            {isLoggedIn! ? <AuthenticatedRoute/> : <UnAuthenticatedRoute/>}
+        </BrowserRouter>
   )
 }
