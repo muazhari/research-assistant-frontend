@@ -496,9 +496,9 @@ export default function PassageSearchPage (): React.JSX.Element {
                     }
                 </button>
             </form>
-            <h2 className="mb-4 mt-5">Output</h2>
+            <h2 className="text-center mb-4 mt-5">Output</h2>
             <div className="d-flex flex-column justify-content-center align-items-center w-75">
-                <h3>Process Duration</h3>
+                <h3 className="text-center">Process Duration</h3>
                 <p className="text-center">
                     {
                         passageSearchProcessResponse !== undefined
@@ -509,7 +509,7 @@ export default function PassageSearchPage (): React.JSX.Element {
             </div>
             <hr className="w-75 mb-3"/>
             <div className="d-flex flex-column justify-content-center align-items-center w-75">
-                <h3 className="mb-3">Marked Documents</h3>
+                <h3 className="text-center mb-3">Marked Documents</h3>
                 {
                     passageSearchProcessResponse !== undefined
                       ? passageSearchProcessResponse.finalDocumentUrls!.map((finalDocumentUrl, index) => {
@@ -542,7 +542,7 @@ export default function PassageSearchPage (): React.JSX.Element {
             </div>
             <hr className="w-75 mb-3"/>
             <div className="d-flex flex-column justify-content-center align-items-center w-75 mb-5">
-                <h3>Retrieved Passages</h3>
+                <h3 className="text-center">Retrieved Passages</h3>
                 <hr className="w-100"/>
                 <table className="table-hover table" style={{ tableLayout: 'fixed' }}>
                     <thead>

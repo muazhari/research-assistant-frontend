@@ -5,14 +5,23 @@ import { Link, useNavigate } from 'react-router-dom'
 import type Content from '../../models/dtos/contracts/Content.ts'
 import type LoginResponse from '../../models/dtos/contracts/response/authentications/LoginResponse.ts'
 import authenticationSlice from '../../slices/AuthenticationSlice.ts'
-import { useDispatch } from 'react-redux'
+import { useDispatch, useSelector } from 'react-redux'
 import React from 'react'
 
 import { authenticationService } from '../../containers/ServiceContainer.ts'
+import type { ProcessState } from '../../slices/ProcessSlice.ts'
+import type { RootState } from '../../slices/StoreConfiguration.ts'
 
 export default function LoginPage (): React.JSX.Element {
   const dispatch = useDispatch()
   const navigate = useNavigate()
+
+  const processState: ProcessState = useSelector((state: RootState) => state.process)
+
+  const {
+    isLoading
+  } = processState
+
   const formik = useFormik({
     initialValues: {
       email: '',
@@ -87,7 +96,15 @@ export default function LoginPage (): React.JSX.Element {
                         Register here
                     </Link>.
                 </div>
-                <button className="btn btn-primary" type="submit">Login</button>
+                <button type="submit" className="btn btn-primary" disabled={isLoading}>
+                    {
+                        isLoading!
+                          ? <div className="spinner-border text-light" role="status">
+                                <span className="visually-hidden">Loading...</span>
+                            </div>
+                          : 'Login'
+                    }
+                </button>
             </form>
         </div>
   )

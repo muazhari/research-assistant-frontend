@@ -2,7 +2,7 @@ import { Modal, ModalBody, ModalHeader } from 'react-bootstrap'
 import { useDispatch, useSelector } from 'react-redux'
 import domainSlice, { type DomainState } from '../../slices/DomainSlice.ts'
 import { type RootState } from '../../slices/StoreConfiguration.ts'
-import React from 'react'
+import React, { useEffect } from 'react'
 import JsonView from '@uiw/react-json-view'
 
 export default function ReRankedDocumentModalComponent (): React.JSX.Element {
@@ -24,6 +24,18 @@ export default function ReRankedDocumentModalComponent (): React.JSX.Element {
     }))
   }
 
+  const [isMobile, setIsMobile] = React.useState<boolean>(false)
+
+  useEffect(() => {
+    window.addEventListener('resize', () => {
+      if (window.innerWidth < 768) {
+        setIsMobile(true)
+      } else {
+        setIsMobile(false)
+      }
+    })
+  }, [])
+
   return (
         <Modal
             size='lg'
@@ -35,7 +47,7 @@ export default function ReRankedDocumentModalComponent (): React.JSX.Element {
             </ModalHeader>
             <ModalBody>
                 <JsonView
-                    style={{ fontSize: '100%' }}
+                    style={{ fontSize: isMobile ? 'calc(2.5 * ((1vh + 1vw)/2))' : 'calc(1.5 * ((1vh + 1vw)/2))' }}
                     value={selectedReRankedDocument ?? {}}
                     collapsed={5}
                     shortenTextAfterLength={0}

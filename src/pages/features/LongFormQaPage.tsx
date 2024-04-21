@@ -614,9 +614,9 @@ Answer:`,
                     }
                 </button>
             </form>
-            <h2 className="mb-4 mt-5">Output</h2>
+            <h2 className="text-center mb-4 mt-5">Output</h2>
             <div className="d-flex flex-column justify-content-center align-items-center w-75">
-                <h3>Process Duration</h3>
+                <h3 className="text-center">Process Duration</h3>
                 <p className="text-center">
                     {
                         longFormQaProcessResponse !== undefined
@@ -627,7 +627,7 @@ Answer:`,
             </div>
             <hr className="w-75 mb-3"/>
             <div className="d-flex flex-column justify-content-center align-items-center w-75">
-                <h3>Grade</h3>
+                <h3 className="text-center">Grades</h3>
                 {longFormQaProcessResponse?.hallucinationGrade !== undefined &&
                 longFormQaProcessResponse?.answerRelevancyGrade !== undefined
                   ? (
@@ -666,14 +666,14 @@ Answer:`,
             </div>
             <hr className="w-75 mb-3"/>
             <div className="d-flex flex-column justify-content-center align-items-center w-75">
-                <h3>Answer</h3>
+                <h3 className="text-center">Answer</h3>
                 <p style={{ textAlign: 'justify' }}>
                     {longFormQaProcessResponse?.generatedAnswer ?? '...'}
                 </p>
             </div>
             <hr className="w-75 mb-3"/>
             <div className="d-flex flex-column justify-content-center align-items-center w-75 mb-5">
-                <h3>Retrieved Passages</h3>
+                <h3 className="text-center">Retrieved Passages</h3>
                 <hr className="w-100"/>
                 <table className="table-hover table" style={{ tableLayout: 'fixed' }}>
                     <thead>
