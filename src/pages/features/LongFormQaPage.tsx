@@ -642,7 +642,7 @@ Answer:`,
                                     disabled={true}
                                 />
                                 <label htmlFor="hallucinationGrade" className="ms-2">
-                                    Retrieved Passage - Answer Hallucination Grade
+                                    Retrieved Passages - Answer Hallucination Grade
                                 </label>
                             </fieldset>
                             <fieldset className="mb-2 d-flex">
