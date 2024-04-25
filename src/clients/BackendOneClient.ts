@@ -51,9 +51,9 @@ export default class BackendOneClient extends Client {
       },
       async error => {
         const originalRequest = error.config
-        if (error.response !== undefined) {
+        if (error.response?.data !== undefined) {
           const errorContent: Content<null> = error.response.data
-          if (errorContent.message!.includes('AuthorizationMiddleware')) {
+          if ((errorContent.message?.includes('AuthorizationMiddleware')) === true) {
             if (error.response.status === 401) {
               const { authentication: authenticationState } = store.getState()
               const refreshAccessTokenResponse: AxiosResponse<Content<Session>> = await serviceContainer.authorizationService.refreshAccessToken(
