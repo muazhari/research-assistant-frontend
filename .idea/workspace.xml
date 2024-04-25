@@ -5,14 +5,7 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="67558acb-1948-4a06-8aee-1a140c430703" name="Changes" comment="">
-      <change beforePath="$PROJECT_DIR$/src/components/features/SelectModalComponent.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/features/SelectModalComponent.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/components/managements/documents/DetailModalComponent.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/managements/documents/DetailModalComponent.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/components/managements/documents/InsertModalComponent.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/managements/documents/InsertModalComponent.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/components/navigation_bars/AuthenticatedNavBarComponent.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/navigation_bars/AuthenticatedNavBarComponent.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/pages/authentications/LoginPage.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/pages/authentications/LoginPage.tsx" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/pages/features/LongFormQaPage.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/pages/features/LongFormQaPage.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/pages/features/PassageSearchPage.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/pages/features/PassageSearchPage.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/pages/managements/DocumentManagementPage.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/pages/managements/DocumentManagementPage.tsx" afterDir="false" />
     </list>
     <list id="a7cadf68-e7dd-4100-82ff-87108b6e6aff" name="Changes by avwan" comment="" />
     <option name="SHOW_DIALOG" value="false" />
@@ -234,7 +227,7 @@
       <workItem from="1713773131646" duration="1210000" />
       <workItem from="1713845652790" duration="76000" />
       <workItem from="1714036071294" duration="156000" />
-      <workItem from="1714036520690" duration="491000" />
+      <workItem from="1714036520690" duration="1397000" />
     </task>
     <servers />
   </component>
