@@ -34,7 +34,7 @@ export default function PassageSearchPage (): React.JSX.Element {
     name
   } = domainState.modalDomain!
 
-  const [initialValues, setInitialValues] = useState<Body>({
+  const [initialValues] = useState<Body>({
     inputSetting: {
       documentIds: [],
       llmSetting: {
@@ -68,13 +68,6 @@ export default function PassageSearchPage (): React.JSX.Element {
       }
     }
   })
-
-  useEffect(() => {
-    initialValues.inputSetting!.documentIds = selectedDocuments!.map((document) => document.id!)
-    setInitialValues({
-      ...initialValues
-    })
-  }, [selectedDocuments])
 
   const handleClickDetail = (reRankedDocument: ReRankedDocument): void => {
     dispatch(domainSlice.actions.setCurrentDomain({
@@ -146,6 +139,10 @@ export default function PassageSearchPage (): React.JSX.Element {
     }
   })
 
+  useEffect(() => {
+    formik.setFieldValue('inputSetting.documentIds', selectedDocuments!.map((document) => document.id!))
+  }, [selectedDocuments])
+
   return (
         <div className="d-flex flex-column justify-content-center align-items-center">
             {name === 'reRankedDocument' && <ReRankedDocumentModalComponent/>}
@@ -169,7 +166,7 @@ export default function PassageSearchPage (): React.JSX.Element {
                             source: 'selectDocumentId'
                           }))
                         }}
-                        onChange={formik.handleChange}
+                        readOnly={true}
                         onBlur={formik.handleBlur}
                         value={formik.values.inputSetting!.documentIds!.join(', ')}
                     />

@@ -33,7 +33,7 @@ export default function LongFormQaPage (): React.JSX.Element {
     name
   } = domainState.modalDomain!
 
-  const [initialValues, setInitialValues] = useState<Body>({
+  const [initialValues] = useState<Body>({
     inputSetting: {
       documentIds: [],
       llmSetting: {
@@ -82,13 +82,6 @@ Answer:`,
     }
   })
 
-  useEffect(() => {
-    initialValues.inputSetting!.documentIds = selectedDocuments!.map((document) => document.id!)
-    setInitialValues({
-      ...initialValues
-    })
-  }, [selectedDocuments])
-
   const handleClickDetail = (reRankedDocument: ReRankedDocument): void => {
     dispatch(domainSlice.actions.setCurrentDomain({
       selectedReRankedDocument: reRankedDocument
@@ -129,6 +122,10 @@ Answer:`,
     }
   })
 
+  useEffect(() => {
+    formik.setFieldValue('inputSetting.documentIds', selectedDocuments!.map((document) => document.id!))
+  }, [selectedDocuments])
+
   return (
         <div className="d-flex flex-column justify-content-center align-items-center">
             {name === 'reRankedDocument' && <ReRankedDocumentModalComponent/>}
@@ -139,10 +136,10 @@ Answer:`,
             <form className="d-flex flex-column w-50 mb-3">
                 <h3 className="mb-2">Input Setting</h3>
                 <fieldset className="mb-2">
-                    <label htmlFor="inputSetting.documentSetting.documentId">Document ID</label>
+                    <label htmlFor="inputSetting.documentIds">Document ID</label>
                     <textarea
-                        id="inputSetting.documentSetting.documentId"
-                        name="inputSetting.documentSetting.documentId"
+                        id="inputSetting.documentIds"
+                        name="inputSetting.documentIds"
                         className="form-control"
                         placeholder="Select here.."
                         onClick={() => {
@@ -152,7 +149,7 @@ Answer:`,
                             source: 'selectDocumentId'
                           }))
                         }}
-                        onChange={formik.handleChange}
+                        readOnly={true}
                         onBlur={formik.handleBlur}
                         value={formik.values.inputSetting!.documentIds!.join(', ')}
                     />
