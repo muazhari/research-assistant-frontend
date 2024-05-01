@@ -49,7 +49,7 @@ export default function RegisterPage (): React.JSX.Element {
         <div className="d-flex flex-column justify-content-center align-items-center flex-wrap p-5">
             <h1 className="mb-5">Register Page</h1>
             <form onSubmit={formik.handleSubmit} className="d-flex flex-column flex-wrap">
-                <fieldset className="mb-2">s
+                <fieldset className="mb-2">
                     <label className="form-label" htmlFor="email">Email:</label>
                     <input
                         className="form-control"

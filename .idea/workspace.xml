@@ -5,7 +5,8 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="67558acb-1948-4a06-8aee-1a140c430703" name="Changes" comment="">
-      <change beforePath="$PROJECT_DIR$/src/pages/features/LongFormQaPage.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/pages/features/LongFormQaPage.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/components/features/SelectModalComponent.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/features/SelectModalComponent.tsx" afterDir="false" />
     </list>
     <list id="a7cadf68-e7dd-4100-82ff-87108b6e6aff" name="Changes by avwan" comment="" />
     <option name="SHOW_DIALOG" value="false" />
@@ -227,7 +228,9 @@
       <workItem from="1713773131646" duration="1210000" />
       <workItem from="1713845652790" duration="76000" />
       <workItem from="1714036071294" duration="156000" />
-      <workItem from="1714036520690" duration="1397000" />
+      <workItem from="1714036520690" duration="1542000" />
+      <workItem from="1714566528462" duration="198000" />
+      <workItem from="1714566990314" duration="15000" />
     </task>
     <servers />
   </component>

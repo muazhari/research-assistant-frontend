@@ -182,13 +182,13 @@ export default function SelectModalComponent (): React.JSX.Element {
     },
     {
       name: 'Document Type ID',
-      width: '12%',
+      width: '10%',
       selector: (row: Document) => row.documentTypeId!,
       sortable: true
     },
     {
       name: 'Actions',
-      width: '25%',
+      width: '27%',
       cell: (row: Document) =>
                 <>
                     <button

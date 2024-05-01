@@ -260,6 +260,7 @@ export default function PassageSearchPage (): React.JSX.Element {
                         onChange={formik.handleChange}
                         onBlur={formik.handleBlur}
                         checked={formik.values.inputSetting!.preprocessorSetting!.isIncludeImage}
+                        disabled={true}
                     />
                     <label htmlFor="inputSetting.preprocessorSetting.isIncludeImage" className="ms-2">
                         Is Include Image?
@@ -274,6 +275,7 @@ export default function PassageSearchPage (): React.JSX.Element {
                         onChange={formik.handleChange}
                         onBlur={formik.handleBlur}
                         checked={formik.values.inputSetting!.preprocessorSetting!.isIncludeTable}
+                        disabled={true}
                     />
                     <label htmlFor="inputSetting.preprocessorSetting.isIncludeTable" className="ms-2">
                         Is Include Table?
