@@ -38,7 +38,7 @@ export default function PassageSearchPage (): React.JSX.Element {
     inputSetting: {
       documentIds: [],
       llmSetting: {
-        modelName: 'claude-3-opus-20240229',
+        modelName: 'gpt-4o',
         maxToken: 500
       },
       preprocessorSetting: {
