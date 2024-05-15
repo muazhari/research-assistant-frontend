@@ -323,7 +323,7 @@ export default function PassageSearchPage (): React.JSX.Element {
                     />
                     <label htmlFor="inputSetting.preprocessorSetting.isForceRefreshCategorizedDocument"
                            className="ms-2">
-                        Is Force Refresh Resized Document?
+                        Is Force Refresh Categorized Document?
                     </label>
                 </fieldset>
                 <hr/>
