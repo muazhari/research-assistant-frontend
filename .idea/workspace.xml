@@ -6,6 +6,7 @@
   <component name="ChangeListManager">
     <list default="true" id="67558acb-1948-4a06-8aee-1a140c430703" name="Changes" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/pages/features/LongFormQaPage.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/pages/features/LongFormQaPage.tsx" afterDir="false" />
     </list>
     <list id="a7cadf68-e7dd-4100-82ff-87108b6e6aff" name="Changes by avwan" comment="" />
     <option name="SHOW_DIALOG" value="false" />
@@ -87,7 +88,7 @@
       <recent name="C:\Data\Apps\research-assistant-frontend\src\models\value_objects\contracts\response\passage_searchs" />
     </key>
   </component>
-  <component name="RunManager" selected="Docker.muazhari/research-assistant-frontend:latest">
+  <component name="RunManager" selected="npm.run-1">
     <configuration name="run-2" type="JavascriptDebugType" uri="http://pc-3:80">
       <method v="2" />
     </configuration>
@@ -236,6 +237,9 @@
       <workItem from="1714682746860" duration="197000" />
       <workItem from="1715628141387" duration="280000" />
       <workItem from="1715629491985" duration="677000" />
+      <workItem from="1715741997763" duration="113000" />
+      <workItem from="1717583172103" duration="979000" />
+      <workItem from="1718383524710" duration="757000" />
     </task>
     <servers />
   </component>

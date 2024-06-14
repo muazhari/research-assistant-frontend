@@ -641,7 +641,7 @@ Answer:`,
                                     disabled={true}
                                 />
                                 <label htmlFor="hallucinationGrade" className="ms-2">
-                                    Retrieved Passages - Answer Hallucination Grade
+                                    &#34;Retrieved Passages - Answer&#34; Hallucination Grade
                                 </label>
                             </fieldset>
                             <fieldset className="mb-2 d-flex">
@@ -655,7 +655,7 @@ Answer:`,
                                     disabled={true}
                                 />
                                 <label htmlFor="relevancyGrade" className="ms-2">
-                                    Question - Answer Relevancy Grade
+                                    &#34;Question - Answer&#34; Relevancy Grade
                                 </label>
                             </fieldset>
                         </>
