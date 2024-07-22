@@ -96,7 +96,8 @@ Answer:`,
   const formik = useFormik({
     initialValues,
     enableReinitialize: true,
-    onSubmit: values => {
+    onSubmit: (values, helper) => {
+      helper.setSubmitting(true)
       dispatch(processSlice.actions.set({
         isLoading: true
       }))
@@ -115,6 +116,7 @@ Answer:`,
           alert(JSON.stringify(error.response.data, null, 2))
         })
         .finally(() => {
+          helper.setSubmitting(false)
           dispatch(processSlice.actions.set({
             isLoading: false
           }))
@@ -142,7 +144,8 @@ Answer:`,
                         name="inputSetting.documentIds"
                         className="form-control"
                         placeholder="Select here.."
-                        onClick={() => {
+                        onClick={(event) => {
+                          event.preventDefault()
                           dispatch(domainSlice.actions.setModalDomain({
                             name: 'select',
                             isShow: true,
@@ -603,7 +606,15 @@ Answer:`,
                     </label>
                 </fieldset>
                 <hr/>
-                <button onClick={formik.submitForm} type="submit" className="btn btn-primary" disabled={isLoading}>
+                <button
+                    onClick={(event) => {
+                      event.preventDefault()
+                      formik.submitForm()
+                    }}
+                    type="submit"
+                    className="btn btn-primary"
+                    disabled={isLoading}
+                >
                     {
                         isLoading!
                           ? <div className="spinner-border text-light" role="status">
@@ -699,7 +710,8 @@ Answer:`,
                                             <td>
                                                 <button
                                                     className="btn btn-success"
-                                                    onClick={() => {
+                                                    onClick={(event) => {
+                                                      event.preventDefault()
                                                       handleClickDetail(reRankedDocument)
                                                     }}
                                                 >

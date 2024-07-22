@@ -159,7 +159,8 @@ export default function PassageSearchPage (): React.JSX.Element {
                         name="inputSetting.documentSetting.documentId"
                         className="form-control"
                         placeholder="Select here.."
-                        onClick={() => {
+                        onClick={(event) => {
+                          event.preventDefault()
                           dispatch(domainSlice.actions.setModalDomain({
                             name: 'select',
                             isShow: true,
@@ -485,7 +486,15 @@ export default function PassageSearchPage (): React.JSX.Element {
                     </label>
                 </fieldset>
                 <hr/>
-                <button onClick={formik.submitForm} type="submit" className="btn btn-primary" disabled={isLoading}>
+                <button
+                    onClick={(event) => {
+                      event.preventDefault()
+                      formik.submitForm()
+                    }}
+                    type="submit"
+                    className="btn btn-primary"
+                    disabled={isLoading}
+                >
                     {
                         isLoading!
                           ? <div className="spinner-border text-light" role="status">
@@ -519,7 +528,8 @@ export default function PassageSearchPage (): React.JSX.Element {
                                 >
                                     <button
                                         className="btn btn-success w-100 rounded-0"
-                                        onClick={() => {
+                                        onClick={(event) => {
+                                          event.preventDefault()
                                           handleClickDocumentId(formik.values.inputSetting!.documentIds![index])
                                         }}
                                     >
@@ -568,7 +578,8 @@ export default function PassageSearchPage (): React.JSX.Element {
                                             <td>
                                                 <button
                                                     className="btn btn-success"
-                                                    onClick={() => {
+                                                    onClick={(event) => {
+                                                      event.preventDefault()
                                                       handleClickDetail(reRankedDocument)
                                                     }}
                                                 >
