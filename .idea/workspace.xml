@@ -7,7 +7,6 @@
     <list default="true" id="67558acb-1948-4a06-8aee-1a140c430703" name="Changes" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/pages/features/LongFormQaPage.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/pages/features/LongFormQaPage.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/pages/features/PassageSearchPage.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/pages/features/PassageSearchPage.tsx" afterDir="false" />
     </list>
     <list id="a7cadf68-e7dd-4100-82ff-87108b6e6aff" name="Changes by avwan" comment="" />
     <option name="SHOW_DIALOG" value="false" />
@@ -93,7 +92,7 @@
     <configuration name="run-2" type="JavascriptDebugType" uri="http://pc-3:80">
       <method v="2" />
     </configuration>
-    <configuration name="muazhari/research-assistant-frontend:latest" type="docker-deploy" factoryName="dockerfile" server-name="Docker">
+    <configuration name="muazhari/research-assistant-frontend:latest" type="docker-deploy" factoryName="dockerfile" server-name="Docker WSL">
       <deployment type="dockerfile">
         <settings>
           <option name="imageTag" value="muazhari/research-assistant-frontend:latest" />
@@ -244,7 +243,11 @@
       <workItem from="1718387048609" duration="667000" />
       <workItem from="1721642911028" duration="275000" />
       <workItem from="1721645422541" duration="735000" />
-      <workItem from="1721646492041" duration="968000" />
+      <workItem from="1721646492041" duration="1632000" />
+      <workItem from="1721659524601" duration="820000" />
+      <workItem from="1721699213313" duration="14000" />
+      <workItem from="1723997970792" duration="6167000" />
+      <workItem from="1724076249958" duration="25000" />
     </task>
     <servers />
   </component>

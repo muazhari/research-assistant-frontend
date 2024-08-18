@@ -356,6 +356,7 @@ export default function PassageSearchPage (): React.JSX.Element {
                 <fieldset className="mb-2">
                     <label htmlFor="inputSetting.embedderSetting.queryInstruction">Query Instruction</label>
                     <input
+                        disabled={true}
                         type="text"
                         id="inputSetting.embedderSetting.queryInstruction"
                         name="inputSetting.embedderSetting.queryInstruction"
@@ -404,7 +405,7 @@ export default function PassageSearchPage (): React.JSX.Element {
                         disabled={formik.values.inputSetting!.preprocessorSetting!.isForceRefreshCategorizedDocument}
                     />
                     <label htmlFor="inputSetting.embedderSetting.isForceRefreshDocument" className="ms-2">
-                        Is Force Refresh Preprocessed Document?
+                        Is Force Refresh Document?
                     </label>
                 </fieldset>
                 <hr/>

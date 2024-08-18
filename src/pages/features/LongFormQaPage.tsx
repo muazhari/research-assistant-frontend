@@ -67,12 +67,19 @@ export default function LongFormQaPage (): React.JSX.Element {
       },
       transformQuestionMaxRetry: 3,
       generatorSetting: {
-        prompt: `Instruction: Create a concise and informative answer for a given question based solely on the given passages. You must only use information from the given passages. Use an academic style. Do not repeat text. Cite at least one passage in each sentence. Cite the passages using passage number notation like "[number]". If multiple passages contain the answer, cite those passages like "[number, number, etc.]". If the passages do not contain the answer to the question, then say that answering is impossible given the available information with the explanation. Ensure the output does not re-explain the instruction.
-Passages:
+        prompt: `<instruction>
+Answer the question efficiently and effectively only based on the given passages. Use academic writing. Cite each sentence with at least one to many necessary passages using passage number notation "[number, number, etc.]". If the passages do not contain the answer to the question, then state with the explanation that answering the question is impossible.
+<instruction/>
+<passages>
 {% for passage in passages %}
-[{{ loop.index }}]={{ passage.page_content }}
+<passage_{{ loop.index }}>
+{{ passage.page_content }}
+<passage_{{ loop.index }}/>
 {% endfor %}
-Question: {{ question }}
+<passages/>
+<question>
+{{ question }}
+<question/>
 Answer:`,
         isForceRefreshGeneratedAnswer: false,
         isForceRefreshGeneratedQuestion: false,
@@ -349,6 +356,7 @@ Answer:`,
                 <fieldset className="mb-2">
                     <label htmlFor="inputSetting.embedderSetting.queryInstruction">Query Instruction</label>
                     <input
+                        disabled={true}
                         type="text"
                         id="inputSetting.embedderSetting.queryInstruction"
                         name="inputSetting.embedderSetting.queryInstruction"
@@ -405,7 +413,7 @@ Answer:`,
                         disabled={formik.values.inputSetting!.preprocessorSetting!.isForceRefreshCategorizedDocument}
                     />
                     <label htmlFor="inputSetting.embedderSetting.isForceRefreshDocument" className="ms-2">
-                        Is Force Refresh Preprocessed Document?
+                        Is Force Refresh Document?
                     </label>
                 </fieldset>
                 <hr/>
@@ -652,7 +660,7 @@ Answer:`,
                                     disabled={true}
                                 />
                                 <label htmlFor="hallucinationGrade" className="ms-2">
-                                    &#34;Retrieved Passages - Answer&#34; Hallucination Grade
+                                    &#34;Retrieved Passages - Question - Answer&#34; Hallucination Grade
                                 </label>
                             </fieldset>
                             <fieldset className="mb-2 d-flex">

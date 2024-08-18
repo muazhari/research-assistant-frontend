@@ -2,7 +2,7 @@
 FROM oven/bun:latest
 
 # Set the working directory
-ENV WORKDIR /app
+ENV WORKDIR=/workdir
 WORKDIR $WORKDIR
 
 # Copy package.json file.
@@ -11,5 +11,5 @@ COPY ./package.json .
 # Install dependencies.
 RUN bun install
 
-# Copy the current directory contents into the container at /app
+# Copy rest of the files to the working directory.
 COPY . .
